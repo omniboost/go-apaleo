@@ -74,7 +74,7 @@ func (d *DateTime) UnmarshalJSON(text []byte) (err error) {
 }
 
 func (d DateTime) MarshalSchema() string {
-	return d.Format("2006-01-02 15:04:05")
+	return d.Format("2006-01-02T15:04:05Z")
 }
 
 type Int int
