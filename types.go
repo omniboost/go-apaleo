@@ -468,6 +468,35 @@ type EmbeddedServiceModel struct {
 	Description string `json:"description"`
 }
 
+type EmbeddedCancellationPolicyModel struct {
+	ID                   string      `json:"id"`
+	Code                 string      `json:"code"`
+	Name                 string      `json:"name"`
+	Description          string      `json:"description"`
+	PeriodPriorToArrival PeriodModel `json:"periodPriorToArrival"`
+}
+
+type EmbeddedNoShowPolicyModel struct {
+	ID          string `json:"id"`
+	Code        string `json:"code"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type EmbeddedTimeSliceDefinitionModel struct {
+	ID           string `json:"id"`
+	Name         string `json:"name"`
+	Template     string `json:"template"`
+	CheckInTime  Time   `json:"checkInTime"`
+	CheckOutTime Time   `json:"checkOutTime"`
+}
+
+type PeriodModel struct {
+	Hours  int32 `json:"hours"`
+	Days   int32 `json:"days"`
+	Months int32 `json:"months"`
+}
+
 type GuestModel struct {
 	Title                          string             `json:"title"`
 	Gender                         string             `json:"gender"`
@@ -649,6 +678,95 @@ type TimeSliceModel struct {
 	TotalGrossAmount MonetaryValueModel        `json:"totalGrossAmount"`
 	IncludedServices []ReservationServiceModel `json:"includedServices"`
 	Actions          ActionModel               `json:"actions"`
+}
+
+type RatePlanItemModel struct {
+	ID                   string                           `json:"id"`
+	Code                 string                           `json:"code"`
+	Name                 string                           `json:"name"`
+	Description          string                           `json:"description"`
+	MinGuaranteeType     string                           `json:"minGuaranteeType"`
+	PriceCalculationMode string                           `json:"priceCalculationMode"`
+	Property             EmbeddedPropertyModel            `json:"property"`
+	UnitGroup            EmbeddedUnitGroupModel           `json:"unitGroup"`
+	CancellationPolicy   EmbeddedCancellationPolicyModel  `json:"cancellationPolicy"`
+	NoShowPolicy         EmbeddedNoShowPolicyModel        `json:"noShowPolicy"`
+	ChannelCodes         []string                         `json:"channelCodes"`
+	PromoCodes           []string                         `json:"promoCodes"`
+	TimeSliceDefinition  EmbeddedTimeSliceDefinitionModel `json:"timeSliceDefinition"`
+	Restrictions         BookingRestrictionsModel         `json:"restrictions"`
+	BookingPeriods       []BookingPeriodModel             `json:"bookingPeriods"`
+	IsBookable           bool                             `json:"isBookable"`
+	IsSubjectToCityTax   bool                             `json:"isSubjectToCityTax"`
+	PricingRule          PricingRuleModel                 `json:"pricingRule"`
+	IsDerived            bool                             `json:"isDerived"`
+	DerivationLevel      int32                            `json:"derivationLevel"`
+	Surcharges           []SurchargeModel                 `json:"surcharges"`
+	AgeCategories        []RatePlanAgeCategoryModel       `json:"ageCategories"`
+	IncludedServices     []RatePlanServiceItemModel       `json:"includedServices"`
+	Companies            []CompanyRatePlanModel           `json:"companies"`
+	RatesRange           RatesRangeModel                  `json:"ratesRange"`
+	AccountingConfigs    []AccountingConfigModel          `json:"accountingConfigs"`
+}
+
+type RatePlans []RatePlanItemModel
+
+type BookingRestrictionsModel struct {
+	MinAdvance       PeriodModel `json:"minAdvance"`
+	MaxAdvance       PeriodModel `json:"maxAdvance"`
+	LateBookingUntil Time        `json:"lateBookingUntil"`
+}
+
+type BookingPeriodModel struct {
+	From DateTime `json:"from"`
+	To   DateTime `json:"to"`
+}
+
+type PricingRuleModel struct {
+	BaseRatePlan EmbeddedRatePlanModel `json:"baseRatePlan"`
+	Type         string                `json:"type"`
+	Value        float64               `json:"value"`
+}
+
+type SurchargeModel struct {
+	Adults int32   `json:"adults"`
+	Type   string  `json:"type"`
+	Value  float64 `json:"value"`
+}
+
+type RatePlanAgeCategoryModel struct {
+	ID         string `json:"id"`
+	Surcharges []AgeCategorySurchageModel
+}
+
+type AgeCategorySurchageModel struct {
+	Adults int32   `json:"adults"`
+	Value  float64 `json:"value"`
+}
+
+type RatePlanServiceItemModel struct {
+	Service     EmbeddedServiceModel `json:"service"`
+	GrossPrice  MonetaryValueModel   `json:"grossPrice"`
+	PricingMode string               `json:"pricingMode"`
+}
+
+type CompanyRatePlanModel struct {
+	ID            string `json:"id"`
+	Code          string `json:"code"`
+	CorporateCode string `json:"corporateCode"`
+	Name          string `json:"name"`
+}
+
+type RatesRangeModel struct {
+	From Date `json:"from"`
+	To   Date `json:"to"`
+}
+
+type AccountingConfigModel struct {
+	VatType      string `json:"vatType"`
+	ServiceType  string `json:"serviceType"`
+	SubAccountID string `json:"subAccountId"`
+	ValidFrom    Date   `json:"validFrom"`
 }
 
 type CommissionModel struct {
