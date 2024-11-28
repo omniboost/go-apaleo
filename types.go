@@ -59,6 +59,17 @@ type CancellationPolicyItemModel struct {
 
 type CancellationPolicies []CancellationPolicyItemModel
 
+type NoShowPolicyItemModel struct {
+	ID          string          `json:"id"`
+	Code        string          `json:"code"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	PropertyID  string          `json:"propertyId"`
+	Fee         FeeDetailsModel `json:"fee"`
+}
+
+type NoShowPolicies []NoShowPolicyItemModel
+
 type FeeDetailsModel struct {
 	VatType      string             `json:"vatType"`
 	FixedValue   MonetaryValueModel `json:"fixedValue"`
