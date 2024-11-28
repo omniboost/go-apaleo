@@ -114,8 +114,8 @@ func (r *GetInvoicesRequest) NewResponseBody() *GetInvoicesResponseBody {
 }
 
 type GetInvoicesResponseBody struct {
-	Count    int         `json:"count"`
-	Invoices InvoiceList `json:"invoices"`
+	Count    int      `json:"count"`
+	Invoices Invoices `json:"invoices"`
 }
 
 func (r *GetInvoicesRequest) URL() *url.URL {
@@ -141,8 +141,8 @@ func (r *GetInvoicesRequest) Do() (GetInvoicesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetInvoicesRequest) All() (InvoiceList, error) {
-	invoices := InvoiceList{}
+func (r *GetInvoicesRequest) All() (Invoices, error) {
+	invoices := Invoices{}
 	for {
 		resp, err := r.Do()
 		if err != nil {

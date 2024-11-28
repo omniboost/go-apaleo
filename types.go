@@ -30,7 +30,7 @@ type ActionModel struct {
 	Reasons   []ActionReasonModel `json:"reasons"`
 }
 
-type PropertyListModel struct {
+type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
 
@@ -91,7 +91,7 @@ type PropertyListModel struct {
 	Actions []ActionModel `json:"actions"`
 }
 
-type PropertyList []PropertyListModel
+type Properties []PropertyItemModel
 
 type AddressModel struct {
 	AddressLine1 string `json:"addressline1"`
@@ -176,7 +176,7 @@ type EmbeddedCompanyModel struct {
 	CanCheckOutOnAR bool   `json:"canCheckOutOnAr"`
 }
 
-type InvoiceListModel struct {
+type InvoiceItemModel struct {
 	ID                   string               `json:"id"`
 	Number               string               `json:"number"`
 	Type                 string               `json:"type"`
@@ -198,7 +198,7 @@ type InvoiceListModel struct {
 	Company              EmbeddedCompanyModel `json:"company"`
 }
 
-type InvoiceList []InvoiceListModel
+type Invoices []InvoiceItemModel
 
 type ExportTransactionItemModel struct {
 	// Timestamp with time zone information, when the booking was done
@@ -257,109 +257,152 @@ type ReceiptModel struct {
 type ReservationItemModel struct {
 	// Reservation id
 	ID string `json:"id"`
+
 	// Booking id
 	BookingID string `json:"bookingId"`
+
 	// Block id
 	BlockID string `json:"blockId"`
+
 	// Status of the reservation = ['Confirmed', 'InHouse', 'CheckedOut',
 	// 'Canceled', 'NoShow'],
 	Status string `json:"status"`
+
 	// Time of check-in
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	CheckInTime DateTime `json:"checkInTime"`
+
 	// Time of check-out
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	CheckOutTime DateTime `json:"checkOutTime"`
+
 	// Time of cancellation, if the reservation was canceled
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	CancellationTime DateTime `json:"cancellationTime"`
+
 	// Time of setting no-show reservation status
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	NoShowTime DateTime `json:"noShowTime"`
+
 	// The property
 	Property EmbeddedPropertyModel `json:"property"`
+
 	// The rate plan
 	RatePlan EmbeddedRatePlanModel `json:"ratePlan"`
+
 	// The unit group
 	UnitGroup EmbeddedUnitGroupModel `json:"unitGroup"`
+
 	// The unit
 	Unit EmbeddedUnitModel `json:"unit,omitempty"`
+
+	// The market segment
+	MarketSegment EmbeddedMarketSegmentModel `json:"marketSegment,omitempty"`
+
 	// Total amount
 	TotalGrossAmount MonetaryValueModel `json:"totalGrossAmount"`
+
 	// Date of arrival
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	Arrival DateTime `json:"arrival"`
+
 	// Date of departure
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	Departure DateTime `json:"departure"`
+
 	// Date of creation
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	Created DateTime `json:"created"`
+
 	// Date of last modification
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	Modified DateTime `json:"modified"`
+
 	// Number of adults
 	Adults int `json:"adults"`
+
 	// The ages of the children
 	ChildrenAges []int `json:"childrenAges"`
+
 	// Additional information and comments
-	Comment string `json:"comment`
+	Comment string `json:"comment"`
+
 	// Additional information and comment by the guest
 	GuestComment string `json:"guestComment"`
+
 	// Code in external system
 	ExternalCode string `json:"externalCode"`
+
 	// Channel code = ['Direct', 'BookingCom', 'Ibe', 'ChannelManager']
 	ChannelCode string `json:"channelCode"`
+
 	// Source of the reservation (e.g Hotels.com, Orbitz, etc.)
 	Source string `json:"source"`
+
 	// The primary guest of the reservation
 	PrimaryGuest GuestModel `json:"primaryGuest"`
+
 	// Additional guests of the reservation
 	AdditionalGuests []GuestModel `json:"additionalGuests"`
+
 	// The person who made the booking
 	Booker BookerModel `json:"booker"`
+
 	// Payment information
 	PaymentAccount PaymentAccountModel `json:"paymentAccountModel"`
+
 	// The strongest guarantee for the rate plans booked in this reservation =
 	// ['PM6Hold', 'CreditCard', 'Prepayment', 'Company', 'Ota']
 	GuaranteeType string `json:"guaranteeType"`
+
 	// Details about the cancellation fee for this reservation<Paste>
 	CancellationFee ReservationCancellationFeeModel `json:"cancellationFee"`
+
 	// Details about the no-show fee for this reservation
 	NoShowFee ReservationNoShowFeeModel `json:"noShowFee"`
+
 	// The purpose of the trip, leisure or business = ['Business', 'Leisure']
 	TravelPurpose string `json:"travelPurpose"`
+
 	// The balance of this reservation
 	Balance MonetaryValueModel `json:"balance"`
+
 	// The list of units assigned to this reservation
 	AssignedUnits []ReservationAssignedUnitModel `json:"assignedUnits"`
 	// The list of time slices with the reserved units / unit groups for the
 	// stay
 	TimeSlices []TimeSliceModel `json:"timeSlices"`
-	// The list of additional services (extras, add-ons) reserved for the stay -
-	// DEPRECATED: Please use 'Services'. This field will be removed on
-	// 31.03.2019
-	ExtraServices []ReservationServiceModel `json:"extraServices"`
+
 	// The list of additional services (extras, add-ons) reserved for the stay
-	Services ReservationServiceItemModel `json:"services"`
+	Services []ReservationServiceItemModel `json:"services"`
+
 	// Validation rules are applied to reservations during their lifetime. For
 	// example a reservation that was created while the house or unit group is
 	// already fully booked. Whenever a rule was or is currently violated, a
 	// validation message will be added to this list. They can be deleted
 	// whenever the hotel staff worked them off.
 	ValidationMessages []ReservationValidationMessageModel `json:"validationMessages"`
+
 	// The list of actions for this reservation
-	Actions []ActionModel        `json:"actions"`
-	Company EmbeddedCompanyModel `json:"company,omitempty"`
+	Actions []ActionModel `json:"actions"`
+
+	Company              EmbeddedCompanyModel `json:"company"`
+	CorporateCode        string               `json:"corporateCode"`
+	AllFoliosHaveInvoice bool                 `json:"allFoliosHaveInvoice"`
+	HasCityTax           bool                 `json:"hasCityTax"`
+	Commission           CommissionModel      `json:"commission"`
+	PromoCode            string               `json:"promoCode"`
 }
+
+type Reservations []ReservationItemModel
 
 type EmbeddedPropertyModel struct {
 	// The property id
@@ -405,6 +448,52 @@ type EmbeddedUnitModel struct {
 	Name string `json:"name"`
 	// The description for the unit
 	Description string `json:"description"`
+}
+
+type EmbeddedMarketSegmentModel struct {
+	// The market segment id
+	ID string `json:"id"`
+
+	// The market segment code
+	Code string `json:"code"`
+
+	// The market segment name
+	Name string `json:"name"`
+}
+
+type EmbeddedServiceModel struct {
+	ID          string `json:"id"`
+	Code        string `json:"code"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type GuestModel struct {
+	Title                          string             `json:"title"`
+	Gender                         string             `json:"gender"`
+	FirstName                      string             `json:"firstName"`
+	MiddleInitial                  string             `json:"middleInitial"`
+	LastName                       string             `json:"lastName"`
+	Email                          string             `json:"email"`
+	Phone                          string             `json:"phone"`
+	Address                        PersonAddressModel `json:"address"`
+	NationalityCountryCode         string             `json:"nationalityCountryCode"`
+	IdentificationNumber           string             `json:"identificationNumber"`
+	IdentificationAdditionalNumber string             `json:"identificationAdditionalNumber"`
+	IdentificationIssueDate        string             `json:"identificationIssueDate"`
+	IdentificationExpiryDate       string             `json:"identificationExpiryDate"`
+	IdentificationIssuePlace       string             `json:"identificationIssuePlace"`
+	IdentificationType             string             `json:"identificationType"`
+	PersonalTaxID                  string             `json:"personalTaxId"`
+	Company                        PersonCompanyModel `json:"company"`
+	PreferredLanguage              string             `json:"preferredLanguage"`
+	BirthDate                      string             `json:"birthDate"`
+	BirthFirstName                 string             `json:"birthFirstName"`
+	BirthLastName                  string             `json:"birthLastName"`
+	MotherFirstName                string             `json:"motherFirstName"`
+	MotherLastName                 string             `json:"motherLastName"`
+	BorderCrossingPlace            string             `json:"borderCrossingPlace"`
+	BorderCrossingDate             string             `json:"borderCrossingDate"`
 }
 
 type BookingItemModel struct {
@@ -465,40 +554,60 @@ type PaymentAccountModel struct {
 }
 
 type BookingReservationModel struct {
-	ID               string                        `json:"id"`
-	Status           string                        `json:"status"`
-	ExternalCode     string                        `json:"externalCode"`
-	ChannelCode      string                        `json:"channelCode"`
-	Source           string                        `json:"source"`
-	PaymentAccount   PaymentAccountModel           `json:"paymentAccount"`
-	Arrival          string                        `json:"arrival"`
-	Departure        string                        `json:"departure"`
-	Adults           int32                         `json:"adults"`
-	ChildrenAges     []int32                       `json:"childrenAges"`
-	TotalGrossAmount MonetaryValueModel            `json:"totalGrossAmount"`
-	Property         EmbeddedPropertyModel         `json:"property"`
-	RatePlan         EmbeddedRatePlanModel         `json:"ratePlan"`
-	UnitGroup        EmbeddedUnitGroupModel        `json:"unitGroup"`
-	Services         []ReservationServiceItemModel `json:"services"`
-	GuestComment     string                        `json:"guestComment"`
-	CancellationFee  struct {
-		ID          string             `json:"id"`
-		Code        string             `json:"code"`
-		Name        string             `json:"name"`
-		Description string             `json:"description"`
-		DueDateTime string             `json:"dueDateTime"`
-		Fee         MonetaryValueModel `json:"fee"`
-	} `json:"cancellationFee"`
+	ID               string                          `json:"id"`
+	Status           string                          `json:"status"`
+	ExternalCode     string                          `json:"externalCode"`
+	ChannelCode      string                          `json:"channelCode"`
+	Source           string                          `json:"source"`
+	PaymentAccount   PaymentAccountModel             `json:"paymentAccount"`
+	Arrival          string                          `json:"arrival"`
+	Departure        string                          `json:"departure"`
+	Adults           int32                           `json:"adults"`
+	ChildrenAges     []int32                         `json:"childrenAges"`
+	TotalGrossAmount MonetaryValueModel              `json:"totalGrossAmount"`
+	Property         EmbeddedPropertyModel           `json:"property"`
+	RatePlan         EmbeddedRatePlanModel           `json:"ratePlan"`
+	UnitGroup        EmbeddedUnitGroupModel          `json:"unitGroup"`
+	Services         []ReservationServiceItemModel   `json:"services"`
+	GuestComment     string                          `json:"guestComment"`
+	CancellationFee  ReservationCancellationFeeModel `json:"cancellationFee"`
+	NoShowFee        ReservationNoShowFeeModel       `json:"noShowFee"`
+	Company          EmbeddedCompanyModel            `json:"company"`
+}
 
-	NoShowFee struct {
-		ID          string             `json:"id"`
-		Code        string             `json:"code"`
-		Name        string             `json:"name"`
-		Description string             `json:"description"`
-		Fee         MonetaryValueModel `json:"fee"`
-	} `json:"noShowFee"`
+type ReservationCancellationFeeModel struct {
+	ID          string             `json:"id"`
+	Code        string             `json:"code"`
+	Name        string             `json:"name"`
+	Description string             `json:"description"`
+	DueDateTime string             `json:"dueDateTime"`
+	Fee         MonetaryValueModel `json:"fee"`
+}
 
-	Company EmbeddedCompanyModel `json:"company"`
+type ReservationNoShowFeeModel struct {
+	ID          string             `json:"id"`
+	Code        string             `json:"code"`
+	Name        string             `json:"name"`
+	Description string             `json:"description"`
+	Fee         MonetaryValueModel `json:"fee"`
+}
+
+type ReservationAssignedUnitModel struct {
+	Unit      EmbeddedUnitModel                       `json:"unit"`
+	TimeRange []ReservationAssignedUnitTimeRangeModel `json:"timeRanges"`
+}
+
+type ReservationAssignedUnitTimeRangeModel struct {
+	From DateTime `json:"from"`
+	To   DateTime `json:"to"`
+}
+
+type ReservationServiceModel struct {
+	Service       EmbeddedServiceModel `json:"service"`
+	ServiceDate   string               `json:"serviceDate"`
+	Count         int32                `json:"count"`
+	Amount        AmountModel          `json:"amount"`
+	BookedAsExtra bool                 `json:"bookedAsExtra"`
 }
 
 type ReservationServiceItemModel struct {
@@ -521,4 +630,28 @@ type ServiceDateItemModel struct {
 	Count       int32       `json:"count"`
 	Amount      AmountModel `json:"amount"`
 	IsMandatory bool        `json:"isMandatory"`
+}
+
+type ReservationValidationMessageModel struct {
+	Service     ServiceModel           `json:"service"`
+	TotalAmount AmountModel            `json:"totalAmount"`
+	Dates       []ServiceDateItemModel `json:"dates"`
+}
+
+type TimeSliceModel struct {
+	From             DateTime                  `json:"from"`
+	To               DateTime                  `json:"to"`
+	ServiceDate      string                    `json:"serviceDate"`
+	RatePlan         EmbeddedRatePlanModel     `json:"ratePlan"`
+	UnitGroup        EmbeddedUnitGroupModel    `json:"unitGroup"`
+	Unit             EmbeddedUnitModel         `json:"unit"`
+	BaseAmount       AmountModel               `json:"baseAmount"`
+	TotalGrossAmount MonetaryValueModel        `json:"totalGrossAmount"`
+	IncludedServices []ReservationServiceModel `json:"includedServices"`
+	Actions          ActionModel               `json:"actions"`
+}
+
+type CommissionModel struct {
+	ComissionAmount        MonetaryValueModel `json:"comissionAmount"`
+	BeforeCommissionAmount MonetaryValueModel `json:"beforeCommissionAmount"`
 }

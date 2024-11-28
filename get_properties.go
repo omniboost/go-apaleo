@@ -116,8 +116,8 @@ func (r *GetPropertiesRequest) NewResponseBody() *GetPropertiesResponseBody {
 }
 
 type GetPropertiesResponseBody struct {
-	Count      int                 `json:"count"`
-	Properties []PropertyListModel `json:"properties"`
+	Count      int        `json:"count"`
+	Properties Properties `json:"properties"`
 }
 
 func (r *GetPropertiesRequest) URL() *url.URL {
@@ -143,8 +143,8 @@ func (r *GetPropertiesRequest) Do() (GetPropertiesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetPropertiesRequest) All() (PropertyList, error) {
-	properties := PropertyList{}
+func (r *GetPropertiesRequest) All() (Properties, error) {
+	properties := Properties{}
 	for {
 		resp, err := r.Do()
 		if err != nil {

@@ -30,6 +30,30 @@ func (c *Client) NewGetReservationsQueryParams() *GetReservationsQueryParams {
 }
 
 type GetReservationsQueryParams struct {
+	BookingID                 string   `schema:"booking_id,omitempty"`
+	PropertyIDs               []string `schema:"propertyIds,omitempty"`
+	RatePlanIDs               []string `schema:"ratePlanIds,omitempty"`
+	CompanyIDs                []string `schema:"companyIds,omitempty"`
+	UnitIDs                   []string `schema:"unitIds,omitempty"`
+	UnitGroupIDs              []string `schema:"unitGroupIds,omitempty"`
+	UnitGroupTypes            []string `schema:"unitGroupTypes,omitempty"`
+	BlockIDs                  []string `schema:"blockIds,omitempty"`
+	MarketSegmentIDs          []string `schema:"marketSegmentIds,omitempty"`
+	Status                    []string `schema:"status,omitempty"`
+	DateFilter                string   `schema:"dateFilter,omitempty"`
+	From                      Date     `schema:"from,omitempty"`
+	To                        Date     `schema:"to,omitempty"`
+	ChannelCode               []string `schema:"channelCode,omitempty"`
+	Sources                   []string `schema:"sources,omitempty"`
+	ValidationMessageCategory []string `schema:"validationMessageCategory,omitempty"`
+	ExternalCode              string   `schema:"externalCode,omitempty"`
+	TextSearch                string   `schema:"textSearch,omitempty"`
+	BalanceFilter             []string `schema:"balanceFilter,omitempty"`
+	AllFoliosHaveInvoice      bool     `schema:"allFoliosHaveInvoice,omitempty"`
+	PageNumber                int      `schema:"pageNumber,omitempty"`
+	PageSize                  int      `schema:"pageSize,omitempty"`
+	Sort                      []string `schema:"sort,omitempty"`
+	Expand                    []string `schema:"expand,omitempty"`
 }
 
 func (p GetReservationsQueryParams) ToURLValues() (url.Values, error) {
@@ -99,8 +123,8 @@ func (r *GetReservationsRequest) NewResponseBody() *GetReservationsResponseBody 
 }
 
 type GetReservationsResponseBody struct {
-	Count        int   `json:"count"`
-	Reservations []any `json:"reservations"`
+	Count        int          `json:"count"`
+	Reservations Reservations `json:"reservations"`
 }
 
 func (r *GetReservationsRequest) URL() *url.URL {
@@ -124,4 +148,31 @@ func (r *GetReservationsRequest) Do() (GetReservationsResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+func (r *GetReservationsRequest) All() (Reservations, error) {
+	reservations := Reservations{}
+	for {
+		resp, err := r.Do()
+		if err != nil {
+			return reservations, err
+		}
+
+		// Break out of loop when no reservations are found
+		if len(resp.Reservations) == 0 {
+			break
+		}
+
+		// Add reservations to list
+		reservations = append(reservations, resp.Reservations...)
+
+		if len(reservations) == resp.Count {
+			break
+		}
+
+		// Increment page number
+		r.QueryParams().PageNumber = r.QueryParams().PageNumber + 1
+	}
+
+	return reservations, nil
 }

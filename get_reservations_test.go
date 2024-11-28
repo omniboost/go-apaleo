@@ -20,3 +20,17 @@ func TestGetReservations(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	log.Println(string(b))
 }
+
+func TestGetReservationsAll(t *testing.T) {
+	client := client()
+	req := client.NewGetReservationsRequest()
+	req.QueryParams().PageSize = 1
+
+	resp, err := req.All()
+	if err != nil {
+		t.Error(err)
+	}
+
+	b, _ := json.MarshalIndent(resp, "", "  ")
+	log.Println(string(b))
+}
