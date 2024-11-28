@@ -736,6 +736,36 @@ type RatePlanItemModel struct {
 
 type RatePlans []RatePlanItemModel
 
+type CompanyModel struct {
+	ID              string                 `json:"id"`
+	Code            string                 `json:"code"`
+	PropertyID      string                 `json:"propertyId"`
+	Name            string                 `json:"name"`
+	TaxID           string                 `json:"taxId"`
+	AdditionalTaxID string                 `json:"additionalTaxId"`
+	Address         CompanyAddressModel    `json:"address"`
+	CanCheckOutOnAr bool                   `json:"canCheckOutOnAr"`
+	RatePlans       []RatePlanCompanyModel `json:"ratePlans"`
+}
+
+type Companies []CompanyModel
+
+type CompanyAddressModel struct {
+	AddressLine1 string `json:"addressLine1"`
+	AddressLine2 string `json:"addressLine2"`
+	PostalCode   string `json:"postalCode"`
+	City         string `json:"city"`
+	RegionCode   string `json:"regionCode"`
+	CountryCode  string `json:"countryCode"`
+}
+
+type RatePlanCompanyModel struct {
+	ID            string `json:"id"`
+	Code          string `json:"code"`
+	CorporateCode string `json:"corporateCode"`
+	Name          string `json:"name"`
+}
+
 type BookingRestrictionsModel struct {
 	MinAdvance       PeriodModel `json:"minAdvance"`
 	MaxAdvance       PeriodModel `json:"maxAdvance"`
