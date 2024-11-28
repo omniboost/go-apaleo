@@ -30,6 +30,23 @@ func (c *Client) NewGetPropertiesQueryParams() *GetPropertiesQueryParams {
 }
 
 type GetPropertiesQueryParams struct {
+	// Filter result by property status
+	Status []string `schema:"status,omitempty"`
+
+	// Include archived properties in the result. If not set, or set to false, it only returns non-archived properties
+	IncludeArchived bool `schema:"includeArchived,omitempty"`
+
+	// Filter result by country code
+	CountryCode []string `schema:"countryCode,omitempty"`
+
+	// Page number, 1-based. Default value is 1 (if this is not set or not positive). Results in 204 if there are no items on that page.
+	PageNumber int `schema:"pageNumber,omitempty"`
+
+	// Page size. If this is not set or not positive, the pageNumber is ignored and all items are returned.
+	PageSize int `schema:"pageSize,omitempty"`
+
+	// List of all embedded resources that should be expanded in the response. Possible values are: actions. All other values will be silently ignored.
+	Expand []string `schema:"expand,omitempty"`
 }
 
 func (p GetPropertiesQueryParams) ToURLValues() (url.Values, error) {
@@ -92,7 +109,7 @@ func (r *GetPropertiesRequest) NewResponseBody() *GetPropertiesResponseBody {
 
 type GetPropertiesResponseBody struct {
 	Count      int                 `json:"count"`
-	Properties []PropertyItemModel `json:"properties"`
+	Properties []PropertyListModel `json:"properties"`
 }
 
 func (r *GetPropertiesRequest) URL() url.URL {
@@ -115,4 +132,31 @@ func (r *GetPropertiesRequest) Do() (GetPropertiesResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+func (r *GetPropertiesRequest) All() (PropertyList, error) {
+	properties := PropertyList{}
+	for {
+		resp, err := r.Do()
+		if err != nil {
+			return properties, err
+		}
+
+		// Break out of loop when no properties are found
+		if len(resp.Properties) == 0 {
+			break
+		}
+
+		// Add properties to list
+		properties = append(properties, resp.Properties...)
+
+		if len(properties) == resp.Count {
+			break
+		}
+
+		// Increment page number
+		r.QueryParams().PageNumber = r.QueryParams().PageNumber + 1
+	}
+
+	return properties, nil
 }

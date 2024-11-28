@@ -20,3 +20,16 @@ func TestGetProperties(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	log.Println(string(b))
 }
+
+func TestGetPropertiesAll(t *testing.T) {
+	client := client()
+	req := client.NewGetPropertiesRequest()
+
+	resp, err := req.All()
+	if err != nil {
+		t.Error(err)
+	}
+
+	b, _ := json.MarshalIndent(resp, "", "  ")
+	log.Println(string(b))
+}
