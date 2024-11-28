@@ -680,6 +680,31 @@ type TimeSliceModel struct {
 	Actions          ActionModel               `json:"actions"`
 }
 
+type ServiceItemModel struct {
+	ID                string                `json:"id"`
+	Name              string                `json:"name"`
+	Code              string                `json:"code"`
+	Description       string                `json:"description"`
+	DefaultGrossPrice MonetaryValueModel    `json:"defaultGrossPrice"`
+	PricingUnit       string                `json:"pricingUnit"`
+	PostNextDay       bool                  `json:"postNextDay"`
+	ServiceType       string                `json:"serviceType"`
+	VatType           string                `json:"vatType"`
+	Availability      AvailabilityModel     `json:"availability"`
+	Property          EmbeddedPropertyModel `json:"property"`
+	SubAccountID      string                `json:"subAccountId"`
+	ChannelCodes      []string              `json:"channelCodes"`
+	AgeCategoryID     string                `json:"ageCategoryId"`
+}
+
+type Services []ServiceItemModel
+
+type AvailabilityModel struct {
+	Mode       string   `json:"mode"`
+	Quantity   int32    `json:"quantity"`
+	DaysOfWeek []string `json:"daysOfWeek"`
+}
+
 type RatePlanItemModel struct {
 	ID                   string                           `json:"id"`
 	Code                 string                           `json:"code"`
