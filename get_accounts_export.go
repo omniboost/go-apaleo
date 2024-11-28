@@ -107,11 +107,11 @@ type GetAccountsExportRequestBody struct {
 }
 
 func (r *GetAccountsExportRequest) RequestBody() *GetAccountsExportRequestBody {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetAccountsExportRequest) RequestBodyInterface() interface{} {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetAccountsExportRequest) SetRequestBody(body GetAccountsExportRequestBody) {

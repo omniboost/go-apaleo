@@ -83,11 +83,11 @@ type GetInvoicesRequestBody struct {
 }
 
 func (r *GetInvoicesRequest) RequestBody() *GetInvoicesRequestBody {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetInvoicesRequest) RequestBodyInterface() interface{} {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetInvoicesRequest) SetRequestBody(body GetInvoicesRequestBody) {

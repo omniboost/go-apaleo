@@ -83,11 +83,11 @@ type GetReservationsRequestBody struct {
 }
 
 func (r *GetReservationsRequest) RequestBody() *GetReservationsRequestBody {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetReservationsRequest) RequestBodyInterface() interface{} {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetReservationsRequest) SetRequestBody(body GetReservationsRequestBody) {

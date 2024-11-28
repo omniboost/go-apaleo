@@ -100,11 +100,11 @@ type GetPropertiesRequestBody struct {
 }
 
 func (r *GetPropertiesRequest) RequestBody() *GetPropertiesRequestBody {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetPropertiesRequest) RequestBodyInterface() interface{} {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetPropertiesRequest) SetRequestBody(body GetPropertiesRequestBody) {

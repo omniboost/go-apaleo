@@ -8,14 +8,12 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
 	"path"
 	"strings"
-	"sync"
 )
 
 const (
@@ -238,7 +236,8 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 	}
 
 	errorResponse := &ErrorResponse{Response: httpResp}
-	err = c.Unmarshal(httpResp.Body, &responseBody, &errorResponse)
+	statusErrResponse := &StatusErrorResponse{Response: httpResp}
+	err = c.Unmarshal(httpResp.Body, []any{responseBody}, []any{errorResponse, statusErrResponse})
 	if err != nil {
 		return httpResp, err
 	}
@@ -247,66 +246,40 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		return httpResp, errorResponse
 	}
 
+	if statusErrResponse.Error() != "" {
+		return httpResp, statusErrResponse
+	}
+
 	return httpResp, nil
 }
 
-func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
-	if len(vv) == 0 {
+func (c *Client) Unmarshal(r io.Reader, vv []interface{}, optionalVv []interface{}) error {
+	if len(vv) == 0 && len(optionalVv) == 0 {
 		return nil
 	}
 
-	wg := sync.WaitGroup{}
-	wg.Add(len(vv))
-	errs := []error{}
-	writers := make([]io.Writer, len(vv))
-
-	for i, v := range vv {
-		pr, pw := io.Pipe()
-		writers[i] = pw
-
-		go func(i int, v interface{}, pr *io.PipeReader, pw *io.PipeWriter) {
-			dec := json.NewDecoder(pr)
-			if c.disallowUnknownFields {
-				dec.DisallowUnknownFields()
-			}
-
-			err := dec.Decode(v)
-			if err != nil {
-				errs = append(errs, err)
-			}
-
-			// mark routine as done
-			wg.Done()
-
-			// Drain reader
-			io.Copy(ioutil.Discard, pr)
-
-			// close reader
-			// pr.CloseWithError(err)
-			pr.Close()
-		}(i, v, pr, pw)
-	}
-
-	// copy the data in a multiwriter
-	mw := io.MultiWriter(writers...)
-	w, err := io.Copy(mw, r)
-	if w == 0 {
-		// nothing was in the request body
-		return nil
-	}
+	b, err := io.ReadAll(r)
 	if err != nil {
 		return err
 	}
 
-	wg.Wait()
-	if len(errs) == len(vv) {
-		// Everything errored
-		msgs := make([]string, len(errs))
-		for i, e := range errs {
-			msgs[i] = fmt.Sprint(e)
+	for _, v := range vv {
+		r := bytes.NewReader(b)
+		dec := json.NewDecoder(r)
+
+		err := dec.Decode(v)
+		if err != nil && err != io.EOF {
+			return err
 		}
-		return errors.New(strings.Join(msgs, ", "))
 	}
+
+	for _, v := range optionalVv {
+		r := bytes.NewReader(b)
+		dec := json.NewDecoder(r)
+
+		_ = dec.Decode(v)
+	}
+
 	return nil
 }
 
@@ -361,14 +334,14 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	// read data and copy it back
-	data, err := ioutil.ReadAll(r.Body)
-	r.Body = ioutil.NopCloser(bytes.NewReader(data))
+	data, err := io.ReadAll(r.Body)
+	r.Body = io.NopCloser(bytes.NewReader(data))
 	if err != nil {
 		return errorResponse
 	}
 
 	if len(data) == 0 {
-		return errorResponse
+		return nil
 	}
 
 	// convert json to struct
@@ -378,6 +351,19 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	return errorResponse
+}
+
+type StatusErrorResponse struct {
+	// HTTP response that caused this error
+	Response *http.Response
+}
+
+func (r *StatusErrorResponse) Error() string {
+	if r.Response.StatusCode != 0 && (r.Response.StatusCode < 200 || r.Response.StatusCode > 299) {
+		return fmt.Sprintf("%s", r.Response.Status)
+	}
+
+	return ""
 }
 
 type ErrorResponse struct {

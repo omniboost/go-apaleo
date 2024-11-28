@@ -87,11 +87,11 @@ func (s *Client) NewGetPropertyRequestBody() GetPropertyRequestBody {
 type GetPropertyRequestBody struct{}
 
 func (r *GetPropertyRequest) RequestBody() *GetPropertyRequestBody {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetPropertyRequest) RequestBodyInterface() interface{} {
-	return &r.requestBody
+	return nil
 }
 
 func (r *GetPropertyRequest) SetRequestBody(body GetPropertyRequestBody) {
