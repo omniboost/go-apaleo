@@ -118,6 +118,14 @@ type ConnectedUnitModel struct {
 	MaxPersons  int32  `json:"maxPersons"`
 }
 
+type UnitAttributeDefinitionModel struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type UnitAttributes []UnitAttributeDefinitionModel
+
 type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
