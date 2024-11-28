@@ -126,6 +126,29 @@ type UnitAttributeDefinitionModel struct {
 
 type UnitAttributes []UnitAttributeDefinitionModel
 
+type UnitGroupItemModel struct {
+	ID                  string                    `json:"id"`
+	Code                string                    `json:"code"`
+	Name                string                    `json:"name"`
+	Description         string                    `json:"description"`
+	MemberCount         int32                     `json:"memberCount"`
+	MaxPersons          int32                     `json:"maxPersons"`
+	Rank                int32                     `json:"rank"`
+	Type                string                    `json:"type"`
+	Property            EmbeddedPropertyModel     `json:"property"`
+	ConnectedUnitGroups []ConnectedUnitGroupModel `json:"connectedUnitGroups"`
+}
+
+type UnitGroups []UnitGroupItemModel
+
+type ConnectedUnitGroupModel struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	MemberCount int32  `json:"memberCount"`
+	MaxPersons  int32  `json:"maxPersons"`
+}
+
 type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
