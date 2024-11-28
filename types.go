@@ -46,6 +46,25 @@ type AgeCategoryItemModel struct {
 
 type AgeCategories []AgeCategoryItemModel
 
+type CancellationPolicyItemModel struct {
+	ID                  string          `json:"id"`
+	Name                string          `json:"name"`
+	Code                string          `json:"code"`
+	Description         string          `json:"description"`
+	PropertyID          string          `json:"propertyId"`
+	PeriodFromReference PeriodModel     `json:"periodFromReference"`
+	Reference           string          `json:"reference"`
+	Fee                 FeeDetailsModel `json:"fee"`
+}
+
+type CancellationPolicies []CancellationPolicyItemModel
+
+type FeeDetailsModel struct {
+	VatType      string             `json:"vatType"`
+	FixedValue   MonetaryValueModel `json:"fixedValue"`
+	PercentValue PercentValueModel  `json:"percentValue"`
+}
+
 type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
@@ -261,6 +280,12 @@ type AmountModel struct {
 type MonetaryValueModel struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
+}
+
+type PercentValueModel struct {
+	Percent           int32    `json:"percent"`
+	Limit             int32    `json:"limit"`
+	IncludeServiceIDs []string `json:"includeServiceIds"`
 }
 
 func (j MonetaryValueModel) MarshalJSON() ([]byte, error) {
