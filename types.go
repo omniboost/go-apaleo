@@ -1,5 +1,10 @@
 package apaleo
 
+import (
+	"github.com/cydev/zero"
+	"github.com/omniboost/go-apaleo/omitempty"
+)
+
 var (
 	AccountTypeRevenues           AccountType = "Revenues"
 	AccountTypePayments           AccountType = "Payments"
@@ -245,6 +250,14 @@ type AmountModel struct {
 type MonetaryValueModel struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
+}
+
+func (j MonetaryValueModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j MonetaryValueModel) IsEmpty() bool {
+	return zero.IsZero(j)
 }
 
 type ReceiptModel struct {
@@ -859,4 +872,71 @@ type AccountingConfigModel struct {
 type CommissionModel struct {
 	ComissionAmount        MonetaryValueModel `json:"comissionAmount"`
 	BeforeCommissionAmount MonetaryValueModel `json:"beforeCommissionAmount"`
+}
+
+func (j CommissionModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j CommissionModel) IsEmpty() bool {
+	return zero.IsZero(j)
+}
+
+type CreatePaymentAccountModel struct {
+	AccountNumber  string `json:"accountNumber"`
+	AccountHolder  string `json:"accountHolder"`
+	ExpiryMonth    string `json:"expiryMonth"`
+	ExpiryYear     string `json:"expiryYear"`
+	PaymentMethod  string `json:"paymentMethod"`
+	PayerEmail     string `json:"payerEmail"`
+	PayerReference string `json:"payerReference"`
+	IsVirtual      bool   `json:"isVirtual"`
+	InactiveReason string `json:"inactiveReason,omitempty"`
+}
+
+type CreateReservationModel struct {
+	Arrival          Date                              `json:"arrival"`
+	Departure        Date                              `json:"departure"`
+	Adults           int32                             `json:"adults"`
+	ChildrenAges     []int32                           `json:"childrenAges,omitempty"`
+	Comment          string                            `json:"comment,omitempty"`
+	GuestComment     string                            `json:"guestComment,omitempty"`
+	ExternalCode     string                            `json:"externalCode,omitempty"`
+	ChannelCode      string                            `json:"channelCode"`
+	Source           string                            `json:"source,omitempty"`
+	PrimaryGuest     GuestModel                        `json:"primaryGuest,omitempty"`
+	AdditionalGuest  []GuestModel                      `json:"additionalGuest,omitempty"`
+	GuaranteeType    string                            `json:"guaranteeType,omitempty"`
+	TravelPurpose    string                            `json:"travelPurpose,omitempty"`
+	TimeSlices       []CreateReservationTimeSliceModel `json:"timeSlices"`
+	Services         []BookReservationServiceModel     `json:"services,omitempty"`
+	CompanyID        string                            `json:"companyId,omitempty"`
+	CorporateCode    string                            `json:"corporateCode,omitempty"`
+	PrePaymentAmount MonetaryValueModel                `json:"prePaymentAmount,omitempty"`
+	Commission       CommissionModel                   `json:"commission,omitempty"`
+	PromoCode        string                            `json:"promoCode,omitempty"`
+}
+
+func (j CreateReservationModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j CreateReservationModel) IsEmpty() bool {
+	return zero.IsZero(j)
+}
+
+type CreateReservationTimeSliceModel struct {
+	RatePlanID  string             `json:"ratePlanId"`
+	TotalAmount MonetaryValueModel `json:"totalAmount"`
+}
+
+type BookReservationServiceModel struct {
+	ServiceID string             `json:"serviceId"`
+	Count     int32              `json:"count,omitempty"`
+	Amount    MonetaryValueModel `json:"amount,omitempty"`
+	Dates     []struct {
+		ServiceDate Date               `json:"serviceDate"`
+		Count       int32              `json:"count,omitempty"`
+		Amount      MonetaryValueModel `json:"amount,omitempty"`
+	} `json:"dates,omitempty"`
 }

@@ -370,38 +370,11 @@ type ErrorResponse struct {
 	// HTTP response that caused this error
 	Response *http.Response `json:"-"`
 
-	Messages Messages
-}
-
-func (r *ErrorResponse) UnmarshalJSON(data []byte) error {
-	msgs := Messages{}
-	err := json.Unmarshal(data, &msgs)
-	if err != nil {
-		return err
-	}
-
-	for _, msg := range msgs {
-		if msg.MessageCode != "" || msg.MessageType != "" || msg.Message != "" {
-			r.Messages = append(r.Messages, msg)
-		}
-	}
-
-	return nil
-}
-
-type Messages []Message
-
-func (msgs Messages) Error() string {
-	err := []string{}
-	for _, v := range msgs {
-		err = append(err, fmt.Sprintf("%s: %s", v.MessageCode, v.Message))
-	}
-
-	return strings.Join(err, ", ")
+	Messages []string `json:"messages"`
 }
 
 func (r *ErrorResponse) Error() string {
-	return r.Messages.Error()
+	return strings.Join(r.Messages, ", ")
 }
 
 type Message struct {
