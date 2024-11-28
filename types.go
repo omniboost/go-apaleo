@@ -169,6 +169,37 @@ type BankAccountModel struct {
 	Bank string `json:"bank"`
 }
 
+type EmbeddedCompanyModel struct {
+	ID              string `json:"id"`
+	Code            string `json:"code"`
+	Name            string `json:"name"`
+	CanCheckOutOnAR bool   `json:"canCheckOutOnAr"`
+}
+
+type InvoiceListModel struct {
+	ID                   string               `json:"id"`
+	Number               string               `json:"number"`
+	Type                 string               `json:"type"`
+	LanguageCode         string               `json:"languageCode"`
+	FolioID              string               `json:"folioId"`
+	ReservationID        string               `json:"reservationId"`
+	BookingID            string               `json:"bookingId"`
+	PropertyID           string               `json:"propertyId"`
+	RelatedInvoiceNumber string               `json:"relatedInvoiceNumber"`
+	WriteOffReason       string               `json:"writeOffReason"`
+	SubTotal             MonetaryValueModel   `json:"subTotal"`
+	OutstandingPayment   MonetaryValueModel   `json:"outstandingPayment"`
+	PaymentSettled       bool                 `json:"paymentSettled"`
+	Status               string               `json:"status"`
+	Created              string               `json:"created"`
+	GuestName            string               `json:"guestName"`
+	GuestCompany         string               `json:"guestCompany"`
+	AllowedActions       []string             `json:"allowedActions"`
+	Company              EmbeddedCompanyModel `json:"company"`
+}
+
+type InvoiceList []InvoiceListModel
+
 type ExportTransactionItemModel struct {
 	// Timestamp with time zone information, when the booking was done
 	// Specify a date and time (without fractional second part) in UTC or with

@@ -30,6 +30,21 @@ func (c *Client) NewGetInvoicesQueryParams() *GetInvoicesQueryParams {
 }
 
 type GetInvoicesQueryParams struct {
+	Number                         string   `schema:"number,omitempty"`
+	Status                         string   `schema:"status,omitempty"`
+	CheckedOutOnAccountsReceivable bool     `schema:"checkedOutOnAccountsReceivable,omitempty"`
+	OutstandingPaymentFilter       []string `schema:"outstandingPaymentFilter,omitempty"`
+	DateFilter                     []string `schema:"dateFilter,omitempty"`
+	PropertyIDs                    []string `schema:"propertyIds,omitempty"`
+	ReservationIDs                 []string `schema:"reservationIds,omitempty"`
+	BookingIDs                     []string `schema:"bookingIds,omitempty"`
+	FolioIDs                       []string `schema:"folioIds,omitempty"`
+	NameSearch                     string   `schema:"nameSearch,omitempty"`
+	PaymentSettled                 bool     `schema:"paymentSettled,omitempty"`
+	CompanyIDs                     []string `schema:"companyIds,omitempty"`
+	PageNumber                     int      `schema:"pageNumber,omitempty"`
+	PageSize                       int      `schema:"pageSize,omitempty"`
+	Expand                         []string `schema:"expand,omitempty"`
 }
 
 func (p GetInvoicesQueryParams) ToURLValues() (url.Values, error) {
@@ -99,6 +114,8 @@ func (r *GetInvoicesRequest) NewResponseBody() *GetInvoicesResponseBody {
 }
 
 type GetInvoicesResponseBody struct {
+	Count    int         `json:"count"`
+	Invoices InvoiceList `json:"invoices"`
 }
 
 func (r *GetInvoicesRequest) URL() *url.URL {
@@ -122,4 +139,31 @@ func (r *GetInvoicesRequest) Do() (GetInvoicesResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+func (r *GetInvoicesRequest) All() (InvoiceList, error) {
+	invoices := InvoiceList{}
+	for {
+		resp, err := r.Do()
+		if err != nil {
+			return invoices, err
+		}
+
+		// Break out of loop when no invoices are found
+		if len(resp.Invoices) == 0 {
+			break
+		}
+
+		// Add invoices to list
+		invoices = append(invoices, resp.Invoices...)
+
+		if len(invoices) == resp.Count {
+			break
+		}
+
+		// Increment page number
+		r.QueryParams().PageNumber = r.QueryParams().PageNumber + 1
+	}
+
+	return invoices, nil
 }

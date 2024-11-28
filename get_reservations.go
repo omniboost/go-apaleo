@@ -99,8 +99,8 @@ func (r *GetReservationsRequest) NewResponseBody() *GetReservationsResponseBody 
 }
 
 type GetReservationsResponseBody struct {
-	Count        int                    `json:"count"`
-	Reservations []ReservationItemModel `json:"reservations"`
+	Count        int   `json:"count"`
+	Reservations []any `json:"reservations"`
 }
 
 func (r *GetReservationsRequest) URL() *url.URL {

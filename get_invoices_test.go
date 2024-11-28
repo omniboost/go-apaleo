@@ -20,3 +20,16 @@ func TestGetInvoices(t *testing.T) {
 	b, _ := json.MarshalIndent(resp, "", "  ")
 	log.Println(string(b))
 }
+
+func TestGetInvoicesAll(t *testing.T) {
+	client := client()
+	req := client.NewGetInvoicesRequest()
+
+	resp, err := req.All()
+	if err != nil {
+		t.Error(err)
+	}
+
+	b, _ := json.MarshalIndent(resp, "", "  ")
+	log.Println(string(b))
+}
