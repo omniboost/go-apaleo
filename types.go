@@ -234,6 +234,14 @@ type ExportTransactionItemModel struct {
 	ReservationID string `json:"reservationId"`
 }
 
+type AmountModel struct {
+	GrossAmount float64 `json:"grossAmount"`
+	NetAmount   float64 `json:"netAmount"`
+	VatType     string  `json:"vatType"`
+	VatPercent  float64 `json:"vatPercent"`
+	Currency    string  `json:"currency"`
+}
+
 type MonetaryValueModel struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
@@ -373,6 +381,8 @@ type EmbeddedRatePlanModel struct {
 	Name string `json:"name"`
 	// The description for the rate plan
 	Description string `json:"description"`
+	// Whether the rate plan is subject to city tax or not
+	IsSubjectToCityTax bool `json:"isSubjectToCityTax"`
 }
 
 type EmbeddedUnitGroupModel struct {
@@ -384,6 +394,8 @@ type EmbeddedUnitGroupModel struct {
 	Name string `json:"name"`
 	// The description for the unit group
 	Description string `json:"description"`
+	// The unit group type
+	Type string `json:"type"`
 }
 
 type EmbeddedUnitModel struct {
@@ -393,4 +405,120 @@ type EmbeddedUnitModel struct {
 	Name string `json:"name"`
 	// The description for the unit
 	Description string `json:"description"`
+}
+
+type BookingItemModel struct {
+	ID             string              `json:"id"`
+	GroupID        string              `json:"groupId"`
+	Booker         BookerModel         `json:"booker"`
+	PaymentAccount PaymentAccountModel `json:"paymentAccount"`
+	Comment        string              `json:"comment"`
+	BookerComment  string              `json:"bookerComment"`
+	Created        string              `json:"created"`
+	Modified       string              `json:"modified"`
+}
+
+type BookerModel struct {
+	Title                    string             `json:"title"`
+	Gender                   string             `json:"gender"`
+	FirstName                string             `json:"firstName"`
+	MiddleInitial            string             `json:"middleInitial"`
+	LastName                 string             `json:"lastName"`
+	Email                    string             `json:"email"`
+	Phone                    string             `json:"phone"`
+	Address                  PersonAddressModel `json:"address"`
+	NationalityCountryCode   string             `json:"nationalityCountryCode"`
+	IdentificationNumber     string             `json:"identificationNumber"`
+	IdentificationIssueDate  string             `json:"identificationIssueDate"`
+	IdentificationExpiryDate string             `json:"identificationExpiryDate"`
+	IdentificationType       string             `json:"identificationType"`
+	Company                  PersonCompanyModel `json:"company"`
+	PreferredLanguage        string             `json:"preferredLanguage"`
+	BirthDate                string             `json:"birthDate"`
+	BirthPlace               string             `json:"birthPlace"`
+}
+
+type PersonAddressModel struct {
+	AddressLine1 string `json:"addressLine1"`
+	AddressLine2 string `json:"addressLine2"`
+	PostalCode   string `json:"postalCode"`
+	City         string `json:"city"`
+	RegionCode   string `json:"regionCode"`
+	CountryCode  string `json:"countryCode"`
+}
+
+type PersonCompanyModel struct {
+	Name  string `json:"name"`
+	TaxID string `json:"taxId"`
+}
+
+type PaymentAccountModel struct {
+	AccountNumber  string `json:"accountNumber"`
+	AccountHolder  string `json:"accountHolder"`
+	ExpiryMonth    string `json:"expiryMonth"`
+	ExpiryYear     string `json:"expiryYear"`
+	PaymentMethod  string `json:"paymentMethod"`
+	PayerEmail     string `json:"payerEmail"`
+	PayerReference string `json:"payerReference"`
+	IsVirtual      bool   `json:"isVirtual"`
+	InactiveReason string `json:"inactiveReason"`
+}
+
+type BookingReservationModel struct {
+	ID               string                        `json:"id"`
+	Status           string                        `json:"status"`
+	ExternalCode     string                        `json:"externalCode"`
+	ChannelCode      string                        `json:"channelCode"`
+	Source           string                        `json:"source"`
+	PaymentAccount   PaymentAccountModel           `json:"paymentAccount"`
+	Arrival          string                        `json:"arrival"`
+	Departure        string                        `json:"departure"`
+	Adults           int32                         `json:"adults"`
+	ChildrenAges     []int32                       `json:"childrenAges"`
+	TotalGrossAmount MonetaryValueModel            `json:"totalGrossAmount"`
+	Property         EmbeddedPropertyModel         `json:"property"`
+	RatePlan         EmbeddedRatePlanModel         `json:"ratePlan"`
+	UnitGroup        EmbeddedUnitGroupModel        `json:"unitGroup"`
+	Services         []ReservationServiceItemModel `json:"services"`
+	GuestComment     string                        `json:"guestComment"`
+	CancellationFee  struct {
+		ID          string             `json:"id"`
+		Code        string             `json:"code"`
+		Name        string             `json:"name"`
+		Description string             `json:"description"`
+		DueDateTime string             `json:"dueDateTime"`
+		Fee         MonetaryValueModel `json:"fee"`
+	} `json:"cancellationFee"`
+
+	NoShowFee struct {
+		ID          string             `json:"id"`
+		Code        string             `json:"code"`
+		Name        string             `json:"name"`
+		Description string             `json:"description"`
+		Fee         MonetaryValueModel `json:"fee"`
+	} `json:"noShowFee"`
+
+	Company EmbeddedCompanyModel `json:"company"`
+}
+
+type ReservationServiceItemModel struct {
+	Service     ServiceModel           `json:"service"`
+	TotalAmount AmountModel            `json:"totalAmount"`
+	Dates       []ServiceDateItemModel `json:"dates"`
+}
+
+type ServiceModel struct {
+	ID                string             `json:"id"`
+	Code              string             `json:"code"`
+	Name              string             `json:"name"`
+	Description       string             `json:"description"`
+	PricingUnit       string             `json:"pricingUnit"`
+	DefaultGrossPrice MonetaryValueModel `json:"defaultGrossPrice"`
+}
+
+type ServiceDateItemModel struct {
+	ServiceDate string      `json:"serviceDate"`
+	Count       int32       `json:"count"`
+	Amount      AmountModel `json:"amount"`
+	IsMandatory bool        `json:"isMandatory"`
 }
