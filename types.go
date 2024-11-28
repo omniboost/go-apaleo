@@ -76,6 +76,48 @@ type FeeDetailsModel struct {
 	PercentValue PercentValueModel  `json:"percentValue"`
 }
 
+type UnitItemModel struct {
+	ID             string                 `json:"id"`
+	Name           string                 `json:"name"`
+	Description    string                 `json:"description"`
+	Property       EmbeddedPropertyModel  `json:"property"`
+	UnitGroup      EmbeddedUnitGroupModel `json:"unitGroup"`
+	ConnectingUnit EmbeddedUnitModel      `json:"connectingUnit"`
+	Status         UnitItemStatusModel    `json:"status"`
+	MaxPersons     int32                  `json:"maxPersons"`
+	Created        DateTime               `json:"created"`
+	Attributes     UnitAttributeModel     `json:"attributes"`
+	ConnectedUnits ConnectedUnitModel     `json:"connectedUnits"`
+}
+
+type Units []UnitItemModel
+
+type UnitItemStatusModel struct {
+	IsOccupied  bool                     `json:"isOccupied"`
+	Condition   string                   `json:"condition"`
+	Maintenance UnitItemMaintenanceModel `json:"maintenance"`
+}
+
+type UnitItemMaintenanceModel struct {
+	ID   string `json:"id"`
+	Type string `json:"type"`
+}
+
+type UnitAttributeModel struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type ConnectedUnitModel struct {
+	ID          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	UnitGroupID string `json:"unitGroupId"`
+	Condition   string `json:"condition"`
+	MaxPersons  int32  `json:"maxPersons"`
+}
+
 type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
