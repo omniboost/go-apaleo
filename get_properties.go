@@ -80,6 +80,10 @@ func (r *GetPropertiesRequest) PathParams() *GetPropertiesPathParams {
 	return r.pathParams
 }
 
+func (r *GetPropertiesRequest) PathParamsInterface() PathParams {
+	return r.pathParams
+}
+
 func (r *GetPropertiesRequest) SetMethod(method string) {
 	r.method = method
 }
@@ -99,6 +103,10 @@ func (r *GetPropertiesRequest) RequestBody() *GetPropertiesRequestBody {
 	return &r.requestBody
 }
 
+func (r *GetPropertiesRequest) RequestBodyInterface() interface{} {
+	return &r.requestBody
+}
+
 func (r *GetPropertiesRequest) SetRequestBody(body GetPropertiesRequestBody) {
 	r.requestBody = body
 }
@@ -112,13 +120,14 @@ type GetPropertiesResponseBody struct {
 	Properties []PropertyListModel `json:"properties"`
 }
 
-func (r *GetPropertiesRequest) URL() url.URL {
-	return r.client.GetEndpointURL("inventory/v1/properties", r.PathParams())
+func (r *GetPropertiesRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("inventory/v1/properties", r.PathParams())
+	return &u
 }
 
 func (r *GetPropertiesRequest) Do() (GetPropertiesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r.Method(), r.URL(), r.RequestBody())
+	req, err := r.client.NewRequest(nil, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

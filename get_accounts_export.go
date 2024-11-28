@@ -87,6 +87,10 @@ func (r *GetAccountsExportRequest) PathParams() *GetAccountsExportPathParams {
 	return r.pathParams
 }
 
+func (r *GetAccountsExportRequest) PathParamsInterface() PathParams {
+	return r.pathParams
+}
+
 func (r *GetAccountsExportRequest) SetMethod(method string) {
 	r.method = method
 }
@@ -106,6 +110,10 @@ func (r *GetAccountsExportRequest) RequestBody() *GetAccountsExportRequestBody {
 	return &r.requestBody
 }
 
+func (r *GetAccountsExportRequest) RequestBodyInterface() interface{} {
+	return &r.requestBody
+}
+
 func (r *GetAccountsExportRequest) SetRequestBody(body GetAccountsExportRequestBody) {
 	r.requestBody = body
 }
@@ -118,13 +126,14 @@ type GetAccountsExportResponseBody struct {
 	Transactions []ExportTransactionItemModel `json:"transactions"`
 }
 
-func (r *GetAccountsExportRequest) URL() url.URL {
-	return r.client.GetEndpointURL("finance/v1/accounts/export", r.PathParams())
+func (r *GetAccountsExportRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("finance/v1/accounts/export", r.PathParams())
+	return &u
 }
 
 func (r *GetAccountsExportRequest) Do() (GetAccountsExportResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r.Method(), r.URL(), r.RequestBody())
+	req, err := r.client.NewRequest(nil, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

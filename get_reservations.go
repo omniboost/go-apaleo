@@ -63,6 +63,10 @@ func (r *GetReservationsRequest) PathParams() *GetReservationsPathParams {
 	return r.pathParams
 }
 
+func (r *GetReservationsRequest) PathParamsInterface() PathParams {
+	return r.pathParams
+}
+
 func (r *GetReservationsRequest) SetMethod(method string) {
 	r.method = method
 }
@@ -82,6 +86,10 @@ func (r *GetReservationsRequest) RequestBody() *GetReservationsRequestBody {
 	return &r.requestBody
 }
 
+func (r *GetReservationsRequest) RequestBodyInterface() interface{} {
+	return &r.requestBody
+}
+
 func (r *GetReservationsRequest) SetRequestBody(body GetReservationsRequestBody) {
 	r.requestBody = body
 }
@@ -95,13 +103,14 @@ type GetReservationsResponseBody struct {
 	Reservations []ReservationItemModel `json:"reservations"`
 }
 
-func (r *GetReservationsRequest) URL() url.URL {
-	return r.client.GetEndpointURL("booking/v1/reservations", r.PathParams())
+func (r *GetReservationsRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("booking/v1/reservations", r.PathParams())
+	return &u
 }
 
 func (r *GetReservationsRequest) Do() (GetReservationsResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r.Method(), r.URL(), r.RequestBody())
+	req, err := r.client.NewRequest(nil, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

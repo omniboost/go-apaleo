@@ -30,6 +30,8 @@ func (c *Client) NewGetPropertyQueryParams() *GetPropertyQueryParams {
 }
 
 type GetPropertyQueryParams struct {
+	// 'all' or comma separated list of two-letter language codes (ISO Alpha-2)
+	Languages []string `json:"languages,omitempty"`
 }
 
 func (p GetPropertyQueryParams) ToURLValues() (url.Values, error) {
@@ -66,6 +68,10 @@ func (r *GetPropertyRequest) PathParams() *GetPropertyPathParams {
 	return r.pathParams
 }
 
+func (r *GetPropertyRequest) PathParamsInterface() PathParams {
+	return r.pathParams
+}
+
 func (r *GetPropertyRequest) SetMethod(method string) {
 	r.method = method
 }
@@ -78,12 +84,13 @@ func (s *Client) NewGetPropertyRequestBody() GetPropertyRequestBody {
 	return GetPropertyRequestBody{}
 }
 
-type GetPropertyRequestBody struct {
-	// 'all' or comma separated list of two-letter language codes (ISO Alpha-2)
-	Languages []string `json:"languages"`
-}
+type GetPropertyRequestBody struct{}
 
 func (r *GetPropertyRequest) RequestBody() *GetPropertyRequestBody {
+	return &r.requestBody
+}
+
+func (r *GetPropertyRequest) RequestBodyInterface() interface{} {
 	return &r.requestBody
 }
 
@@ -99,13 +106,14 @@ type GetPropertyResponseBody struct {
 	PropertyModel
 }
 
-func (r *GetPropertyRequest) URL() url.URL {
-	return r.client.GetEndpointURL("inventory/v1/properties/{{.id}}", r.PathParams())
+func (r *GetPropertyRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("inventory/v1/properties/{{.id}}", r.PathParams())
+	return &u
 }
 
 func (r *GetPropertyRequest) Do() (GetPropertyResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r.Method(), r.URL(), r.RequestBody())
+	req, err := r.client.NewRequest(nil, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

@@ -153,33 +153,33 @@ func (c *Client) GetEndpointURL(relative string, pathParams PathParams) url.URL 
 	return clientURL
 }
 
-func (c *Client) NewRequest(ctx context.Context, method string, URL url.URL, body interface{}) (*http.Request, error) {
+func (c *Client) NewRequest(ctx context.Context, req Request) (*http.Request, error) {
 	// convert body struct to json
 	buf := new(bytes.Buffer)
-	if body != nil {
-		err := json.NewEncoder(buf).Encode(body)
+	if req.RequestBodyInterface() != nil {
+		err := json.NewEncoder(buf).Encode(req.RequestBodyInterface())
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	// create new http request
-	req, err := http.NewRequest(method, URL.String(), buf)
+	r, err := http.NewRequest(req.Method(), req.URL().String(), buf)
 	if err != nil {
 		return nil, err
 	}
 
 	// optionally pass along context
 	if ctx != nil {
-		req = req.WithContext(ctx)
+		r = r.WithContext(ctx)
 	}
 
 	// set other headers
-	req.Header.Add("Content-Type", fmt.Sprintf("%s; charset=%s", c.MediaType(), c.Charset()))
-	req.Header.Add("Accept", c.MediaType())
-	req.Header.Add("User-Agent", c.UserAgent())
+	r.Header.Add("Content-Type", fmt.Sprintf("%s; charset=%s", c.MediaType(), c.Charset()))
+	r.Header.Add("Accept", c.MediaType())
+	r.Header.Add("User-Agent", c.UserAgent())
 
-	return req, nil
+	return r, nil
 }
 
 // Do sends an Client request and returns the Client response. The Client response is json decoded and stored in the value
@@ -432,8 +432,4 @@ func checkContentType(response *http.Response) error {
 	}
 
 	return nil
-}
-
-type PathParams interface {
-	Params() map[string]string
 }

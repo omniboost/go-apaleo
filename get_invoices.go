@@ -63,6 +63,10 @@ func (r *GetInvoicesRequest) PathParams() *GetInvoicesPathParams {
 	return r.pathParams
 }
 
+func (r *GetInvoicesRequest) PathParamsInterface() PathParams {
+	return r.pathParams
+}
+
 func (r *GetInvoicesRequest) SetMethod(method string) {
 	r.method = method
 }
@@ -82,6 +86,10 @@ func (r *GetInvoicesRequest) RequestBody() *GetInvoicesRequestBody {
 	return &r.requestBody
 }
 
+func (r *GetInvoicesRequest) RequestBodyInterface() interface{} {
+	return &r.requestBody
+}
+
 func (r *GetInvoicesRequest) SetRequestBody(body GetInvoicesRequestBody) {
 	r.requestBody = body
 }
@@ -93,13 +101,14 @@ func (r *GetInvoicesRequest) NewResponseBody() *GetInvoicesResponseBody {
 type GetInvoicesResponseBody struct {
 }
 
-func (r *GetInvoicesRequest) URL() url.URL {
-	return r.client.GetEndpointURL("finance/v1/invoices", r.PathParams())
+func (r *GetInvoicesRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("finance/v1/invoices", r.PathParams())
+	return &u
 }
 
 func (r *GetInvoicesRequest) Do() (GetInvoicesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r.Method(), r.URL(), r.RequestBody())
+	req, err := r.client.NewRequest(nil, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
