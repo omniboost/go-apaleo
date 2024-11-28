@@ -35,6 +35,17 @@ type ActionModel struct {
 	Reasons   []ActionReasonModel `json:"reasons"`
 }
 
+type AgeCategoryItemModel struct {
+	ID         string `json:"id"`
+	Code       string `json:"code"`
+	PropertyID string `json:"propertyId"`
+	Name       string `json:"name"`
+	MinAge     int32  `json:"minAge"`
+	MaxAge     int32  `json:"maxAge"`
+}
+
+type AgeCategories []AgeCategoryItemModel
+
 type PropertyItemModel struct {
 	// The property id
 	ID string `json:"id"`
