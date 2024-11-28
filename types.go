@@ -766,6 +766,38 @@ type RatePlanCompanyModel struct {
 	Name          string `json:"name"`
 }
 
+type CreateCompanyModel struct {
+	Code            string                 `json:"code"`
+	PropertyID      string                 `json:"propertyId"`
+	Name            string                 `json:"name"`
+	TaxID           string                 `json:"taxId"`
+	AdditionalTaxID string                 `json:"additionalTaxId"`
+	Address         CompanyAddressModel    `json:"address"`
+	CanCheckOutOnAr bool                   `json:"canCheckOutOnAr"`
+	RatePlans       []RatePlanCompanyModel `json:"ratePlans"`
+}
+
+func (j CreateCompanyModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j CreateCompanyModel) IsEmpty() bool {
+	return zero.IsZero(j)
+}
+
+type CreateRatePlanCompanyModel struct {
+	ID            string `json:"id"`
+	CorporateCode string `json:"corporateCode,omitempty"`
+}
+
+func (j CreateRatePlanCompanyModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j CreateRatePlanCompanyModel) IsEmpty() bool {
+	return zero.IsZero(j)
+}
+
 type BookingRestrictionsModel struct {
 	MinAdvance       PeriodModel `json:"minAdvance"`
 	MaxAdvance       PeriodModel `json:"maxAdvance"`
