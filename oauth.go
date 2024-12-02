@@ -6,10 +6,11 @@ import (
 	"time"
 
 	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/clientcredentials"
 )
 
 const (
-	scope                = "*"
+	scope                = ""
 	oauthStateString     = ""
 	authorizationTimeout = 60 * time.Second
 	tokenTimeout         = 5 * time.Second
@@ -48,4 +49,22 @@ func (c *Oauth2Config) SetBaseURL(baseURL *url.URL) {
 		AuthURL:  baseURL.String() + "/oauth",
 		TokenURL: baseURL.String() + "/access_token",
 	}
+}
+
+type Oauth2ClientCredentialsConfig struct {
+	clientcredentials.Config
+}
+
+func NewOauth2ClientCredentialsConfig() *Oauth2ClientCredentialsConfig {
+	config := &Oauth2ClientCredentialsConfig{
+		Config: clientcredentials.Config{
+			ClientID:     "",
+			ClientSecret: "",
+			Scopes:       []string{scope},
+			TokenURL:     "https://identity.apaleo.com/connect/token",
+			AuthStyle:    oauth2.AuthStyleInHeader,
+		},
+	}
+
+	return config
 }
