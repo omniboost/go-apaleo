@@ -3,6 +3,8 @@ package apaleo
 import (
 	"net/http"
 	"net/url"
+
+	"github.com/omniboost/go-apaleo/omitempty"
 )
 
 func (c *Client) NewPostBookingRequest() PostBookingRequest {
@@ -99,6 +101,10 @@ type PostBookingRequestBody struct {
 	BookerComment        string                    `json:"bookerComment,omitempty"`
 	Reservations         []CreateReservationModel  `json:"reservations,omitempty"`
 	TransactionReference string                    `json:"transactionReference,omitempty"`
+}
+
+func (r PostBookingRequestBody) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(r)
 }
 
 func (r *PostBookingRequest) RequestBody() *PostBookingRequestBody {

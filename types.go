@@ -86,7 +86,7 @@ type UnitItemModel struct {
 	Status         UnitItemStatusModel    `json:"status"`
 	MaxPersons     int32                  `json:"maxPersons"`
 	Created        DateTime               `json:"created"`
-	Attributes     UnitAttributeModel     `json:"attributes"`
+	Attributes     []UnitAttributeModel     `json:"attributes"`
 	ConnectedUnits ConnectedUnitModel     `json:"connectedUnits"`
 }
 
@@ -1012,6 +1012,10 @@ type CreatePaymentAccountModel struct {
 	PayerReference string `json:"payerReference"`
 	IsVirtual      bool   `json:"isVirtual"`
 	InactiveReason string `json:"inactiveReason,omitempty"`
+}
+
+func (j CreatePaymentAccountModel) IsEmpty() bool {
+	return zero.IsZero(j)
 }
 
 type CreateReservationModel struct {
