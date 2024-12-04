@@ -13,6 +13,19 @@ func (c *Client) NewPostBookingRequest() PostBookingRequest {
 		method:      http.MethodPost,
 		headers:     http.Header{},
 		requestBody: c.NewPostBookingRequestBody(),
+		force:       false,
+	}
+}
+
+func (c *Client) NewPostBookingForceRequest() PostBookingRequest {
+	return PostBookingRequest{
+		client:      c,
+		queryParams: c.NewPostBookingQueryParams(),
+		pathParams:  c.NewPostBookingPathParams(),
+		method:      http.MethodPost,
+		headers:     http.Header{},
+		requestBody: c.NewPostBookingRequestBody(),
+		force:       true,
 	}
 }
 
@@ -23,6 +36,7 @@ type PostBookingRequest struct {
 	method      string
 	headers     http.Header
 	requestBody PostBookingRequestBody
+	force       bool
 }
 
 func (c *Client) NewPostBookingQueryParams() *PostBookingQueryParams {
@@ -111,7 +125,11 @@ type PostBookingResponseBody struct {
 }
 
 func (r *PostBookingRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("booking/v1/bookings", r.PathParams())
+	path := "booking/v1/bookings"
+	if r.force {
+		path = path + "/$force"
+	}
+	u := r.client.GetEndpointURL(path, r.PathParams())
 	return &u
 }
 
