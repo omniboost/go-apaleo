@@ -31,6 +31,12 @@ func (d *Date) UnmarshalJSON(data []byte) (err error) {
 		return nil
 	}
 
+	// then try custom format
+	d.Time, err = time.Parse("2006-01-02T15:04:05", value)
+	if err == nil {
+		return nil
+	}
+
 	// try iso8601 date format
 	d.Time, err = time.Parse("2006-01-02", value)
 	return err

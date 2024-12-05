@@ -86,7 +86,7 @@ type UnitItemModel struct {
 	Status         UnitItemStatusModel    `json:"status"`
 	MaxPersons     int32                  `json:"maxPersons"`
 	Created        DateTime               `json:"created"`
-	Attributes     []UnitAttributeModel     `json:"attributes"`
+	Attributes     []UnitAttributeModel   `json:"attributes"`
 	ConnectedUnits ConnectedUnitModel     `json:"connectedUnits"`
 }
 
@@ -639,23 +639,23 @@ type GuestModel struct {
 	Email                          string             `json:"email"`
 	Phone                          string             `json:"phone"`
 	Address                        PersonAddressModel `json:"address"`
-	NationalityCountryCode         string             `json:"nationalityCountryCode"`
-	IdentificationNumber           string             `json:"identificationNumber"`
-	IdentificationAdditionalNumber string             `json:"identificationAdditionalNumber"`
-	IdentificationIssueDate        string             `json:"identificationIssueDate"`
-	IdentificationExpiryDate       string             `json:"identificationExpiryDate"`
-	IdentificationIssuePlace       string             `json:"identificationIssuePlace"`
-	IdentificationType             string             `json:"identificationType"`
+	NationalityCountryCode         string             `json:"nationalityCountryCode,omitempty"`
+	IdentificationNumber           string             `json:"identificationNumber,omitempty"`
+	IdentificationAdditionalNumber string             `json:"identificationAdditionalNumber,omitempty"`
+	IdentificationIssueDate        string             `json:"identificationIssueDate,omitempty"`
+	IdentificationExpiryDate       string             `json:"identificationExpiryDate,omitempty"`
+	IdentificationIssuePlace       string             `json:"identificationIssuePlace,omitempty"`
+	IdentificationType             string             `json:"identificationType,omitempty"`
 	PersonalTaxID                  string             `json:"personalTaxId"`
 	Company                        PersonCompanyModel `json:"company"`
-	PreferredLanguage              string             `json:"preferredLanguage"`
-	BirthDate                      string             `json:"birthDate"`
-	BirthFirstName                 string             `json:"birthFirstName"`
-	BirthLastName                  string             `json:"birthLastName"`
-	MotherFirstName                string             `json:"motherFirstName"`
-	MotherLastName                 string             `json:"motherLastName"`
-	BorderCrossingPlace            string             `json:"borderCrossingPlace"`
-	BorderCrossingDate             string             `json:"borderCrossingDate"`
+	PreferredLanguage              string             `json:"preferredLanguage,omitempty"`
+	BirthDate                      Date               `json:"birthDate,omitempty"`
+	BirthFirstName                 string             `json:"birthFirstName,omitempty"`
+	BirthLastName                  string             `json:"birthLastName,omitempty"`
+	MotherFirstName                string             `json:"motherFirstName,omitempty"`
+	MotherLastName                 string             `json:"motherLastName,omitempty"`
+	BorderCrossingPlace            string             `json:"borderCrossingPlace,omitempty"`
+	BorderCrossingDate             string             `json:"borderCrossingDate,omitempty"`
 }
 
 type BookingItemModel struct {
@@ -679,14 +679,14 @@ type BookerModel struct {
 	Phone                    string             `json:"phone"`
 	Address                  PersonAddressModel `json:"address"`
 	NationalityCountryCode   string             `json:"nationalityCountryCode"`
-	IdentificationNumber     string             `json:"identificationNumber"`
-	IdentificationIssueDate  string             `json:"identificationIssueDate"`
-	IdentificationExpiryDate string             `json:"identificationExpiryDate"`
-	IdentificationType       string             `json:"identificationType"`
+	IdentificationNumber     string             `json:"identificationNumber,omitempty"`
+	IdentificationIssueDate  string             `json:"identificationIssueDate,omitempty"`
+	IdentificationExpiryDate string             `json:"identificationExpiryDate,omitempty"`
+	IdentificationType       string             `json:"identificationType,omitempty"`
 	Company                  PersonCompanyModel `json:"company"`
-	PreferredLanguage        string             `json:"preferredLanguage"`
-	BirthDate                string             `json:"birthDate"`
-	BirthPlace               string             `json:"birthPlace"`
+	PreferredLanguage        string             `json:"preferredLanguage,omitempty"`
+	BirthDate                Date               `json:"birthDate,omitempty"`
+	BirthPlace               string             `json:"birthPlace,omitempty"`
 }
 
 type PersonAddressModel struct {
