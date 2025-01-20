@@ -242,7 +242,7 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		return httpResp, err
 	}
 
-	if len(errorResponse.Messages) > 0 {
+	if errorResponse.Error() != "" {
 		return httpResp, errorResponse
 	}
 
@@ -374,7 +374,11 @@ type ErrorResponse struct {
 }
 
 func (r *ErrorResponse) Error() string {
-	return strings.Join(r.Messages, ", ")
+	if len(r.Messages) > 0 {
+		return strings.Join(r.Messages, ", ")
+	}
+
+	return ""
 }
 
 type Message struct {
