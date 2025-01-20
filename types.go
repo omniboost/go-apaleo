@@ -667,6 +667,7 @@ type BookingItemModel struct {
 	BookerComment  string              `json:"bookerComment"`
 	Created        string              `json:"created"`
 	Modified       string              `json:"modified"`
+	Reservations   Reservations        `json:"reservations"`
 }
 
 type BookerModel struct {
