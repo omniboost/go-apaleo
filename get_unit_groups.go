@@ -3,6 +3,8 @@ package apaleo
 import (
 	"net/http"
 	"net/url"
+
+	"github.com/omniboost/go-apaleo/utils"
 )
 
 func (c *Client) NewGetUnitGroupsRequest() GetUnitGroupsRequest {
@@ -38,7 +40,9 @@ type GetUnitGroupsQueryParams struct {
 }
 
 func (p GetUnitGroupsQueryParams) ToURLValues() (url.Values, error) {
-	encoder := newSchemaEncoder()
+	encoder := utils.NewSchemaEncoder()
+	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
+	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
 	params := url.Values{}
 
 	err := encoder.Encode(p, params)
@@ -121,7 +125,7 @@ func (r *GetUnitGroupsRequest) Do() (GetUnitGroupsResponseBody, error) {
 	}
 
 	// Process query parameters
-	err = AddQueryParamsToRequest(r.QueryParams(), req, false)
+	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, false)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

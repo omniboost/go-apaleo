@@ -5,6 +5,7 @@ import (
 	"net/url"
 
 	"github.com/omniboost/go-apaleo/omitempty"
+	"github.com/omniboost/go-apaleo/utils"
 )
 
 func (c *Client) NewPostBookingRequest() PostBookingRequest {
@@ -48,7 +49,9 @@ func (c *Client) NewPostBookingQueryParams() *PostBookingQueryParams {
 type PostBookingQueryParams struct{}
 
 func (p PostBookingQueryParams) ToURLValues() (url.Values, error) {
-	encoder := newSchemaEncoder()
+	encoder := utils.NewSchemaEncoder()
+	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
+	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
 	params := url.Values{}
 
 	err := encoder.Encode(p, params)
@@ -147,7 +150,7 @@ func (r *PostBookingRequest) Do() (PostBookingResponseBody, error) {
 	}
 
 	// Process query parameters
-	err = AddQueryParamsToRequest(r.QueryParams(), req, false)
+	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, false)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
