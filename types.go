@@ -1,6 +1,8 @@
 package apaleo
 
 import (
+	"strings"
+
 	"github.com/cydev/zero"
 	"github.com/omniboost/go-apaleo/omitempty"
 )
@@ -20,6 +22,12 @@ var (
 	AccountingSchemaSimple   AccountingSchema = "Simple"
 	AccountingSchemaExtended AccountingSchema = "Extended"
 )
+
+type CommaSeparatedQueryParam []string
+
+func (t CommaSeparatedQueryParam) MarshalSchema() string {
+	return strings.Join(t, ",")
+}
 
 type AccountType string
 type AccountingSchema string
@@ -1064,4 +1072,137 @@ type BookReservationServiceModel struct {
 		Count       int32              `json:"count,omitempty"`
 		Amount      MonetaryValueModel `json:"amount,omitempty"`
 	} `json:"dates,omitempty"`
+}
+
+type CompanyInfoModel struct {
+	Name            string `json:"name"`
+	TaxID           string `json:"taxId"`
+	AdditionalTaxID string `json:"additionalTaxId"`
+}
+
+type NonStrictAddressModel struct {
+	AddressLine1 string `json:"addressLine1"`
+	AddressLine2 string `json:"addressLine2"`
+	PostalCode   string `json:"postalCode"`
+	City         string `json:"city"`
+	RegionCode   string `json:"regionCode"`
+	CountryCode  string `json:"countryCode"`
+}
+
+type FolioDebitorModel struct {
+	Type          string                `json:"type"`
+	Title         string                `json:"title"`
+	FirstName     string                `json:"firstName"`
+	Name          string                `json:"name"`
+	Address       NonStrictAddressModel `json:"address"`
+	Company       CompanyInfoModel      `json:"company"`
+	PersonalTaxID string                `json:"personalTaxId"`
+	Reference     string                `json:"reference"`
+	Email         string                `json:"email"`
+}
+
+type EmbeddedReservationModel struct {
+	ID        string `json:"id"`
+	BookingID string `json:"bookingId"`
+}
+
+type EmbeddedInvoiceModel struct {
+	ID string `json:"id"`
+}
+
+type EmbeddedFolioModel struct {
+	ID      string `json:"id"`
+	Debitor string `json:"debitor"`
+}
+
+type Charges struct {
+	ID              string             `json:"id"`
+	ServiceType     string             `json:"serviceType"`
+	Name            string             `json:"name"`
+	TranslatedNames map[string]string  `json:"translatedNames"`
+	IsPosted        bool               `json:"isPosted"`
+	ServiceDate     Date               `json:"serviceDate"`
+	Created         DateTime           `json:"created"`
+	MovedFrom       EmbeddedFolioModel `json:"movedFrom"`
+	MovedTo         EmbeddedFolioModel `json:"movedTo"`
+	MovedReason     string             `json:"movedReason"`
+	RoutedFrom      EmbeddedFolioModel `json:"routedFrom"`
+	RoutedTo        EmbeddedFolioModel `json:"routedTo"`
+	Amount          AmountModel        `json:"amount"`
+	Receipt         string             `json:"receipt"`
+	GroupID         string             `json:"groupId"`
+	SubAccountID    string             `json:"subAccountId"`
+	Quantity        int32              `json:"quantity"`
+	Type            string             `json:"type"`
+}
+
+type AllowanceModel struct {
+	ID             string             `json:"id"`
+	Amount         AmountModel        `json:"amount"`
+	Reason         string             `json:"reason"`
+	ServiceType    string             `json:"serviceType"`
+	ServiceDate    Date               `json:"serviceDate"`
+	Created        DateTime           `json:"created"`
+	MovedFrom      EmbeddedFolioModel `json:"movedFrom"`
+	MovedTo        EmbeddedFolioModel `json:"movedTo"`
+	MovedReason    string             `json:"movedReason"`
+	SourceChargeID string             `json:"sourceChargeId"`
+	SubAccountID   string             `json:"subAccountId"`
+}
+
+type TransitoryChargeModel struct {
+	ID          string             `json:"id"`
+	Name        string             `json:"name"`
+	Amount      MonetaryValueModel `json:"amount"`
+	ServiceType string             `json:"serviceType"`
+	ServiceDate Date               `json:"serviceDate"`
+	Created     DateTime           `json:"created"`
+	Receipt     string             `json:"receipt"`
+	MovedFrom   EmbeddedFolioModel `json:"movedFrom"`
+	MovedTo     EmbeddedFolioModel `json:"movedTo"`
+	MovedReason string             `json:"movedReason"`
+	Quantity    int32              `json:"quantity"`
+}
+
+type ExternalReference struct {
+	MerchantReference string `json:"merchantReference"`
+	PSPReference      string `json:"pspReference"`
+}
+
+type PaymentModel struct {
+	ID                string             `json:"id"`
+	Method            string             `json:"method"`
+	Amount            MonetaryValueModel `json:"amount"`
+	ExternalReference ExternalReference  `json:"externalReference"`
+	Receipt           string             `json:"receipt"`
+	PaymentDate       DateTime           `json:"paymentDate"`
+	MovedFrom         EmbeddedFolioModel `json:"movedFrom"`
+	MovedTo           EmbeddedFolioModel `json:"movedTo"`
+	MovedReason       string             `json:"movedReason"`
+	SourcePaymentID   string             `json:"sourcePaymentId"`
+	BusinessDate      Date               `json:"businessDate"`
+}
+
+type FolioItemModel struct {
+	ID                             string                   `json:"id"`
+	Created                        DateTime                 `json:"created"`
+	Updated                        DateTime                 `json:"updated"`
+	Type                           string                   `json:"type"`
+	Debitor                        FolioDebitorModel        `json:"debitor"`
+	ClosingDate                    Date                     `json:"closingDate"`
+	IsMainFolio                    bool                     `json:"isMainFolio"`
+	IsEmpty                        bool                     `json:"isEmpty"`
+	Reservation                    EmbeddedReservationModel `json:"reservation"`
+	BookingID                      string                   `json:"bookingId"`
+	Company                        EmbeddedCompanyModel     `json:"company"`
+	Balance                        MonetaryValueModel       `json:"balance"`
+	CheckedOutOnAccountsReceivable bool                     `json:"checkedOutOnAccountsReceivable"`
+	FolioWarnings                  []string                 `json:"folioWarnings"`
+	AllowedActions                 []string                 `json:"allowedActions"`
+	RelatedInvoices                []EmbeddedInvoiceModel   `json:"relatedInvoices"`
+	Status                         string                   `json:"status"`
+	Charges                        []Charges                `json:"charges"`
+	Allowances                     []AllowanceModel         `json:"allowances"`
+	TransitoryCharges              []TransitoryChargeModel  `json:"transitoryCharges"`
+	Payments                       []PaymentModel           `json:"payments"`
 }
