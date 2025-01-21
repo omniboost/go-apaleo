@@ -1115,7 +1115,7 @@ type EmbeddedFolioModel struct {
 	Debitor string `json:"debitor"`
 }
 
-type Charges struct {
+type ChargeModel struct {
 	ID              string             `json:"id"`
 	ServiceType     string             `json:"serviceType"`
 	Name            string             `json:"name"`
@@ -1201,8 +1201,43 @@ type FolioItemModel struct {
 	AllowedActions                 []string                 `json:"allowedActions"`
 	RelatedInvoices                []EmbeddedInvoiceModel   `json:"relatedInvoices"`
 	Status                         string                   `json:"status"`
-	Charges                        []Charges                `json:"charges"`
+	Charges                        []ChargeModel            `json:"charges"`
 	Allowances                     []AllowanceModel         `json:"allowances"`
 	TransitoryCharges              []TransitoryChargeModel  `json:"transitoryCharges"`
 	Payments                       []PaymentModel           `json:"payments"`
+}
+
+type PendingPaymentModel struct {
+	ID         string             `json:"id"`
+	Amount     MonetaryValueModel `json:"amount"`
+	TerminalID string             `json:"terminalId"`
+}
+
+type FolioModel struct {
+	ID                             string                   `json:"id"`
+	Created                        DateTime                 `json:"created"`
+	Updated                        DateTime                 `json:"updated"`
+	Type                           string                   `json:"type"`
+	Debitor                        FolioDebitorModel        `json:"debitor"`
+	ClosingDate                    Date                     `json:"closingDate"`
+	Reservation                    EmbeddedReservationModel `json:"reservation"`
+	BookingID                      string                   `json:"bookingId"`
+	Company                        EmbeddedCompanyModel     `json:"company"`
+	Property                       EmbeddedPropertyModel    `json:"property"`
+	Charges                        []ChargeModel            `json:"charges"`
+	TransitoryCharges              []TransitoryChargeModel  `json:"transitoryCharges"`
+	Payments                       []PaymentModel           `json:"payments"`
+	PendingPayments                []PendingPaymentModel    `json:"pendingPayments"`
+	Allowances                     []AllowanceModel         `json:"allowances"`
+	Balance                        MonetaryValueModel       `json:"balance"`
+	CheckedOutOnAccountsReceivable bool                     `json:"checkedOutOnAccountsReceivable"`
+	IsMainFolio                    bool                     `json:"isMainFolio"`
+	IsEmpty                        bool                     `json:"isEmpty"`
+	RelatedFolios                  []EmbeddedFolioModel     `json:"relatedFolios"`
+	RelatedInvoices                []EmbeddedInvoiceModel   `json:"relatedInvoices"`
+	FolioWarnings                  []string                 `json:"folioWarnings"`
+	AllowedActions                 []string                 `json:"allowedActions"`
+	AllowedPayments                float64                  `json:"allowedPayments"`
+	MaximumAllowance               float64                  `json:"maximumAllowance"`
+	Status                         string                   `json:"status"`
 }
