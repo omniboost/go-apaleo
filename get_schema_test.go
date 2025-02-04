@@ -8,11 +8,10 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func TestGetProperty(t *testing.T) {
+func TestGetSchema(t *testing.T) {
 	client := client()
-	req := client.NewGetPropertyRequest()
-
-	req.PathParams().ID = "BER"
+	req := client.NewGetSchemaRequest()
+	req.QueryParams().PropertyID = "BER"
 
 	resp, err := req.Do()
 	if err != nil {

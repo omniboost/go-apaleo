@@ -8,9 +8,9 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-func TestGetProperty(t *testing.T) {
+func TestGetPdf(t *testing.T) {
 	client := client()
-	req := client.NewGetPropertyRequest()
+	req := client.NewGetPdfRequest()
 
 	req.PathParams().ID = "BER"
 

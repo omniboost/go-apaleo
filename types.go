@@ -2,6 +2,7 @@ package apaleo
 
 import (
 	"strings"
+	"time"
 
 	"github.com/cydev/zero"
 	"github.com/omniboost/go-apaleo/omitempty"
@@ -1240,4 +1241,136 @@ type FolioModel struct {
 	AllowedPayments                float64                  `json:"allowedPayments"`
 	MaximumAllowance               float64                  `json:"maximumAllowance"`
 	Status                         string                   `json:"status"`
+}
+
+// post_aggregate_daily
+type PostAggregateDailyModel struct {
+	Aggregations []Aggregations `json:"aggregations"`
+	Total        Total          `json:"total"`
+}
+type Account struct {
+	Name   string `json:"name"`
+	Number string `json:"number"`
+	Type   string `json:"type"`
+}
+type CreditedAmount struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type DebitedAmount struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type Balance struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type Aggregations struct {
+	Account        Account        `json:"account"`
+	CreditedAmount CreditedAmount `json:"creditedAmount"`
+	DebitedAmount  DebitedAmount  `json:"debitedAmount"`
+	Balance        Balance        `json:"balance"`
+}
+type Total struct {
+	CreditedAmount CreditedAmount `json:"creditedAmount"`
+	DebitedAmount  DebitedAmount  `json:"debitedAmount"`
+	Balance        Balance        `json:"balance"`
+}
+
+// get_schema
+type GetSchemaModel struct {
+	GlobalAccounts   []GlobalAccounts   `json:"globalAccounts"`
+	GuestAccounts    []GuestAccounts    `json:"guestAccounts"`
+	ExternalAccounts []ExternalAccounts `json:"externalAccounts"`
+	BookingAccounts  []BookingAccounts  `json:"bookingAccounts"`
+}
+type GlobalAccounts struct {
+	AccountNumber string `json:"accountNumber"`
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	HasChildren   bool   `json:"hasChildren"`
+	IsArchived    bool   `json:"isArchived"`
+}
+type GuestAccounts struct {
+	AccountNumber string `json:"accountNumber"`
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	HasChildren   bool   `json:"hasChildren"`
+	IsArchived    bool   `json:"isArchived"`
+}
+type ExternalAccounts struct {
+	AccountNumber string `json:"accountNumber"`
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	HasChildren   bool   `json:"hasChildren"`
+	IsArchived    bool   `json:"isArchived"`
+}
+type BookingAccounts struct {
+	AccountNumber string `json:"accountNumber"`
+	Name          string `json:"name"`
+	Type          string `json:"type"`
+	HasChildren   bool   `json:"hasChildren"`
+	IsArchived    bool   `json:"isArchived"`
+}
+
+// get_aggregate_pairs_daily
+type PostAggregatePairsDailyModel struct {
+	AccountTransactionPairs []AccountTransactionPairs `json:"accountTransactionPairs"`
+}
+type DebitedAccount struct {
+	Name   string `json:"name"`
+	Number string `json:"number"`
+	Type   string `json:"type"`
+}
+type CreditedAccount struct {
+	Name   string `json:"name"`
+	Number string `json:"number"`
+	Type   string `json:"type"`
+}
+type Amount struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type AccountTransactionPairs struct {
+	DebitedAccount  DebitedAccount  `json:"debitedAccount"`
+	CreditedAccount CreditedAccount `json:"creditedAccount"`
+	Amount          Amount          `json:"amount"`
+}
+
+// post_aggregate
+type PostAggregateModel struct {
+	Aggregations []Aggregations `json:"aggregations"`
+	Total        Total          `json:"total"`
+}
+
+// post_export_daily
+type PostExportDailyModel struct {
+	Transactions []Transactions `json:"transactions"`
+}
+type Receipt struct {
+	Type   string `json:"type"`
+	Number string `json:"number"`
+}
+type Transactions struct {
+	Timestamp        time.Time       `json:"timestamp"`
+	Date             string          `json:"date"`
+	DebitedAccount   DebitedAccount  `json:"debitedAccount"`
+	CreditedAccount  CreditedAccount `json:"creditedAccount"`
+	Command          string          `json:"command"`
+	Amount           Amount          `json:"amount"`
+	Receipt          Receipt         `json:"receipt"`
+	EntryNumber      string          `json:"entryNumber"`
+	Reference        string          `json:"reference"`
+	ReferenceType    string          `json:"referenceType"`
+	EntryGroupNumber string          `json:"entryGroupNumber"`
+}
+
+// post_export_gross_daily
+type PostExportGrossDailyModel struct {
+	Transactions []Transactions `json:"transactions"`
+}
+
+// post_export
+type PostExportModel struct {
+	Transactions []Transactions `json:"transactions"`
 }
