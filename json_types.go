@@ -42,6 +42,10 @@ func (d *Date) UnmarshalJSON(data []byte) (err error) {
 	return err
 }
 
+func (d Date) MarshalSchema() string {
+	return d.Format("2006-01-02")
+}
+
 type DateTime struct {
 	time.Time
 }

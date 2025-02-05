@@ -38,12 +38,12 @@ type PostAggregateDailyQueryParams struct {
 	// business date interval should be specified.
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
-	From string `schema:"from"`
+	From Date `schema:"from"`
 	// The exclusive end time of the posting date. Either posting date or
 	// business date interval should be specified.
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
-	To string `schema:"to"`
+	To Date `schema:"to"`
 	// Filter transactions by reference (reservation id/external folio id/property id for house folio).
 	Reference string `schema:"reference,omitempty"`
 	// Filter transactions by account number

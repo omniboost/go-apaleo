@@ -4,20 +4,22 @@ import (
 	"encoding/json"
 	"log"
 	"testing"
+	"time"
 
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/omniboost/go-apaleo"
 )
 
 func TestPostAggregatePairsDaily(t *testing.T) {
 	client := client()
 
-	// today := time.Now()
-	// yesterday := today.AddDate(0, 0, -9)
+	today := time.Now()
+	yesterday := today.AddDate(0, 0, -9)
 
 	req := client.NewPostAggregatePairsDailyRequest()
 	req.QueryParams().PropertyID = "BER"
-	req.QueryParams().From = "2023-01-01"
-	req.QueryParams().To = "2024-12-29"
+	req.QueryParams().From = apaleo.Date{yesterday}
+	req.QueryParams().To = apaleo.Date{today}
 	// req.QueryParams().Reference = "1"
 
 	resp, err := req.Do()
