@@ -12,7 +12,7 @@ func TestGetPdf(t *testing.T) {
 	client := client()
 	req := client.NewGetPdfRequest()
 
-	req.PathParams().ID = "BER"
+	req.PathParams().ID = "TEST-20190700000001"
 
 	resp, err := req.Do()
 	if err != nil {

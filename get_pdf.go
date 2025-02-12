@@ -56,7 +56,7 @@ func (c *Client) NewGetPdfPathParams() *GetPdfPathParams {
 }
 
 type GetPdfPathParams struct {
-	ID string
+	ID string `schema:"id"`
 }
 
 func (p *GetPdfPathParams) Params() map[string]string {
@@ -104,9 +104,7 @@ func (r *GetPdfRequest) NewResponseBody() *GetPdfResponseBody {
 	return &GetPdfResponseBody{}
 }
 
-type GetPdfResponseBody struct {
-	Invoices []InvoiceItemModel `json:"invoices"`
-}
+type GetPdfResponseBody InvoiceItemModel
 
 func (r *GetPdfRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/invoices/{{.id}}/pdf", r.PathParams())
