@@ -31,7 +31,9 @@ func (c *Client) NewGetPdfQueryParams() *GetPdfQueryParams {
 	return &GetPdfQueryParams{}
 }
 
-type GetPdfQueryParams struct{}
+type GetPdfQueryParams struct {
+	Expand []string `schema:"expand,omitempty"`
+}
 
 func (p GetPdfQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
