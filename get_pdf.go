@@ -106,7 +106,7 @@ func (r *GetPdfRequest) NewResponseBody() *GetPdfResponseBody {
 	return &GetPdfResponseBody{}
 }
 
-type GetPdfResponseBody InvoiceItemModel
+type GetPdfResponseBody struct{}
 
 func (r *GetPdfRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/invoices/{{.id}}/pdf", r.PathParams())
