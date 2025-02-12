@@ -1,7 +1,7 @@
 package apaleo
 
 import (
-	"encoding/json"
+	"io"
 	"net/http"
 	"net/url"
 
@@ -102,12 +102,11 @@ func (r *GetPdfRequest) SetRequestBody(body GetPdfRequestBody) {
 }
 
 func (r *GetPdfRequest) NewResponseBody() *GetPdfResponseBody {
-	return &GetPdfResponseBody{}
+	responseBody := GetPdfResponseBody("")
+	return &responseBody
 }
 
-type GetPdfResponseBody struct {
-	RawBytes []byte `json:"-"`
-}
+type GetPdfResponseBody string
 
 func (r *GetPdfRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/invoices/{{.id}}/pdf", r.PathParams())
@@ -123,19 +122,22 @@ func (r *GetPdfRequest) Do() (GetPdfResponseBody, error) {
 
 	req.Header.Set("Content-Type", "application/pdf")
 	// Process query parameters
-	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, false)
+	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, true)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
-	var rawBytes string
-	_, err = r.client.Do(req, &rawBytes)
+	resp, err := r.client.Do(req, nil)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
-	responseBody := r.NewResponseBody()
-	if err := json.Unmarshal([]byte(rawBytes), responseBody); err != nil {
+	defer resp.Body.Close()
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
 		return *r.NewResponseBody(), err
 	}
-	return *responseBody, err
+
+	responseBody := GetPdfResponseBody(bodyBytes)
+	return responseBody, nil
 }

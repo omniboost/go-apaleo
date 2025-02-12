@@ -1,7 +1,6 @@
 package apaleo_test
 
 import (
-	"encoding/json"
 	"log"
 	"testing"
 
@@ -20,6 +19,6 @@ func TestGetPdf(t *testing.T) {
 		t.Error(err)
 	}
 
-	b, _ := json.MarshalIndent(resp, "", "  ")
-	log.Println(string(b))
+	// b, _ := json.MarshalIndent(resp, "", "  ")
+	log.Println(string(resp))
 }
