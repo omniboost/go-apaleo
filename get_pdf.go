@@ -31,9 +31,7 @@ func (c *Client) NewGetPdfQueryParams() *GetPdfQueryParams {
 	return &GetPdfQueryParams{}
 }
 
-type GetPdfQueryParams struct {
-	Expand []string `schema:"expand,omitempty"`
-}
+type GetPdfQueryParams struct{}
 
 func (p GetPdfQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
@@ -106,9 +104,7 @@ func (r *GetPdfRequest) NewResponseBody() *GetPdfResponseBody {
 	return &GetPdfResponseBody{}
 }
 
-type GetPdfResponseBody struct {
-	Base64 string `json:"base64"`
-}
+type GetPdfResponseBody struct{}
 
 func (r *GetPdfRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/invoices/{{.id}}/pdf", r.PathParams())
@@ -122,6 +118,7 @@ func (r *GetPdfRequest) Do() (GetPdfResponseBody, error) {
 		return *r.NewResponseBody(), err
 	}
 
+	req.Header.Set("Content-Type", "application/pdf")
 	// Process query parameters
 	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, true)
 	if err != nil {
@@ -129,6 +126,7 @@ func (r *GetPdfRequest) Do() (GetPdfResponseBody, error) {
 	}
 
 	responseBody := r.NewResponseBody()
-	_, err = r.client.Do(req, responseBody)
+	// Ensure the response is treated as binary data
+	_, err = r.client.Do(req, nil)
 	return *responseBody, err
 }
