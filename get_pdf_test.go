@@ -13,7 +13,7 @@ func TestGetPdf(t *testing.T) {
 	req := client.NewGetPdfRequest()
 
 	req.PathParams().ID = "TEST-20190700000001"
-	req.QueryParams().Expand = []string{"invoices"}
+	// req.QueryParams().Expand = []string{"invoices"}
 
 	resp, err := req.Do()
 	if err != nil {

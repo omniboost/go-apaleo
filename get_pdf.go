@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 
@@ -104,7 +105,9 @@ func (r *GetPdfRequest) NewResponseBody() *GetPdfResponseBody {
 	return &GetPdfResponseBody{}
 }
 
-type GetPdfResponseBody struct{}
+type GetPdfResponseBody struct {
+	RawBytes []byte `json:"-"`
+}
 
 func (r *GetPdfRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/invoices/{{.id}}/pdf", r.PathParams())
@@ -120,13 +123,19 @@ func (r *GetPdfRequest) Do() (GetPdfResponseBody, error) {
 
 	req.Header.Set("Content-Type", "application/pdf")
 	// Process query parameters
-	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, true)
+	err = utils.AddQueryParamsToRequest(r.QueryParams(), req, false)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
 
+	var rawBytes string
+	_, err = r.client.Do(req, &rawBytes)
+	if err != nil {
+		return *r.NewResponseBody(), err
+	}
 	responseBody := r.NewResponseBody()
-	// Ensure the response is treated as binary data
-	_, err = r.client.Do(req, nil)
+	if err := json.Unmarshal([]byte(rawBytes), responseBody); err != nil {
+		return *r.NewResponseBody(), err
+	}
 	return *responseBody, err
 }
