@@ -11,7 +11,7 @@ import (
 
 func TestPostGroupBooking(t *testing.T) {
 	client := client()
-	req := client.NewPostGroupBookingRequest()
+	req := client.NewPostBookingGroupRequest()
 	req.RequestBody().Name = "API test"
 	req.RequestBody().PaymentAccount = apaleo.CreatePaymentAccountModel{
 		AccountNumber:  "123456789",
