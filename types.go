@@ -1405,3 +1405,17 @@ type GroupItemModel struct {
 	Actions        []ActionModel       `json:"actions"`
 	PropertyIDs    []string            `json:"propertyIds"`
 }
+
+type PickUpReservationModel struct {
+	BlockID          string                        `json:"blockId"`
+	Services         []BookReservationServiceModel `json:"services,omitempty"`
+	Arrival          Date                          `json:"arrival"`
+	Departure        Date                          `json:"departure"`
+	Adults           int32                         `json:"adults"`
+	ChildrenAges     []int32                       `json:"childrenAges,omitempty"`
+	Comment          string                        `json:"comment,omitempty"`
+	GuestComment     string                        `json:"guestComment,omitempty"`
+	PrimaryGuest     GuestModel                    `json:"primaryGuest,omitempty"`
+	AdditionalGuests []GuestModel                  `json:"additional_guests,omitempty"`
+	TravelPurpose    string                        `json:"travelPurpose,omitempty"`
+}
