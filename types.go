@@ -1374,3 +1374,34 @@ type PostExportGrossDailyModel struct {
 type PostExportModel struct {
 	Transactions []Transactions `json:"transactions"`
 }
+
+type GroupBlockModel struct {
+	ID                 string                 `json:"id"`
+	Status             string                 `json:"status"`
+	Property           EmbeddedPropertyModel  `json:"property"`
+	RatePlan           EmbeddedRatePlanModel  `json:"ratePlan"`
+	UnitGroup          EmbeddedUnitGroupModel `json:"unitGroup"`
+	GrossDailyRate     MonetaryValueModel     `json:"grossDailyRate"`
+	From               DateTime               `json:"from"`
+	To                 DateTime               `json:"to"`
+	BlockedUnits       int32                  `json:"blockedUnits"`
+	PickedReservations int32                  `json:"pickedReservations"`
+	Created            DateTime               `json:"created"`
+	Modified           DateTime               `json:"modified"`
+}
+
+type GroupItemModel struct {
+	ID             string              `json:"id"`
+	From           DateTime            `json:"from"`
+	To             DateTime            `json:"to"`
+	Name           string              `json:"name"`
+	Booker         BookerModel         `json:"booker"`
+	Comment        string              `json:"comment"`
+	BookerComment  string              `json:"bookerComment"`
+	PaymentAccount PaymentAccountModel `json:"paymentAccount"`
+	Created        DateTime            `json:"created"`
+	Modified       DateTime            `json:"modified"`
+	Blocks         []GroupBlockModel   `json:"blocks"`
+	Actions        []ActionModel       `json:"actions"`
+	PropertyIDs    []string            `json:"propertyIds"`
+}
