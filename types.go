@@ -1419,3 +1419,7 @@ type PickUpReservationModel struct {
 	AdditionalGuests []GuestModel                  `json:"additional_guests,omitempty"`
 	TravelPurpose    string                        `json:"travelPurpose,omitempty"`
 }
+
+type CreateBlockTimeSliceModel struct {
+	BlockedUnits int32 `json:"blockedUnits"`
+}
