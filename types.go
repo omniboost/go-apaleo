@@ -1423,3 +1423,31 @@ type PickUpReservationModel struct {
 type CreateBlockTimeSliceModel struct {
 	BlockedUnits int32 `json:"blockedUnits"`
 }
+
+type BlockTimeSliceModel struct {
+	From             DateTime           `json:"from"`
+	To               DateTime           `json:"to"`
+	BlockedUnits     int32              `json:"blockedUnits"`
+	PickedUnits      int32              `json:"pickedUnits"`
+	BaseAmount       AmountModel        `json:"baseAmount"`
+	TotalGrossAmount MonetaryValueModel `json:"totalGrossAmount"`
+}
+
+type BlockItemModel struct {
+	ID                 string                 `json:"id"`
+	Group              string                 `json:"group"`
+	Status             string                 `json:"status"`
+	Property           EmbeddedPropertyModel  `json:"property"`
+	RatePlan           EmbeddedRatePlanModel  `json:"ratePlan"`
+	UnitGroup          EmbeddedUnitGroupModel `json:"unitGroup"`
+	GrossDailyRate     MonetaryValueModel     `json:"grossDailyRate"`
+	From               DateTime               `json:"from"`
+	To                 DateTime               `json:"to"`
+	PickedReservations int32                  `json:"pickedReservations"`
+	PromoCode          string                 `json:"promoCode"`
+	CorporateCode      string                 `json:"corporateCode"`
+	Created            DateTime               `json:"created"`
+	Modified           DateTime               `json:"modified"`
+	TimeSlices         []BlockTimeSliceModel  `json:"timeSlices"`
+	Actions            []ActionModel          `json:"actions"`
+}
