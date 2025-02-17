@@ -1451,3 +1451,106 @@ type BlockItemModel struct {
 	TimeSlices         []BlockTimeSliceModel  `json:"timeSlices"`
 	Actions            []ActionModel          `json:"actions"`
 }
+type InvoicesByIDModel struct {
+	ID                    string                `json:"id"`
+	Number                string                `json:"number"`
+	Type                  string                `json:"type"`
+	To                    To                    `json:"to"`
+	PaymentSettled        bool                  `json:"paymentSettled"`
+	Status                string                `json:"status"`
+	Created               time.Time             `json:"created"`
+	WriteOffReason        string                `json:"writeOffReason"`
+	AllowedActions        []string              `json:"allowedActions"`
+	InvoiceDate           string                `json:"invoiceDate"`
+	FolioID               string                `json:"folioId"`
+	From                  From                  `json:"from"`
+	CommercialInformation CommercialInformation `json:"commercialInformation"`
+	BankAccount           BankAccount           `json:"bankAccount"`
+	PaymentTerms          string                `json:"paymentTerms"`
+	LineItems             LineItems             `json:"lineItems"`
+	Payments              []Payments            `json:"payments"`
+	TaxDetails            []TaxDetails          `json:"taxDetails"`
+	Total                 Total                 `json:"total"`
+	StayInfo              StayInfo              `json:"stayInfo"`
+	PropertyID            string                `json:"propertyId"`
+	PropertyCountryCode   string                `json:"propertyCountryCode"`
+	LanguageCode          string                `json:"languageCode"`
+	Company               Company               `json:"company"`
+}
+type Address struct {
+	AddressLine1 string `json:"addressLine1"`
+	PostalCode   string `json:"postalCode"`
+	City         string `json:"city"`
+	CountryCode  string `json:"countryCode"`
+}
+type To struct {
+	Name          string  `json:"name"`
+	Address       Address `json:"address"`
+	CompanyName   string  `json:"companyName"`
+	CompanyTaxID  string  `json:"companyTaxId"`
+	Reference     string  `json:"reference"`
+	PersonalTaxID string  `json:"personalTaxId"`
+}
+type From struct {
+	Name    string  `json:"name"`
+	Address Address `json:"address"`
+}
+type CommercialInformation struct {
+	RegisterEntry string `json:"registerEntry"`
+	TaxID         string `json:"taxId"`
+}
+type BankAccount struct {
+	Iban string `json:"iban"`
+	Bic  string `json:"bic"`
+	Bank string `json:"bank"`
+}
+type Price struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type LineItems struct {
+	Date        string  `json:"date"`
+	Description string  `json:"description"`
+	Price       Price   `json:"price"`
+	VatType     string  `json:"vatType"`
+	VatPercent  float64 `json:"vatPercent"`
+	IsNoShowFee bool    `json:"isNoShowFee"`
+	Guest       string  `json:"guest"`
+}
+type SubTotal struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type Payments struct {
+	ID           string    `json:"id"`
+	Method       string    `json:"method"`
+	MethodName   string    `json:"methodName"`
+	Amount       Amount    `json:"amount"`
+	PaymentDate  time.Time `json:"paymentDate"`
+	BusinessDate string    `json:"businessDate"`
+}
+type Net struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type Tax struct {
+	Amount   float64 `json:"amount"`
+	Currency string  `json:"currency"`
+}
+type TaxDetails struct {
+	VatType    string  `json:"vatType"`
+	VatPercent float64 `json:"vatPercent"`
+	Net        Net     `json:"net"`
+	Tax        Tax     `json:"tax"`
+}
+type StayInfo struct {
+	GuestName     string `json:"guestName"`
+	ArrivalDate   string `json:"arrivalDate"`
+	DepartureDate string `json:"departureDate"`
+	ReservationID string `json:"reservationId"`
+}
+type Company struct {
+	ID   string `json:"id"`
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
