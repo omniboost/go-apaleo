@@ -1029,8 +1029,8 @@ func (j CreatePaymentAccountModel) IsEmpty() bool {
 }
 
 type CreateReservationModel struct {
-	Arrival          Date                              `json:"arrival"`
-	Departure        Date                              `json:"departure"`
+	Arrival          DateTime                          `json:"arrival"`
+	Departure        DateTime                          `json:"departure"`
 	Adults           int32                             `json:"adults"`
 	ChildrenAges     []int32                           `json:"childrenAges,omitempty"`
 	Comment          string                            `json:"comment,omitempty"`
