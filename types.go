@@ -1059,6 +1059,43 @@ func (j CreateReservationModel) IsEmpty() bool {
 	return zero.IsZero(j)
 }
 
+type CreateReservationNSFWModel struct {
+	Arrival            DateTime                          `json:"arrival"`
+	Departure          DateTime                          `json:"departure"`
+	Adults             int32                             `json:"adults"`
+	ChildrenAges       []int32                           `json:"childrenAges,omitempty"`
+	Comment            string                            `json:"comment,omitempty"`
+	GuestComment       string                            `json:"guestComment,omitempty"`
+	ExternalCode       string                            `json:"externalCode,omitempty"`
+	ChannelCode        string                            `json:"channelCode"`
+	Source             string                            `json:"source,omitempty"`
+	PrimaryGuest       GuestModel                        `json:"primaryGuest,omitempty"`
+	AdditionalGuest    []GuestModel                      `json:"additionalGuest,omitempty"`
+	GuaranteeType      string                            `json:"guaranteeType,omitempty"`
+	TravelPurpose      string                            `json:"travelPurpose,omitempty"`
+	TimeSlices         []CreateReservationTimeSliceModel `json:"timeSlices"`
+	Services           []BookReservationServiceModel     `json:"services,omitempty"`
+	CompanyID          string                            `json:"companyId,omitempty"`
+	CorporateCode      string                            `json:"corporateCode,omitempty"`
+	PrePaymentAmount   MonetaryValueModel                `json:"prePaymentAmount,omitempty"`
+	Commission         CommissionModel                   `json:"commission,omitempty"`
+	PromoCode          string                            `json:"promoCode,omitempty"`
+	ExternalReferences struct {
+		GlobalDistributionSystemID string `json:"globalDistributionSystemId,omitempty"`
+		OnlineTravelAgencyID       string `json:"onlineTravelAgencyId,omitempty"`
+		OnlineBookingToolID        string `json:"onlineBookingToolId,omitempty"`
+		ChannelManagerID           string `json:"channelManagerId,omitempty"`
+	} `json:"externalReferences,omitempty"`
+}
+
+func (j CreateReservationNSFWModel) MarshalJSON() ([]byte, error) {
+	return omitempty.MarshalJSON(j)
+}
+
+func (j CreateReservationNSFWModel) IsEmpty() bool {
+	return zero.IsZero(j)
+}
+
 type CreateReservationTimeSliceModel struct {
 	RatePlanID  string             `json:"ratePlanId"`
 	TotalAmount MonetaryValueModel `json:"totalAmount"`
