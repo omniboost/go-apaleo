@@ -1287,7 +1287,7 @@ type FolioModel struct {
 }
 
 // post_aggregate_daily
-type PostAggregateDailyModel struct {
+type PostAccountsAggregateDailyModel struct {
 	Aggregations []Aggregations `json:"aggregations"`
 	Total        Total          `json:"total"`
 }
@@ -1321,7 +1321,7 @@ type Total struct {
 }
 
 // get_schema
-type GetSchemaModel struct {
+type GetAccountsSchemaModel struct {
 	GlobalAccounts   []GlobalAccounts   `json:"globalAccounts"`
 	GuestAccounts    []GuestAccounts    `json:"guestAccounts"`
 	ExternalAccounts []ExternalAccounts `json:"externalAccounts"`
@@ -1357,7 +1357,7 @@ type BookingAccounts struct {
 }
 
 // get_aggregate_pairs_daily
-type PostAggregatePairsDailyModel struct {
+type PostAccountsAggregatePairsDailyModel struct {
 	AccountTransactionPairs []AccountTransactionPairs `json:"accountTransactionPairs"`
 }
 type DebitedAccount struct {
@@ -1381,13 +1381,13 @@ type AccountTransactionPairs struct {
 }
 
 // post_aggregate
-type PostAggregateModel struct {
+type PostAccountsAggregateModel struct {
 	Aggregations []Aggregations `json:"aggregations"`
 	Total        Total          `json:"total"`
 }
 
 // post_export_daily
-type PostExportDailyModel struct {
+type PostAccountsExportDailyModel struct {
 	Transactions []Transactions `json:"transactions"`
 }
 type Receipt struct {
@@ -1409,12 +1409,12 @@ type Transactions struct {
 }
 
 // post_export_gross_daily
-type PostExportGrossDailyModel struct {
+type PostAccountsExportGrossDailyModel struct {
 	Transactions []Transactions `json:"transactions"`
 }
 
 // post_export
-type PostExportModel struct {
+type PostAccountsExportModel struct {
 	Transactions []Transactions `json:"transactions"`
 }
 

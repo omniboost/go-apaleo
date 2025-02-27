@@ -7,31 +7,31 @@ import (
 	"github.com/omniboost/go-apaleo/utils"
 )
 
-func (c *Client) NewPostExportGrossDailyRequest() PostExportGrossDailyRequest {
-	return PostExportGrossDailyRequest{
+func (c *Client) NewPostAccountsExportGrossDailyRequest() PostAccountsExportGrossDailyRequest {
+	return PostAccountsExportGrossDailyRequest{
 		client:      c,
-		queryParams: c.NewPostExportGrossDailyQueryParams(),
-		pathParams:  c.NewPostExportGrossDailyPathParams(),
+		queryParams: c.NewPostAccountsExportGrossDailyQueryParams(),
+		pathParams:  c.NewPostAccountsExportGrossDailyPathParams(),
 		method:      http.MethodPost,
 		headers:     http.Header{},
-		requestBody: c.NewPostExportGrossDailyRequestBody(),
+		requestBody: c.NewPostAccountsExportGrossDailyRequestBody(),
 	}
 }
 
-type PostExportGrossDailyRequest struct {
+type PostAccountsExportGrossDailyRequest struct {
 	client      *Client
-	queryParams *PostExportGrossDailyQueryParams
-	pathParams  *PostExportGrossDailyPathParams
+	queryParams *PostAccountsExportGrossDailyQueryParams
+	pathParams  *PostAccountsExportGrossDailyPathParams
 	method      string
 	headers     http.Header
-	requestBody PostExportGrossDailyRequestBody
+	requestBody PostAccountsExportGrossDailyRequestBody
 }
 
-func (c *Client) NewPostExportGrossDailyQueryParams() *PostExportGrossDailyQueryParams {
-	return &PostExportGrossDailyQueryParams{}
+func (c *Client) NewPostAccountsExportGrossDailyQueryParams() *PostAccountsExportGrossDailyQueryParams {
+	return &PostAccountsExportGrossDailyQueryParams{}
 }
 
-type PostExportGrossDailyQueryParams struct {
+type PostAccountsExportGrossDailyQueryParams struct {
 	// Specifies the property for which transactions will be exported
 	PropertyID string `schema:"propertyId"`
 	// The inclusive start time of the posting date. Either posting date or
@@ -56,7 +56,7 @@ type PostExportGrossDailyQueryParams struct {
 	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
 }
 
-func (p PostExportGrossDailyQueryParams) ToURLValues() (url.Values, error) {
+func (p PostAccountsExportGrossDailyQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
 	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
 	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
@@ -70,69 +70,69 @@ func (p PostExportGrossDailyQueryParams) ToURLValues() (url.Values, error) {
 	return params, nil
 }
 
-func (r *PostExportGrossDailyRequest) QueryParams() *PostExportGrossDailyQueryParams {
+func (r *PostAccountsExportGrossDailyRequest) QueryParams() *PostAccountsExportGrossDailyQueryParams {
 	return r.queryParams
 }
 
-func (c *Client) NewPostExportGrossDailyPathParams() *PostExportGrossDailyPathParams {
-	return &PostExportGrossDailyPathParams{}
+func (c *Client) NewPostAccountsExportGrossDailyPathParams() *PostAccountsExportGrossDailyPathParams {
+	return &PostAccountsExportGrossDailyPathParams{}
 }
 
-type PostExportGrossDailyPathParams struct {
+type PostAccountsExportGrossDailyPathParams struct {
 }
 
-func (p *PostExportGrossDailyPathParams) Params() map[string]string {
+func (p *PostAccountsExportGrossDailyPathParams) Params() map[string]string {
 	return map[string]string{}
 }
 
-func (r *PostExportGrossDailyRequest) PathParams() *PostExportGrossDailyPathParams {
+func (r *PostAccountsExportGrossDailyRequest) PathParams() *PostAccountsExportGrossDailyPathParams {
 	return r.pathParams
 }
 
-func (r *PostExportGrossDailyRequest) PathParamsInterface() PathParams {
+func (r *PostAccountsExportGrossDailyRequest) PathParamsInterface() PathParams {
 	return r.pathParams
 }
 
-func (r *PostExportGrossDailyRequest) SetMethod(method string) {
+func (r *PostAccountsExportGrossDailyRequest) SetMethod(method string) {
 	r.method = method
 }
 
-func (r *PostExportGrossDailyRequest) Method() string {
+func (r *PostAccountsExportGrossDailyRequest) Method() string {
 	return r.method
 }
 
-func (s *Client) NewPostExportGrossDailyRequestBody() PostExportGrossDailyRequestBody {
-	return PostExportGrossDailyRequestBody{}
+func (s *Client) NewPostAccountsExportGrossDailyRequestBody() PostAccountsExportGrossDailyRequestBody {
+	return PostAccountsExportGrossDailyRequestBody{}
 }
 
-type PostExportGrossDailyRequestBody struct {
+type PostAccountsExportGrossDailyRequestBody struct {
 	CreateCompanyModel
 }
 
-func (r *PostExportGrossDailyRequest) RequestBody() *PostExportGrossDailyRequestBody {
+func (r *PostAccountsExportGrossDailyRequest) RequestBody() *PostAccountsExportGrossDailyRequestBody {
 	return &r.requestBody
 }
 
-func (r *PostExportGrossDailyRequest) RequestBodyInterface() interface{} {
+func (r *PostAccountsExportGrossDailyRequest) RequestBodyInterface() interface{} {
 	return &r.requestBody
 }
 
-func (r *PostExportGrossDailyRequest) SetRequestBody(body PostExportGrossDailyRequestBody) {
+func (r *PostAccountsExportGrossDailyRequest) SetRequestBody(body PostAccountsExportGrossDailyRequestBody) {
 	r.requestBody = body
 }
 
-func (r *PostExportGrossDailyRequest) NewResponseBody() *PostExportGrossDailyResponseBody {
-	return &PostExportGrossDailyResponseBody{}
+func (r *PostAccountsExportGrossDailyRequest) NewResponseBody() *PostAccountsExportGrossDailyResponseBody {
+	return &PostAccountsExportGrossDailyResponseBody{}
 }
 
-type PostExportGrossDailyResponseBody PostExportGrossDailyModel
+type PostAccountsExportGrossDailyResponseBody PostAccountsExportGrossDailyModel
 
-func (r *PostExportGrossDailyRequest) URL() *url.URL {
+func (r *PostAccountsExportGrossDailyRequest) URL() *url.URL {
 	u := r.client.GetEndpointURL("finance/v1/accounts/export-gross-daily", r.PathParams())
 	return &u
 }
 
-func (r *PostExportGrossDailyRequest) Do() (PostExportGrossDailyResponseBody, error) {
+func (r *PostAccountsExportGrossDailyRequest) Do() (PostAccountsExportGrossDailyResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(nil, r)
 	if err != nil {

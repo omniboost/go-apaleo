@@ -7,31 +7,31 @@ import (
 	"github.com/omniboost/go-apaleo/utils"
 )
 
-func (c *Client) NewPostAggregateDailyRequest() PostAggregateDailyRequest {
-	return PostAggregateDailyRequest{
+func (c *Client) NewPostAccountsAggregatePairsDailyRequest() PostAccountsAggregatePairsDailyRequest {
+	return PostAccountsAggregatePairsDailyRequest{
 		client:      c,
-		queryParams: c.NewPostAggregateDailyQueryParams(),
-		pathParams:  c.NewPostAggregateDailyPathParams(),
+		queryParams: c.NewPostAccountsAggregatePairsDailyQueryParams(),
+		pathParams:  c.NewPostAccountsAggregatePairsDailyPathParams(),
 		method:      http.MethodPost,
 		headers:     http.Header{},
-		requestBody: c.NewPostAggregateDailyRequestBody(),
+		requestBody: c.NewPostAccountsAggregatePairsDailyRequestBody(),
 	}
 }
 
-type PostAggregateDailyRequest struct {
+type PostAccountsAggregatePairsDailyRequest struct {
 	client      *Client
-	queryParams *PostAggregateDailyQueryParams
-	pathParams  *PostAggregateDailyPathParams
+	queryParams *PostAccountsAggregatePairsDailyQueryParams
+	pathParams  *PostAccountsAggregatePairsDailyPathParams
 	method      string
 	headers     http.Header
-	requestBody PostAggregateDailyRequestBody
+	requestBody PostAccountsAggregatePairsDailyRequestBody
 }
 
-func (c *Client) NewPostAggregateDailyQueryParams() *PostAggregateDailyQueryParams {
-	return &PostAggregateDailyQueryParams{}
+func (c *Client) NewPostAccountsAggregatePairsDailyQueryParams() *PostAccountsAggregatePairsDailyQueryParams {
+	return &PostAccountsAggregatePairsDailyQueryParams{}
 }
 
-type PostAggregateDailyQueryParams struct {
+type PostAccountsAggregatePairsDailyQueryParams struct {
 	// Specifies the property for which transactions will be exported
 	PropertyID string `schema:"propertyId"`
 	// The inclusive start time of the posting date. Either posting date or
@@ -62,7 +62,7 @@ type PostAggregateDailyQueryParams struct {
 	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
 }
 
-func (p PostAggregateDailyQueryParams) ToURLValues() (url.Values, error) {
+func (p PostAccountsAggregatePairsDailyQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
 	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
 	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
@@ -76,69 +76,69 @@ func (p PostAggregateDailyQueryParams) ToURLValues() (url.Values, error) {
 	return params, nil
 }
 
-func (r *PostAggregateDailyRequest) QueryParams() *PostAggregateDailyQueryParams {
+func (r *PostAccountsAggregatePairsDailyRequest) QueryParams() *PostAccountsAggregatePairsDailyQueryParams {
 	return r.queryParams
 }
 
-func (c *Client) NewPostAggregateDailyPathParams() *PostAggregateDailyPathParams {
-	return &PostAggregateDailyPathParams{}
+func (c *Client) NewPostAccountsAggregatePairsDailyPathParams() *PostAccountsAggregatePairsDailyPathParams {
+	return &PostAccountsAggregatePairsDailyPathParams{}
 }
 
-type PostAggregateDailyPathParams struct {
+type PostAccountsAggregatePairsDailyPathParams struct {
 }
 
-func (p *PostAggregateDailyPathParams) Params() map[string]string {
+func (p *PostAccountsAggregatePairsDailyPathParams) Params() map[string]string {
 	return map[string]string{}
 }
 
-func (r *PostAggregateDailyRequest) PathParams() *PostAggregateDailyPathParams {
+func (r *PostAccountsAggregatePairsDailyRequest) PathParams() *PostAccountsAggregatePairsDailyPathParams {
 	return r.pathParams
 }
 
-func (r *PostAggregateDailyRequest) PathParamsInterface() PathParams {
+func (r *PostAccountsAggregatePairsDailyRequest) PathParamsInterface() PathParams {
 	return r.pathParams
 }
 
-func (r *PostAggregateDailyRequest) SetMethod(method string) {
+func (r *PostAccountsAggregatePairsDailyRequest) SetMethod(method string) {
 	r.method = method
 }
 
-func (r *PostAggregateDailyRequest) Method() string {
+func (r *PostAccountsAggregatePairsDailyRequest) Method() string {
 	return r.method
 }
 
-func (s *Client) NewPostAggregateDailyRequestBody() PostAggregateDailyRequestBody {
-	return PostAggregateDailyRequestBody{}
+func (s *Client) NewPostAccountsAggregatePairsDailyRequestBody() PostAccountsAggregatePairsDailyRequestBody {
+	return PostAccountsAggregatePairsDailyRequestBody{}
 }
 
-type PostAggregateDailyRequestBody struct {
+type PostAccountsAggregatePairsDailyRequestBody struct {
 	CreateCompanyModel
 }
 
-func (r *PostAggregateDailyRequest) RequestBody() *PostAggregateDailyRequestBody {
+func (r *PostAccountsAggregatePairsDailyRequest) RequestBody() *PostAccountsAggregatePairsDailyRequestBody {
 	return &r.requestBody
 }
 
-func (r *PostAggregateDailyRequest) RequestBodyInterface() interface{} {
+func (r *PostAccountsAggregatePairsDailyRequest) RequestBodyInterface() interface{} {
 	return &r.requestBody
 }
 
-func (r *PostAggregateDailyRequest) SetRequestBody(body PostAggregateDailyRequestBody) {
+func (r *PostAccountsAggregatePairsDailyRequest) SetRequestBody(body PostAccountsAggregatePairsDailyRequestBody) {
 	r.requestBody = body
 }
 
-func (r *PostAggregateDailyRequest) NewResponseBody() *PostAggregateDailyResponseBody {
-	return &PostAggregateDailyResponseBody{}
+func (r *PostAccountsAggregatePairsDailyRequest) NewResponseBody() *PostAccountsAggregatePairsDailyResponseBody {
+	return &PostAccountsAggregatePairsDailyResponseBody{}
 }
 
-type PostAggregateDailyResponseBody PostAggregateDailyModel
+type PostAccountsAggregatePairsDailyResponseBody PostAccountsAggregatePairsDailyModel
 
-func (r *PostAggregateDailyRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("finance/v1/accounts/aggregate-daily", r.PathParams())
+func (r *PostAccountsAggregatePairsDailyRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("finance/v1/accounts/aggregate-pairs-daily", r.PathParams())
 	return &u
 }
 
-func (r *PostAggregateDailyRequest) Do() (PostAggregateDailyResponseBody, error) {
+func (r *PostAccountsAggregatePairsDailyRequest) Do() (PostAccountsAggregatePairsDailyResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(nil, r)
 	if err != nil {

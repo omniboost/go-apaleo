@@ -16,7 +16,7 @@ func TestPostExportGrossDaily(t *testing.T) {
 	today := time.Now()
 	yesterday := today.AddDate(0, 0, -9)
 
-	req := client.NewPostExportGrossDailyRequest()
+	req := client.NewPostAccountsExportGrossDailyRequest()
 	req.QueryParams().PropertyID = "BER"
 	req.QueryParams().From = apaleo.Date{yesterday}
 	req.QueryParams().To = apaleo.Date{today}

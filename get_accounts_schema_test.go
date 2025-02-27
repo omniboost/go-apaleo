@@ -10,7 +10,7 @@ import (
 
 func TestGetSchema(t *testing.T) {
 	client := client()
-	req := client.NewGetSchemaRequest()
+	req := client.NewGetAccountsSchemaRequest()
 	req.QueryParams().PropertyID = "BER"
 
 	resp, err := req.Do()

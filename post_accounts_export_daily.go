@@ -7,43 +7,43 @@ import (
 	"github.com/omniboost/go-apaleo/utils"
 )
 
-func (c *Client) NewPostExportRequest() PostExportRequest {
-	return PostExportRequest{
+func (c *Client) NewPostAccountsExportDailyRequest() PostAccountsExportDailyRequest {
+	return PostAccountsExportDailyRequest{
 		client:      c,
-		queryParams: c.NewPostExportQueryParams(),
-		pathParams:  c.NewPostExportPathParams(),
+		queryParams: c.NewPostAccountsExportDailyQueryParams(),
+		pathParams:  c.NewPostAccountsExportDailyPathParams(),
 		method:      http.MethodPost,
 		headers:     http.Header{},
-		requestBody: c.NewPostExportRequestBody(),
+		requestBody: c.NewPostAccountsExportDailyRequestBody(),
 	}
 }
 
-type PostExportRequest struct {
+type PostAccountsExportDailyRequest struct {
 	client      *Client
-	queryParams *PostExportQueryParams
-	pathParams  *PostExportPathParams
+	queryParams *PostAccountsExportDailyQueryParams
+	pathParams  *PostAccountsExportDailyPathParams
 	method      string
 	headers     http.Header
-	requestBody PostExportRequestBody
+	requestBody PostAccountsExportDailyRequestBody
 }
 
-func (c *Client) NewPostExportQueryParams() *PostExportQueryParams {
-	return &PostExportQueryParams{}
+func (c *Client) NewPostAccountsExportDailyQueryParams() *PostAccountsExportDailyQueryParams {
+	return &PostAccountsExportDailyQueryParams{}
 }
 
-type PostExportQueryParams struct {
+type PostAccountsExportDailyQueryParams struct {
 	// Specifies the property for which transactions will be exported
 	PropertyID string `schema:"propertyId"`
 	// The inclusive start time of the posting date. Either posting date or
 	// business date interval should be specified.
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
-	From DateTime `schema:"from"`
+	From Date `schema:"from"`
 	// The exclusive end time of the posting date. Either posting date or
 	// business date interval should be specified.
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
-	To DateTime `schema:"to"`
+	To Date `schema:"to"`
 	// Filter transactions by reference (reservation id/external folio id/property id for house folio).
 	Reference string `schema:"reference,omitempty"`
 	// Filter transactions by account number
@@ -62,7 +62,7 @@ type PostExportQueryParams struct {
 	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
 }
 
-func (p PostExportQueryParams) ToURLValues() (url.Values, error) {
+func (p PostAccountsExportDailyQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
 	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
 	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
@@ -76,69 +76,69 @@ func (p PostExportQueryParams) ToURLValues() (url.Values, error) {
 	return params, nil
 }
 
-func (r *PostExportRequest) QueryParams() *PostExportQueryParams {
+func (r *PostAccountsExportDailyRequest) QueryParams() *PostAccountsExportDailyQueryParams {
 	return r.queryParams
 }
 
-func (c *Client) NewPostExportPathParams() *PostExportPathParams {
-	return &PostExportPathParams{}
+func (c *Client) NewPostAccountsExportDailyPathParams() *PostAccountsExportDailyPathParams {
+	return &PostAccountsExportDailyPathParams{}
 }
 
-type PostExportPathParams struct {
+type PostAccountsExportDailyPathParams struct {
 }
 
-func (p *PostExportPathParams) Params() map[string]string {
+func (p *PostAccountsExportDailyPathParams) Params() map[string]string {
 	return map[string]string{}
 }
 
-func (r *PostExportRequest) PathParams() *PostExportPathParams {
+func (r *PostAccountsExportDailyRequest) PathParams() *PostAccountsExportDailyPathParams {
 	return r.pathParams
 }
 
-func (r *PostExportRequest) PathParamsInterface() PathParams {
+func (r *PostAccountsExportDailyRequest) PathParamsInterface() PathParams {
 	return r.pathParams
 }
 
-func (r *PostExportRequest) SetMethod(method string) {
+func (r *PostAccountsExportDailyRequest) SetMethod(method string) {
 	r.method = method
 }
 
-func (r *PostExportRequest) Method() string {
+func (r *PostAccountsExportDailyRequest) Method() string {
 	return r.method
 }
 
-func (s *Client) NewPostExportRequestBody() PostExportRequestBody {
-	return PostExportRequestBody{}
+func (s *Client) NewPostAccountsExportDailyRequestBody() PostAccountsExportDailyRequestBody {
+	return PostAccountsExportDailyRequestBody{}
 }
 
-type PostExportRequestBody struct {
+type PostAccountsExportDailyRequestBody struct {
 	CreateCompanyModel
 }
 
-func (r *PostExportRequest) RequestBody() *PostExportRequestBody {
+func (r *PostAccountsExportDailyRequest) RequestBody() *PostAccountsExportDailyRequestBody {
 	return &r.requestBody
 }
 
-func (r *PostExportRequest) RequestBodyInterface() interface{} {
+func (r *PostAccountsExportDailyRequest) RequestBodyInterface() interface{} {
 	return &r.requestBody
 }
 
-func (r *PostExportRequest) SetRequestBody(body PostExportRequestBody) {
+func (r *PostAccountsExportDailyRequest) SetRequestBody(body PostAccountsExportDailyRequestBody) {
 	r.requestBody = body
 }
 
-func (r *PostExportRequest) NewResponseBody() *PostExportResponseBody {
-	return &PostExportResponseBody{}
+func (r *PostAccountsExportDailyRequest) NewResponseBody() *PostAccountsExportDailyResponseBody {
+	return &PostAccountsExportDailyResponseBody{}
 }
 
-type PostExportResponseBody PostExportModel
+type PostAccountsExportDailyResponseBody PostAccountsExportDailyModel
 
-func (r *PostExportRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("finance/v1/accounts/export", r.PathParams())
+func (r *PostAccountsExportDailyRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("finance/v1/accounts/export-daily", r.PathParams())
 	return &u
 }
 
-func (r *PostExportRequest) Do() (PostExportResponseBody, error) {
+func (r *PostAccountsExportDailyRequest) Do() (PostAccountsExportDailyResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(nil, r)
 	if err != nil {

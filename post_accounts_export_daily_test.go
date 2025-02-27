@@ -10,16 +10,16 @@ import (
 	"github.com/omniboost/go-apaleo"
 )
 
-func TestPostAggregate(t *testing.T) {
+func TestPostExportDaily(t *testing.T) {
 	client := client()
 
 	today := time.Now()
 	yesterday := today.AddDate(0, 0, -9)
 
-	req := client.NewPostAggregateRequest()
+	req := client.NewPostAccountsExportDailyRequest()
 	req.QueryParams().PropertyID = "BER"
-	req.QueryParams().From = apaleo.DateTime{yesterday}
-	req.QueryParams().To = apaleo.DateTime{today}
+	req.QueryParams().From = apaleo.Date{yesterday}
+	req.QueryParams().To = apaleo.Date{today}
 	// req.QueryParams().Reference = "1"
 
 	resp, err := req.Do()

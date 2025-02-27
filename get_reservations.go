@@ -43,8 +43,8 @@ type GetReservationsQueryParams struct {
 	MarketSegmentIDs          []string `schema:"marketSegmentIds,omitempty"`
 	Status                    []string `schema:"status,omitempty"`
 	DateFilter                string   `schema:"dateFilter,omitempty"`
-	From                      Date     `schema:"from,omitempty"`
-	To                        Date     `schema:"to,omitempty"`
+	From                      DateTime `schema:"from,omitempty"`
+	To                        DateTime `schema:"to,omitempty"`
 	ChannelCode               []string `schema:"channelCode,omitempty"`
 	Sources                   []string `schema:"sources,omitempty"`
 	ValidationMessageCategory []string `schema:"validationMessageCategory,omitempty"`

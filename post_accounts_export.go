@@ -7,32 +7,32 @@ import (
 	"github.com/omniboost/go-apaleo/utils"
 )
 
-func (c *Client) NewPostAggregateRequest() PostAggregateRequest {
-	return PostAggregateRequest{
+func (c *Client) NewPostAccountsExportRequest() PostAccountsExportRequest {
+	return PostAccountsExportRequest{
 		client:      c,
-		queryParams: c.NewPostAggregateQueryParams(),
-		pathParams:  c.NewPostAggregatePathParams(),
+		queryParams: c.NewPostAccountsExportQueryParams(),
+		pathParams:  c.NewPostAccountsExportPathParams(),
 		method:      http.MethodPost,
 		headers:     http.Header{},
-		requestBody: c.NewPostAggregateRequestBody(),
+		requestBody: c.NewPostAccountsExportRequestBody(),
 	}
 }
 
-type PostAggregateRequest struct {
+type PostAccountsExportRequest struct {
 	client      *Client
-	queryParams *PostAggregateQueryParams
-	pathParams  *PostAggregatePathParams
+	queryParams *PostAccountsExportQueryParams
+	pathParams  *PostAccountsExportPathParams
 	method      string
 	headers     http.Header
-	requestBody PostAggregateRequestBody
+	requestBody PostAccountsExportRequestBody
 }
 
-func (c *Client) NewPostAggregateQueryParams() *PostAggregateQueryParams {
-	return &PostAggregateQueryParams{}
+func (c *Client) NewPostAccountsExportQueryParams() *PostAccountsExportQueryParams {
+	return &PostAccountsExportQueryParams{}
 }
 
-type PostAggregateQueryParams struct {
-	// Specifies the property for which transactions will be exported
+type PostAccountsExportQueryParams struct {
+	// Specifies the property for which transactions will be Accountsexported
 	PropertyID string `schema:"propertyId"`
 	// The inclusive start time of the posting date. Either posting date or
 	// business date interval should be specified.
@@ -44,6 +44,8 @@ type PostAggregateQueryParams struct {
 	// Specify a date and time (without fractional second part) in UTC or with
 	// UTC offset as defined in the ISO8601:2004
 	To DateTime `schema:"to"`
+	// Filter transactions by reference (reservation id/external folio id/property id for house folio).
+	Reference string `schema:"reference,omitempty"`
 	// Filter transactions by account number
 	AccountNumber string `schema:"accountNumber,omitempty"`
 	// Filter transactions by type
@@ -60,7 +62,7 @@ type PostAggregateQueryParams struct {
 	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
 }
 
-func (p PostAggregateQueryParams) ToURLValues() (url.Values, error) {
+func (p PostAccountsExportQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
 	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
 	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
@@ -74,69 +76,69 @@ func (p PostAggregateQueryParams) ToURLValues() (url.Values, error) {
 	return params, nil
 }
 
-func (r *PostAggregateRequest) QueryParams() *PostAggregateQueryParams {
+func (r *PostAccountsExportRequest) QueryParams() *PostAccountsExportQueryParams {
 	return r.queryParams
 }
 
-func (c *Client) NewPostAggregatePathParams() *PostAggregatePathParams {
-	return &PostAggregatePathParams{}
+func (c *Client) NewPostAccountsExportPathParams() *PostAccountsExportPathParams {
+	return &PostAccountsExportPathParams{}
 }
 
-type PostAggregatePathParams struct {
+type PostAccountsExportPathParams struct {
 }
 
-func (p *PostAggregatePathParams) Params() map[string]string {
+func (p *PostAccountsExportPathParams) Params() map[string]string {
 	return map[string]string{}
 }
 
-func (r *PostAggregateRequest) PathParams() *PostAggregatePathParams {
+func (r *PostAccountsExportRequest) PathParams() *PostAccountsExportPathParams {
 	return r.pathParams
 }
 
-func (r *PostAggregateRequest) PathParamsInterface() PathParams {
+func (r *PostAccountsExportRequest) PathParamsInterface() PathParams {
 	return r.pathParams
 }
 
-func (r *PostAggregateRequest) SetMethod(method string) {
+func (r *PostAccountsExportRequest) SetMethod(method string) {
 	r.method = method
 }
 
-func (r *PostAggregateRequest) Method() string {
+func (r *PostAccountsExportRequest) Method() string {
 	return r.method
 }
 
-func (s *Client) NewPostAggregateRequestBody() PostAggregateRequestBody {
-	return PostAggregateRequestBody{}
+func (s *Client) NewPostAccountsExportRequestBody() PostAccountsExportRequestBody {
+	return PostAccountsExportRequestBody{}
 }
 
-type PostAggregateRequestBody struct {
+type PostAccountsExportRequestBody struct {
 	CreateCompanyModel
 }
 
-func (r *PostAggregateRequest) RequestBody() *PostAggregateRequestBody {
+func (r *PostAccountsExportRequest) RequestBody() *PostAccountsExportRequestBody {
 	return &r.requestBody
 }
 
-func (r *PostAggregateRequest) RequestBodyInterface() interface{} {
+func (r *PostAccountsExportRequest) RequestBodyInterface() interface{} {
 	return &r.requestBody
 }
 
-func (r *PostAggregateRequest) SetRequestBody(body PostAggregateRequestBody) {
+func (r *PostAccountsExportRequest) SetRequestBody(body PostAccountsExportRequestBody) {
 	r.requestBody = body
 }
 
-func (r *PostAggregateRequest) NewResponseBody() *PostAggregateResponseBody {
-	return &PostAggregateResponseBody{}
+func (r *PostAccountsExportRequest) NewResponseBody() *PostAccountsExportResponseBody {
+	return &PostAccountsExportResponseBody{}
 }
 
-type PostAggregateResponseBody PostAggregateModel
+type PostAccountsExportResponseBody PostAccountsExportModel
 
-func (r *PostAggregateRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("finance/v1/accounts/aggregate", r.PathParams())
+func (r *PostAccountsExportRequest) URL() *url.URL {
+	u := r.client.GetEndpointURL("finance/v1/accounts/export", r.PathParams())
 	return &u
 }
 
-func (r *PostAggregateRequest) Do() (PostAggregateResponseBody, error) {
+func (r *PostAccountsExportRequest) Do() (PostAccountsExportResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(nil, r)
 	if err != nil {

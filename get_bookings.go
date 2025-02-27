@@ -40,6 +40,9 @@ type GetBookingsQueryParams struct {
 	PageNumber    int      `json:"pageNumber,omitempty"`
 	PageSize      int      `json:"pageSize,omitempty"`
 	Expand        []string `json:"expand,omitempty"`
+	PropertyID    string   `json:"propertyId,omitempty"`
+	From          DateTime `json:"from,omitempty"`
+	To            DateTime `json:"to,omitempty"`
 }
 
 func (p GetBookingsQueryParams) ToURLValues() (url.Values, error) {
