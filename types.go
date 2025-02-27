@@ -30,6 +30,12 @@ func (t CommaSeparatedQueryParam) MarshalSchema() string {
 	return strings.Join(t, ",")
 }
 
+type ClientRateLimit struct {
+	Limit     string    `json:"rateLimitLimit"`
+	Remaining int       `json:"rateLimitRemaining"`
+	Reset     time.Time `json:"rateLimitReset"`
+}
+
 type AccountType string
 type AccountingSchema string
 

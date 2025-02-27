@@ -13,7 +13,9 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"path"
+	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -47,6 +49,11 @@ func NewClient(httpClient *http.Client) *Client {
 	client.SetUserAgent(userAgent)
 	client.SetMediaType(mediaType)
 	client.SetCharset(charset)
+	client.SetRateLimit(ClientRateLimit{
+		Limit:     "1m",
+		Remaining: 100,
+		Reset:     time.Now(),
+	})
 
 	return client
 }
@@ -65,6 +72,9 @@ type Client struct {
 	mediaType             string
 	charset               string
 	disallowUnknownFields bool
+
+	// Rate limiting
+	rateLimit ClientRateLimit
 
 	// Optional function called after every successful request made to the DO Clients
 	onRequestCompleted RequestCompletionCallback
@@ -111,6 +121,14 @@ func (c *Client) SetUserAgent(userAgent string) {
 
 func (c *Client) UserAgent() string {
 	return userAgent
+}
+
+func (c *Client) SetRateLimit(rateLimit ClientRateLimit) {
+	c.rateLimit = rateLimit
+}
+
+func (c *Client) RateLimit() *ClientRateLimit {
+	return &c.rateLimit
 }
 
 func (c *Client) SetDisallowUnknownFields(disallowUnknownFields bool) {
@@ -189,13 +207,16 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		log.Println(string(dump))
 	}
 
-	// c.SleepUntilRequestRate()
+	c.sleepUntilRequestLimit()
 	// c.RegisterRequestTimestamp(time.Now())
 
 	httpResp, err := c.http.Do(req)
 	if err != nil {
 		return nil, err
 	}
+
+	// Register request limit
+	c.registerRequestLimit(httpResp)
 
 	if c.onRequestCompleted != nil {
 		c.onRequestCompleted(req, httpResp)
@@ -393,6 +414,42 @@ func checkContentType(response *http.Response) error {
 	if contentType != mediaType {
 		return fmt.Errorf("Expected Content-Type \"%s\", got \"%s\"", mediaType, contentType)
 	}
+
+	return nil
+}
+
+func (c *Client) sleepUntilRequestLimit() {
+	// When remaining requests is more than 1, continue
+	if c.RateLimit().Remaining > 1 {
+		return
+	}
+
+	// Sleep for time until it reaches reset
+	time.Sleep(time.Until(c.RateLimit().Reset))
+}
+
+func (c *Client) registerRequestLimit(req *http.Response) error {
+	// Create variables
+	var err error
+	rateLimit := ClientRateLimit{}
+
+	// Set limit
+	rateLimit.Limit = req.Header.Get("X-Rate-Limit-Limit")
+
+	// Set remaining
+	rateLimit.Remaining, err = strconv.Atoi(req.Header.Get("X-Rate-Limit-Remaining"))
+	if err != nil {
+		return err
+	}
+
+	// Set reset timestamp
+	rateLimit.Reset, err = time.Parse(time.RFC3339Nano, req.Header.Get("X-Rate-Limit-Reset"))
+	if err != nil {
+		return err
+	}
+
+	// Set rate limit
+	c.SetRateLimit(rateLimit)
 
 	return nil
 }
