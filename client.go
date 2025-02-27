@@ -23,6 +23,9 @@ const (
 	userAgent      = "go-apaleo/" + libraryVersion
 	mediaType      = "application/json"
 	charset        = "utf-8"
+
+	requestTimestampsLimit         = 20
+	requestTimestampsLimitDuration = time.Second
 )
 
 var (
@@ -31,7 +34,6 @@ var (
 		Host:   "api.apaleo.com",
 		Path:   "",
 	}
-	// requestTimestamps = []time.Time{}
 )
 
 // NewClient returns a new InvoiceXpress Client client
@@ -41,7 +43,8 @@ func NewClient(httpClient *http.Client) *Client {
 	}
 
 	client := &Client{
-		http: httpClient,
+		http:              httpClient,
+		requestTimestamps: []time.Time{},
 	}
 
 	client.SetBaseURL(BaseURL)
@@ -74,7 +77,8 @@ type Client struct {
 	disallowUnknownFields bool
 
 	// Rate limiting
-	rateLimit ClientRateLimit
+	rateLimit         ClientRateLimit
+	requestTimestamps []time.Time
 
 	// Optional function called after every successful request made to the DO Clients
 	onRequestCompleted RequestCompletionCallback
@@ -207,8 +211,12 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		log.Println(string(dump))
 	}
 
+	// Sleep for rate limits
+	c.sleepUntilRequestRate()
 	c.sleepUntilRequestLimit()
-	// c.RegisterRequestTimestamp(time.Now())
+
+	// Register request timestamp
+	c.registerRequestTimestamp(time.Now())
 
 	httpResp, err := c.http.Do(req)
 	if err != nil {
@@ -303,33 +311,6 @@ func (c *Client) Unmarshal(r io.Reader, vv []interface{}, optionalVv []interface
 
 	return nil
 }
-
-// func (c *Client) RegisterRequestTimestamp(t time.Time) {
-// 	if len(requestTimestamps) >= 5 {
-// 		requestTimestamps = requestTimestamps[1:5]
-// 	}
-// 	requestTimestamps = append(requestTimestamps, t)
-// }
-
-// func (c *Client) SleepUntilRequestRate() {
-// 	// Requestrate is 5r/1s
-
-// 	// if there are less then 5 registered requests: execute the request
-// 	// immediately
-// 	if len(requestTimestamps) < 4 {
-// 		return
-// 	}
-
-// 	// is the first item within 1 second? If it's > 1 second the request can be
-// 	// executed imediately
-// 	diff := time.Now().Sub(requestTimestamps[0])
-// 	if diff >= time.Second {
-// 		return
-// 	}
-
-// 	// Sleep for the time it takes for the first item to be > 1 second old
-// 	time.Sleep(time.Second - diff)
-// }
 
 // CheckResponse checks the Client response for errors, and returns them if
 // present. A response is considered an error if it has a status code outside
@@ -452,4 +433,31 @@ func (c *Client) registerRequestLimit(req *http.Response) error {
 	c.SetRateLimit(rateLimit)
 
 	return nil
+}
+
+func (c *Client) registerRequestTimestamp(t time.Time) {
+	if len(c.requestTimestamps) >= requestTimestampsLimit {
+		c.requestTimestamps = c.requestTimestamps[1:requestTimestampsLimit]
+	}
+	c.requestTimestamps = append(c.requestTimestamps, t)
+}
+
+func (c *Client) sleepUntilRequestRate() {
+	// Requestrate is <requestTimestampsLimit> requests per <requestTimestampsLimitDuration>
+
+	// if there are less then <requestTimestampsLimit> registered requests: execute the request
+	// immediately
+	if len(c.requestTimestamps) < requestTimestampsLimit {
+		return
+	}
+
+	// is the first item within <requestTimestampsLimitDuration>? If it's > <requestTimestampsLimitDuration>: the request can be
+	// executed imediately
+	diff := time.Since(c.requestTimestamps[0])
+	if diff >= requestTimestampsLimitDuration {
+		return
+	}
+
+	// Sleep for the time it takes for the first item to be > <requestTimestampsLimitDuration> old
+	time.Sleep(requestTimestampsLimitDuration - diff)
 }
