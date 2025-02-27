@@ -32,17 +32,17 @@ func (c *Client) NewGetBookingsQueryParams() *GetBookingsQueryParams {
 }
 
 type GetBookingsQueryParams struct {
-	ReservationID string   `json:"reservationId,omitempty"`
-	GroupdID      string   `json:"groupId,omitempty"`
-	ChannelCode   []string `json:"channelCode,omitempty"`
-	ExternalCode  string   `json:"externalCode,omitempty"`
-	TextSearch    string   `json:"textSearch,omitempty"`
-	PageNumber    int      `json:"pageNumber,omitempty"`
-	PageSize      int      `json:"pageSize,omitempty"`
-	Expand        []string `json:"expand,omitempty"`
-	PropertyID    string   `json:"propertyId,omitempty"`
-	From          DateTime `json:"from,omitempty"`
-	To            DateTime `json:"to,omitempty"`
+	ReservationID string   `schema:"reservationId,omitempty"`
+	GroupdID      string   `schema:"groupId,omitempty"`
+	ChannelCode   []string `schema:"channelCode,omitempty"`
+	ExternalCode  string   `schema:"externalCode,omitempty"`
+	TextSearch    string   `schema:"textSearch,omitempty"`
+	PageNumber    int      `schema:"pageNumber,omitempty"`
+	PageSize      int      `schema:"pageSize,omitempty"`
+	Expand        []string `schema:"expand,omitempty"`
+	PropertyID    string   `schema:"propertyId,omitempty"`
+	From          DateTime `schema:"from,omitempty"`
+	To            DateTime `schema:"to,omitempty"`
 }
 
 func (p GetBookingsQueryParams) ToURLValues() (url.Values, error) {

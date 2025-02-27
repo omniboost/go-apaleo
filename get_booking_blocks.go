@@ -32,19 +32,19 @@ func (c *Client) NewGetBookingBlocksQueryParams() *GetBookingBlocksQueryParams {
 }
 
 type GetBookingBlocksQueryParams struct {
-	GroupID                string   `json:"groupId,omitempty"`
-	PropertyIDs            string   `json:"propertyIds,omitempty"`
-	Status                 string   `json:"status,omitempty"`
-	UnitGroupIDs           []string `json:"unitGroupIds,omitempty"`
-	RatePlanIDs            []string `json:"ratePlanIds,omitempty"`
-	TimeSliceDefinitionIDs []string `json:"timeSliceDefinitionIds,omitempty"`
-	UnitGroupTypes         []string `json:"unitGroupTypes,omitempty"`
-	TimeSliceTemplate      string   `json:"timeSliceTemplate,omitempty"`
-	From                   Date     `json:"from,omitempty"`
-	To                     Date     `json:"to,omitempty"`
-	PageNumber             int      `json:"pageNumber,omitempty"`
-	PageSize               int      `json:"pageSize,omitempty"`
-	Expand                 []string `json:"expand,omitempty"`
+	GroupID                string   `schema:"groupId,omitempty"`
+	PropertyIDs            string   `schema:"propertyIds,omitempty"`
+	Status                 string   `schema:"status,omitempty"`
+	UnitGroupIDs           []string `schema:"unitGroupIds,omitempty"`
+	RatePlanIDs            []string `schema:"ratePlanIds,omitempty"`
+	TimeSliceDefinitionIDs []string `schema:"timeSliceDefinitionIds,omitempty"`
+	UnitGroupTypes         []string `schema:"unitGroupTypes,omitempty"`
+	TimeSliceTemplate      string   `schema:"timeSliceTemplate,omitempty"`
+	From                   Date     `schema:"from,omitempty"`
+	To                     Date     `schema:"to,omitempty"`
+	PageNumber             int      `schema:"pageNumber,omitempty"`
+	PageSize               int      `schema:"pageSize,omitempty"`
+	Expand                 []string `schema:"expand,omitempty"`
 }
 
 func (p GetBookingBlocksQueryParams) ToURLValues() (url.Values, error) {
