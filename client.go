@@ -242,6 +242,12 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 		log.Println(string(dump))
 	}
 
+	// Handle '429 - Too many requests' response
+	if httpResp.StatusCode == 429 {
+		c.sleepUntilRetryAfter(httpResp)
+		return c.Do(req, responseBody)
+	}
+
 	// check if the response isn't an error
 	err = CheckResponse(httpResp)
 	if err != nil {
@@ -451,8 +457,8 @@ func (c *Client) sleepUntilRequestRate() {
 		return
 	}
 
-	// is the first item within <requestTimestampsLimitDuration>? If it's > <requestTimestampsLimitDuration>: the request can be
-	// executed imediately
+	// is the first item within <requestTimestampsLimitDuration>? If it's more than <requestTimestampsLimitDuration>: the request can be
+	// executed immediately
 	diff := time.Since(c.requestTimestamps[0])
 	if diff >= requestTimestampsLimitDuration {
 		return
@@ -460,4 +466,25 @@ func (c *Client) sleepUntilRequestRate() {
 
 	// Sleep for the time it takes for the first item to be > <requestTimestampsLimitDuration> old
 	time.Sleep(requestTimestampsLimitDuration - diff)
+}
+
+func (c *Client) sleepUntilRetryAfter(req *http.Response) error {
+	// Get the "Retry-After" header
+	retryAfter := req.Header.Get("Retry-After")
+
+	// When the "Retry-After" header is not set, continue
+	if retryAfter == "" {
+		return nil
+	}
+
+	// Parse the "Retry-After" header to a duration in seconds
+	diff, err := time.ParseDuration(fmt.Sprintf("%ss", retryAfter))
+	if err != nil {
+		return err
+	}
+
+	// Sleep for the duration of "Retry-After"
+	time.Sleep(diff)
+
+	return nil
 }
