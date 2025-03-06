@@ -1291,11 +1291,6 @@ type PostAccountsAggregateDailyModel struct {
 	Aggregations []Aggregations `json:"aggregations"`
 	Total        Total          `json:"total"`
 }
-type Account struct {
-	Name   string `json:"name"`
-	Number string `json:"number"`
-	Type   string `json:"type"`
-}
 type CreditedAmount struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
@@ -1360,24 +1355,20 @@ type BookingAccounts struct {
 type PostAccountsAggregatePairsDailyModel struct {
 	AccountTransactionPairs []AccountTransactionPairs `json:"accountTransactionPairs"`
 }
-type DebitedAccount struct {
-	Name   string `json:"name"`
-	Number string `json:"number"`
-	Type   string `json:"type"`
-}
-type CreditedAccount struct {
-	Name   string `json:"name"`
-	Number string `json:"number"`
-	Type   string `json:"type"`
+type Account struct {
+	Name         string `json:"name"`
+	Number       string `json:"number"`
+	Type         string `json:"type"`
+	ParentNumber string `json:"parentNumber"`
 }
 type Amount struct {
 	Amount   float64 `json:"amount"`
 	Currency string  `json:"currency"`
 }
 type AccountTransactionPairs struct {
-	DebitedAccount  DebitedAccount  `json:"debitedAccount"`
-	CreditedAccount CreditedAccount `json:"creditedAccount"`
-	Amount          Amount          `json:"amount"`
+	DebitedAccount  Account `json:"debitedAccount"`
+	CreditedAccount Account `json:"creditedAccount"`
+	Amount          Amount  `json:"amount"`
 }
 
 // post_aggregate
@@ -1395,17 +1386,18 @@ type Receipt struct {
 	Number string `json:"number"`
 }
 type Transactions struct {
-	Timestamp        time.Time       `json:"timestamp"`
-	Date             string          `json:"date"`
-	DebitedAccount   DebitedAccount  `json:"debitedAccount"`
-	CreditedAccount  CreditedAccount `json:"creditedAccount"`
-	Command          string          `json:"command"`
-	Amount           Amount          `json:"amount"`
-	Receipt          Receipt         `json:"receipt"`
-	EntryNumber      string          `json:"entryNumber"`
-	Reference        string          `json:"reference"`
-	ReferenceType    string          `json:"referenceType"`
-	EntryGroupNumber string          `json:"entryGroupNumber"`
+	Timestamp        time.Time `json:"timestamp"`
+	Date             string    `json:"date"`
+	DebitedAccount   Account   `json:"debitedAccount"`
+	CreditedAccount  Account   `json:"creditedAccount"`
+	Command          string    `json:"command"`
+	Amount           Amount    `json:"amount"`
+	Receipt          Receipt   `json:"receipt"`
+	EntryNumber      string    `json:"entryNumber"`
+	Reference        string    `json:"reference"`
+	ReferenceType    string    `json:"referenceType"`
+	EntryGroupNumber string    `json:"entryGroupNumber"`
+	Currency         string    `json:"currency"`
 }
 
 // post_export_gross_daily

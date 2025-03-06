@@ -11,7 +11,7 @@ import (
 func TestGetInvoicesByID(t *testing.T) {
 	client := client()
 	req := client.NewGetInvoicesByIDRequest()
-	req.PathParams().ID = "TEST-20190700000001"
+	req.PathParams().ID = "TEST-20250200000001"
 
 	resp, err := req.Do()
 	if err != nil {
