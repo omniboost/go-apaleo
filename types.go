@@ -1304,10 +1304,10 @@ type Balance struct {
 	Currency string  `json:"currency"`
 }
 type Aggregations struct {
-	Account        Account        `json:"account"`
-	CreditedAmount CreditedAmount `json:"creditedAmount"`
-	DebitedAmount  DebitedAmount  `json:"debitedAmount"`
-	Balance        Balance        `json:"balance"`
+	Account        ExportAccountModel `json:"account"`
+	CreditedAmount CreditedAmount     `json:"creditedAmount"`
+	DebitedAmount  DebitedAmount      `json:"debitedAmount"`
+	Balance        Balance            `json:"balance"`
 }
 type Total struct {
 	CreditedAmount CreditedAmount `json:"creditedAmount"`
@@ -1317,45 +1317,33 @@ type Total struct {
 
 // get_schema
 type GetAccountsSchemaModel struct {
-	GlobalAccounts   []GlobalAccounts   `json:"globalAccounts"`
-	GuestAccounts    []GuestAccounts    `json:"guestAccounts"`
-	ExternalAccounts []ExternalAccounts `json:"externalAccounts"`
-	BookingAccounts  []BookingAccounts  `json:"bookingAccounts"`
+	GlobalAccounts   []SlimFinanceAccountModel `json:"globalAccounts"`
+	GuestAccounts    []SlimFinanceAccountModel `json:"guestAccounts"`
+	ExternalAccounts []SlimFinanceAccountModel `json:"externalAccounts"`
+	BookingAccounts  []SlimFinanceAccountModel `json:"bookingAccounts"`
 }
-type GlobalAccounts struct {
-	AccountNumber string `json:"accountNumber"`
-	Name          string `json:"name"`
-	Type          string `json:"type"`
-	HasChildren   bool   `json:"hasChildren"`
-	IsArchived    bool   `json:"isArchived"`
+
+type SlimFinanceAccountModel struct {
+	AccountNumber string                    `json:"accountNumber"`
+	Name          string                    `json:"name"`
+	Type          string                    `json:"type"`
+	ParentNumber  string                    `json:"parentNumber"`
+	HasChildren   bool                      `json:"hasChildren"`
+	IsArchived    bool                      `json:"isArchived"`
+	VAT           VATItemModel              `json:"vat"`
+	SubAccounts   []SlimFinanceAccountModel `json:"subAccounts"`
 }
-type GuestAccounts struct {
-	AccountNumber string `json:"accountNumber"`
-	Name          string `json:"name"`
-	Type          string `json:"type"`
-	HasChildren   bool   `json:"hasChildren"`
-	IsArchived    bool   `json:"isArchived"`
-}
-type ExternalAccounts struct {
-	AccountNumber string `json:"accountNumber"`
-	Name          string `json:"name"`
-	Type          string `json:"type"`
-	HasChildren   bool   `json:"hasChildren"`
-	IsArchived    bool   `json:"isArchived"`
-}
-type BookingAccounts struct {
-	AccountNumber string `json:"accountNumber"`
-	Name          string `json:"name"`
-	Type          string `json:"type"`
-	HasChildren   bool   `json:"hasChildren"`
-	IsArchived    bool   `json:"isArchived"`
+
+type VATItemModel struct {
+	Type    string  `json:"type"`
+	Percent float64 `json:"percent"`
 }
 
 // get_aggregate_pairs_daily
 type PostAccountsAggregatePairsDailyModel struct {
 	AccountTransactionPairs []AccountTransactionPairs `json:"accountTransactionPairs"`
 }
-type Account struct {
+type ExportAccountModel struct {
 	Name         string `json:"name"`
 	Number       string `json:"number"`
 	Type         string `json:"type"`
@@ -1366,9 +1354,9 @@ type Amount struct {
 	Currency string  `json:"currency"`
 }
 type AccountTransactionPairs struct {
-	DebitedAccount  Account `json:"debitedAccount"`
-	CreditedAccount Account `json:"creditedAccount"`
-	Amount          Amount  `json:"amount"`
+	DebitedAccount  ExportAccountModel `json:"debitedAccount"`
+	CreditedAccount ExportAccountModel `json:"creditedAccount"`
+	Amount          Amount             `json:"amount"`
 }
 
 // post_aggregate
@@ -1386,18 +1374,18 @@ type Receipt struct {
 	Number string `json:"number"`
 }
 type Transactions struct {
-	Timestamp        time.Time `json:"timestamp"`
-	Date             string    `json:"date"`
-	DebitedAccount   Account   `json:"debitedAccount"`
-	CreditedAccount  Account   `json:"creditedAccount"`
-	Command          string    `json:"command"`
-	Amount           Amount    `json:"amount"`
-	Receipt          Receipt   `json:"receipt"`
-	EntryNumber      string    `json:"entryNumber"`
-	Reference        string    `json:"reference"`
-	ReferenceType    string    `json:"referenceType"`
-	EntryGroupNumber string    `json:"entryGroupNumber"`
-	Currency         string    `json:"currency"`
+	Timestamp        time.Time          `json:"timestamp"`
+	Date             string             `json:"date"`
+	DebitedAccount   ExportAccountModel `json:"debitedAccount"`
+	CreditedAccount  ExportAccountModel `json:"creditedAccount"`
+	Command          string             `json:"command"`
+	Amount           Amount             `json:"amount"`
+	Receipt          Receipt            `json:"receipt"`
+	EntryNumber      string             `json:"entryNumber"`
+	Reference        string             `json:"reference"`
+	ReferenceType    string             `json:"referenceType"`
+	EntryGroupNumber string             `json:"entryGroupNumber"`
+	Currency         string             `json:"currency"`
 }
 
 // post_export_gross_daily
