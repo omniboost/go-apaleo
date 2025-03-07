@@ -552,6 +552,168 @@ type ReservationItemModel struct {
 
 type Reservations []ReservationItemModel
 
+type ReservationItemNSFWModel struct {
+	// Reservation id
+	ID string `json:"id"`
+
+	// Booking id
+	BookingID string `json:"bookingId"`
+
+	// Block id
+	BlockID string `json:"blockId"`
+
+	// Name of the group
+	GroupName string `json:"groupName"`
+
+	// Status of the reservation = ['Confirmed', 'InHouse', 'CheckedOut',
+	// 'Canceled', 'NoShow'],
+	Status string `json:"status"`
+
+	// Time of check-in
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	CheckInTime DateTime `json:"checkInTime"`
+
+	// Time of check-out
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	CheckOutTime DateTime `json:"checkOutTime"`
+
+	// Time of cancellation, if the reservation was canceled
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	CancellationTime DateTime `json:"cancellationTime"`
+
+	// Time of setting no-show reservation status
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	NoShowTime DateTime `json:"noShowTime"`
+
+	// The property
+	Property EmbeddedPropertyModel `json:"property"`
+
+	// The rate plan
+	RatePlan EmbeddedRatePlanModel `json:"ratePlan"`
+
+	// The unit group
+	UnitGroup EmbeddedUnitGroupModel `json:"unitGroup"`
+
+	// The unit
+	Unit EmbeddedUnitModel `json:"unit,omitempty"`
+
+	// The market segment
+	MarketSegment EmbeddedMarketSegmentModel `json:"marketSegment,omitempty"`
+
+	// Total amount
+	TotalGrossAmount MonetaryValueModel `json:"totalGrossAmount"`
+
+	// Date of arrival
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	Arrival DateTime `json:"arrival"`
+
+	// Date of departure
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	Departure DateTime `json:"departure"`
+
+	// Date of creation
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	Created DateTime `json:"created"`
+
+	// Date of last modification
+	// Specify a date and time (without fractional second part) in UTC or with
+	// UTC offset as defined in the ISO8601:2004
+	Modified DateTime `json:"modified"`
+
+	// Number of adults
+	Adults int `json:"adults"`
+
+	// The ages of the children
+	ChildrenAges []int `json:"childrenAges"`
+
+	// Additional information and comments
+	Comment string `json:"comment"`
+
+	// Additional information and comment by the guest
+	GuestComment string `json:"guestComment"`
+
+	// Code in external system
+	ExternalCode string `json:"externalCode"`
+
+	// Channel code = ['Direct', 'BookingCom', 'Ibe', 'ChannelManager']
+	ChannelCode string `json:"channelCode"`
+
+	// Source of the reservation (e.g Hotels.com, Orbitz, etc.)
+	Source string `json:"source"`
+
+	// The primary guest of the reservation
+	PrimaryGuest GuestModel `json:"primaryGuest"`
+
+	// Additional guests of the reservation
+	AdditionalGuests []GuestModel `json:"additionalGuests"`
+
+	// The person who made the booking
+	Booker BookerModel `json:"booker"`
+
+	// Payment information
+	PaymentAccount PaymentAccountModel `json:"paymentAccountModel"`
+
+	// The strongest guarantee for the rate plans booked in this reservation =
+	// ['PM6Hold', 'CreditCard', 'Prepayment', 'Company', 'Ota']
+	GuaranteeType string `json:"guaranteeType"`
+
+	// Details about the cancellation fee for this reservation<Paste>
+	CancellationFee ReservationCancellationFeeModel `json:"cancellationFee"`
+
+	// Details about the no-show fee for this reservation
+	NoShowFee ReservationNoShowFeeModel `json:"noShowFee"`
+
+	// The purpose of the trip, leisure or business = ['Business', 'Leisure']
+	TravelPurpose string `json:"travelPurpose"`
+
+	// The balance of this reservation
+	Balance MonetaryValueModel `json:"balance"`
+
+	// The list of units assigned to this reservation
+	AssignedUnits []ReservationAssignedUnitModel `json:"assignedUnits"`
+	// The list of time slices with the reserved units / unit groups for the
+	// stay
+	TimeSlices []TimeSliceModel `json:"timeSlices"`
+
+	// The list of additional services (extras, add-ons) reserved for the stay
+	Services []ReservationServiceItemModel `json:"services"`
+
+	// Validation rules are applied to reservations during their lifetime. For
+	// example a reservation that was created while the house or unit group is
+	// already fully booked. Whenever a rule was or is currently violated, a
+	// validation message will be added to this list. They can be deleted
+	// whenever the hotel staff worked them off.
+	ValidationMessages []ReservationValidationMessageModel `json:"validationMessages"`
+
+	// The list of actions for this reservation
+	Actions []ActionModel `json:"actions"`
+
+	Company              EmbeddedCompanyModel `json:"company"`
+	CorporateCode        string               `json:"corporateCode"`
+	AllFoliosHaveInvoice bool                 `json:"allFoliosHaveInvoice"`
+	HasCityTax           bool                 `json:"hasCityTax"`
+	Commission           CommissionModel      `json:"commission"`
+	PromoCode            string               `json:"promoCode"`
+	IsOpenForCharges     bool                 `json:"isOpenForCharges"`
+	IsPreCheckedIn       bool                 `json:"isPreCheckedIn"`
+	ExternalReferences   struct {
+		GlobalDistributionSystemID string `json:"globalDistributionSystemId"`
+		OnlineTravelAgencyID       string `json:"onlineTravelAgencyId"`
+		OnlineBookingToolID        string `json:"onlineBookingToolId"`
+		ChannelManagerID           string `json:"channelManagerId"`
+		LegacyID                   string `json:"legacyId"`
+	} `json:"externalReferences"`
+}
+
+type ReservationsNSFW []ReservationItemNSFWModel
+
 type EmbeddedPropertyModel struct {
 	// The property id
 	ID string `json:"Id"`
@@ -1091,6 +1253,7 @@ type CreateReservationNSFWModel struct {
 		OnlineTravelAgencyID       string `json:"onlineTravelAgencyId,omitempty"`
 		OnlineBookingToolID        string `json:"onlineBookingToolId,omitempty"`
 		ChannelManagerID           string `json:"channelManagerId,omitempty"`
+		LegacyID                   string `json:"legacyId,omitempty"`
 	} `json:"externalReferences,omitempty"`
 }
 
