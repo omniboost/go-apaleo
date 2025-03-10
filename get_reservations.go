@@ -32,7 +32,7 @@ func (c *Client) NewGetReservationsQueryParams() *GetReservationsQueryParams {
 }
 
 type GetReservationsQueryParams struct {
-	BookingID                 string   `schema:"booking_id,omitempty"`
+	BookingID                 string   `schema:"bookingId,omitempty"`
 	PropertyIDs               []string `schema:"propertyIds,omitempty"`
 	RatePlanIDs               []string `schema:"ratePlanIds,omitempty"`
 	CompanyIDs                []string `schema:"companyIds,omitempty"`
