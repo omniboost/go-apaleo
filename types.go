@@ -325,7 +325,7 @@ type InvoiceItemModel struct {
 	OutstandingPayment   MonetaryValueModel   `json:"outstandingPayment"`
 	PaymentSettled       bool                 `json:"paymentSettled"`
 	Status               string               `json:"status"`
-	Created              string               `json:"created"`
+	Created              DateTime             `json:"created"`
 	GuestName            string               `json:"guestName"`
 	GuestCompany         string               `json:"guestCompany"`
 	AllowedActions       []string             `json:"allowedActions"`
@@ -1530,13 +1530,46 @@ type PostAccountsAggregateModel struct {
 
 // post_export_daily
 type PostAccountsExportDailyModel struct {
-	Transactions []Transactions `json:"transactions"`
+	Transactions []AccountingTransactionModel `json:"transactions"`
 }
 type Receipt struct {
 	Type   string `json:"type"`
 	Number string `json:"number"`
 }
-type Transactions struct {
+
+type ExportGrossTransactionItemModel struct {
+	Timestamp         time.Time          `json:"timestamp"`
+	Date              string             `json:"date"`
+	DebitedAccount    ExportAccountModel `json:"debitedAccount"`
+	CreditedAccount   ExportAccountModel `json:"creditedAccount"`
+	Command           string             `json:"command"`
+	Currency          string             `json:"currency"`
+	GrossAmount       float64            `json:"grossAmount"`
+	NetAmount         float64            `json:"netAmount"`
+	Receipt           Receipt            `json:"receipt"`
+	SourceEntryNumber string             `json:"sourceEntryNumber"`
+	Reference         string             `json:"reference"`
+	ReferenceType     string             `json:"referenceType"`
+	Taxes             []TaxAmountModel   `json:"taxes"`
+}
+
+type TaxAmountModel struct {
+	Type    string  `json:"type"`
+	Percent float64 `json:"percent"`
+	Amount  float64 `json:"amount"`
+}
+
+// post_export_gross_daily
+type PostAccountsExportGrossDailyModel struct {
+	Transactions []ExportGrossTransactionItemModel `json:"transactions"`
+}
+
+// post_export
+type PostAccountsExportModel struct {
+	Transactions []AccountingTransactionModel `json:"transactions"`
+}
+
+type AccountingTransactionModel struct {
 	Timestamp        time.Time          `json:"timestamp"`
 	Date             string             `json:"date"`
 	DebitedAccount   ExportAccountModel `json:"debitedAccount"`
@@ -1549,16 +1582,6 @@ type Transactions struct {
 	ReferenceType    string             `json:"referenceType"`
 	EntryGroupNumber string             `json:"entryGroupNumber"`
 	Currency         string             `json:"currency"`
-}
-
-// post_export_gross_daily
-type PostAccountsExportGrossDailyModel struct {
-	Transactions []Transactions `json:"transactions"`
-}
-
-// post_export
-type PostAccountsExportModel struct {
-	Transactions []Transactions `json:"transactions"`
 }
 
 type GroupBlockModel struct {
