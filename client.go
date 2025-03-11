@@ -212,7 +212,6 @@ func (c *Client) Do(req *http.Request, responseBody interface{}) (*http.Response
 	}
 
 	// Sleep for rate limits
-	c.sleepUntilRequestRate()
 	c.sleepUntilRequestLimit()
 
 	// Register request timestamp
