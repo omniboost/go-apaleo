@@ -42,8 +42,8 @@ func TestPostBookingNSFW(t *testing.T) {
 
 	reservations := []apaleo.CreateReservationNSFWModel{}
 	reservations = append(reservations, apaleo.CreateReservationNSFWModel{
-		Arrival:      apaleo.DateTime{time.Now()},
-		Departure:    apaleo.DateTime{time.Now().Add(time.Hour * 24)},
+		Arrival:      apaleo.Date{time.Now()},
+		Departure:    apaleo.Date{time.Now().Add(time.Hour * 24)},
 		Adults:       1,
 		ChildrenAges: []int32{5},
 		Comment:      "Don't provide help",

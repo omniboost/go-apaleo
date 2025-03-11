@@ -1228,8 +1228,8 @@ func (j CreateReservationModel) IsEmpty() bool {
 }
 
 type CreateReservationNSFWModel struct {
-	Arrival            DateTime                          `json:"arrival"`
-	Departure          DateTime                          `json:"departure"`
+	Arrival            Date                              `json:"arrival"`
+	Departure          Date                              `json:"departure"`
 	Adults             int32                             `json:"adults"`
 	ChildrenAges       []int32                           `json:"childrenAges,omitempty"`
 	Comment            string                            `json:"comment,omitempty"`
