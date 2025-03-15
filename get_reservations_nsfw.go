@@ -130,8 +130,8 @@ func (r *GetReservationsNSFWRequest) NewResponseBody() *GetReservationsNSFWRespo
 }
 
 type GetReservationsNSFWResponseBody struct {
-	Count        int          `json:"count"`
-	Reservations Reservations `json:"reservations"`
+	Count        int              `json:"count"`
+	Reservations ReservationsNSFW `json:"reservations"`
 }
 
 func (r *GetReservationsNSFWRequest) URL() *url.URL {
@@ -157,8 +157,8 @@ func (r *GetReservationsNSFWRequest) Do() (GetReservationsNSFWResponseBody, erro
 	return *responseBody, err
 }
 
-func (r *GetReservationsNSFWRequest) All() (Reservations, error) {
-	reservations := Reservations{}
+func (r *GetReservationsNSFWRequest) All() (ReservationsNSFW, error) {
+	reservations := ReservationsNSFW{}
 	for {
 		resp, err := r.Do()
 		if err != nil {
