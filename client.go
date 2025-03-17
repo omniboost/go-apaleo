@@ -15,6 +15,7 @@ import (
 	"path"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -79,6 +80,7 @@ type Client struct {
 	// Rate limiting
 	rateLimit         ClientRateLimit
 	requestTimestamps []time.Time
+	requestTimestampsMu sync.RWMutex
 
 	// Optional function called after every successful request made to the DO Clients
 	onRequestCompleted RequestCompletionCallback
@@ -441,6 +443,9 @@ func (c *Client) registerRequestLimit(req *http.Response) error {
 }
 
 func (c *Client) registerRequestTimestamp(t time.Time) {
+	c.requestTimestampsMu.Lock()
+	defer c.requestTimestampsMu.Unlock()
+
 	if len(c.requestTimestamps) >= requestTimestampsLimit {
 		c.requestTimestamps = c.requestTimestamps[1:requestTimestampsLimit]
 	}
@@ -448,6 +453,9 @@ func (c *Client) registerRequestTimestamp(t time.Time) {
 }
 
 func (c *Client) sleepUntilRequestRate() {
+	c.requestTimestampsMu.RLock()
+	defer c.requestTimestampsMu.RUnlock()
+
 	// Requestrate is <requestTimestampsLimit> requests per <requestTimestampsLimitDuration>
 
 	// if there are less then <requestTimestampsLimit> registered requests: execute the request
