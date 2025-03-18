@@ -121,7 +121,7 @@ type PostChargeToFolioResponseBody struct {
 }
 
 func (r *PostChargeToFolioRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("finance/v1/folios/{{.id}}/charges", r.PathParams())
+	u := r.client.GetEndpointURL("finance/v1/folio-actions/{{.id}}/charges", r.PathParams())
 	return &u
 }
 
