@@ -33,7 +33,7 @@ func (c *Client) NewGetBookingGroupsQueryParams() *GetBookingGroupsQueryParams {
 
 type GetBookingGroupsQueryParams struct {
 	TextSearch  string   `schema:"textSearch,omitempty"`
-	PropertyIDs string   `schema:"propertyIds,omitempty"`
+	PropertyIDs []string `schema:"propertyIds,omitempty"`
 	From        DateTime `schema:"from,omitempty"`
 	To          DateTime `schema:"to,omitempty"`
 	PageNumber  int      `schema:"pageNumber,omitempty"`
