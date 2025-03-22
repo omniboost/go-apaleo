@@ -1081,12 +1081,12 @@ type CreateCompanyModel struct {
 	Code            string                 `json:"code"`
 	PropertyID      string                 `json:"propertyId"`
 	Name            string                 `json:"name"`
-	InvoicingEmail  string                 `json:"invoicingEmail"`
-	TaxID           string                 `json:"taxId"`
-	AdditionalTaxID string                 `json:"additionalTaxId"`
+	InvoicingEmail  string                 `json:"invoicingEmail,omitempty"`
+	TaxID           string                 `json:"taxId,omitempty"`
+	AdditionalTaxID string                 `json:"additionalTaxId,omitempty"`
 	Address         CompanyAddressModel    `json:"address"`
 	CanCheckOutOnAr bool                   `json:"canCheckOutOnAr"`
-	RatePlans       []RatePlanCompanyModel `json:"ratePlans"`
+	RatePlans       []RatePlanCompanyModel `json:"ratePlans,omitempty"`
 }
 
 func (j CreateCompanyModel) MarshalJSON() ([]byte, error) {
