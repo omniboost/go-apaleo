@@ -1081,6 +1081,7 @@ type CreateCompanyModel struct {
 	Code            string                 `json:"code"`
 	PropertyID      string                 `json:"propertyId"`
 	Name            string                 `json:"name"`
+	InvoicingEmail  string                 `json:"invoicingEmail"`
 	TaxID           string                 `json:"taxId"`
 	AdditionalTaxID string                 `json:"additionalTaxId"`
 	Address         CompanyAddressModel    `json:"address"`
