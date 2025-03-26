@@ -31,7 +31,9 @@ func (c *Client) NewGetInvoicesByIDQueryParams() *GetInvoicesByIDQueryParams {
 	return &GetInvoicesByIDQueryParams{}
 }
 
-type GetInvoicesByIDQueryParams struct{}
+type GetInvoicesByIDQueryParams struct {
+	Expand CommaSeparatedQueryParam `schema:"expand,omitempty"`
+}
 
 func (p GetInvoicesByIDQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
