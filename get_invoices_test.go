@@ -24,6 +24,8 @@ func TestGetInvoices(t *testing.T) {
 func TestGetInvoicesAll(t *testing.T) {
 	client := client()
 	req := client.NewGetInvoicesRequest()
+	req.QueryParams().CheckedOutOnAccountsReceivable = true
+	req.QueryParams().DateFilter = []string{"gte_2025-03-24", "lte_2025-03-25"}
 
 	resp, err := req.All()
 	if err != nil {

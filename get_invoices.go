@@ -32,27 +32,28 @@ func (c *Client) NewGetInvoicesQueryParams() *GetInvoicesQueryParams {
 }
 
 type GetInvoicesQueryParams struct {
-	Number                         string   `schema:"number,omitempty"`
-	Status                         string   `schema:"status,omitempty"`
-	CheckedOutOnAccountsReceivable bool     `schema:"checkedOutOnAccountsReceivable,omitempty"`
-	OutstandingPaymentFilter       []string `schema:"outstandingPaymentFilter,omitempty"`
-	DateFilter                     []string `schema:"dateFilter,omitempty"`
-	PropertyIDs                    []string `schema:"propertyIds,omitempty"`
-	ReservationIDs                 []string `schema:"reservationIds,omitempty"`
-	BookingIDs                     []string `schema:"bookingIds,omitempty"`
-	FolioIDs                       []string `schema:"folioIds,omitempty"`
-	NameSearch                     string   `schema:"nameSearch,omitempty"`
-	PaymentSettled                 bool     `schema:"paymentSettled,omitempty"`
-	CompanyIDs                     []string `schema:"companyIds,omitempty"`
-	PageNumber                     int      `schema:"pageNumber,omitempty"`
-	PageSize                       int      `schema:"pageSize,omitempty"`
-	Expand                         []string `schema:"expand,omitempty"`
+	Number                         string                   `schema:"number,omitempty"`
+	Status                         string                   `schema:"status,omitempty"`
+	CheckedOutOnAccountsReceivable bool                     `schema:"checkedOutOnAccountsReceivable,omitempty"`
+	OutstandingPaymentFilter       CommaSeparatedQueryParam `schema:"outstandingPaymentFilter,omitempty"`
+	DateFilter                     CommaSeparatedQueryParam `schema:"dateFilter,omitempty"`
+	PropertyIDs                    []string                 `schema:"propertyIds,omitempty"`
+	ReservationIDs                 []string                 `schema:"reservationIds,omitempty"`
+	BookingIDs                     []string                 `schema:"bookingIds,omitempty"`
+	FolioIDs                       []string                 `schema:"folioIds,omitempty"`
+	NameSearch                     string                   `schema:"nameSearch,omitempty"`
+	PaymentSettled                 bool                     `schema:"paymentSettled,omitempty"`
+	CompanyIDs                     []string                 `schema:"companyIds,omitempty"`
+	PageNumber                     int                      `schema:"pageNumber,omitempty"`
+	PageSize                       int                      `schema:"pageSize,omitempty"`
+	Expand                         []string                 `schema:"expand,omitempty"`
 }
 
 func (p GetInvoicesQueryParams) ToURLValues() (url.Values, error) {
 	encoder := utils.NewSchemaEncoder()
 	encoder.RegisterEncoder(Date{}, utils.EncodeSchemaMarshaler)
 	encoder.RegisterEncoder(DateTime{}, utils.EncodeSchemaMarshaler)
+	encoder.RegisterEncoder(CommaSeparatedQueryParam{}, utils.EncodeSchemaMarshaler)
 	params := url.Values{}
 
 	err := encoder.Encode(p, params)
