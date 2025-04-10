@@ -1712,10 +1712,16 @@ type InvoicesByIDModel struct { //This has to be like this, otherwise the LineIt
 				Amount   float64 `json:"amount"`
 				Currency string  `json:"currency"`
 			} `json:"price"`
-			VatType     string  `json:"vatType"`
-			VatPercent  float64 `json:"vatPercent"`
-			IsNoShowFee bool    `json:"isNoShowFee"`
-			Guest       string  `json:"guest"`
+			VatType           string  `json:"vatType"`
+			VatPercent        float64 `json:"vatPercent"`
+			IsNoShowFee       bool    `json:"isNoShowFee"`
+			Guest             string  `json:"guest"`
+			IncludedLineItems []struct {
+				Description string `json:"description"`
+				Price       MonetaryValueModel
+				VatType     string  `json:"vatType"`
+				VatPercent  float64 `json:"vatPercent"`
+			} `json:"includedLineItems"`
 		} `json:"lineItems"`
 		SubTotal struct {
 			Amount   float64 `json:"amount"`
