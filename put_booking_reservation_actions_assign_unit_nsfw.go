@@ -103,13 +103,6 @@ type PutReservationAssignUnitResponseBody struct {
 	TimeSlices []AutoAssignedUnitItemModel `json:"timeSlices"`
 }
 
-// AutoAssignedUnitItemModel represents an assigned unit with time slice
-type AutoAssignedUnitItemModel struct {
-	Unit EmbeddedUnitModel `json:"unit"`
-	From DateTime          `json:"from"`
-	To   DateTime          `json:"to"`
-}
-
 func (r *PutReservationAssignUnitRequest) URL() *url.URL {
 	path := "booking/v0-nsfw/reservation-actions/{{.id}}/assign-unit"
 	u := r.client.GetEndpointURL(path, r.PathParams())

@@ -758,6 +758,8 @@ type EmbeddedUnitModel struct {
 	Name string `json:"name"`
 	// The description for the unit
 	Description string `json:"description"`
+	// The unit group id
+	UnitGroupID string `json:"unitGroupId"`
 }
 
 type EmbeddedMarketSegmentModel struct {
@@ -1769,4 +1771,11 @@ type InvoicesByIDModel struct { //This has to be like this, otherwise the LineIt
 		Code string `json:"code"`
 		Name string `json:"name"`
 	} `json:"company"`
+}
+
+// AutoAssignedUnitItemModel represents an assigned unit with time slice
+type AutoAssignedUnitItemModel struct {
+	Unit EmbeddedUnitModel `json:"unit"`
+	From DateTime          `json:"from"`
+	To   DateTime          `json:"to"`
 }
