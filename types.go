@@ -1779,3 +1779,10 @@ type AutoAssignedUnitItemModel struct {
 	From DateTime          `json:"from"`
 	To   DateTime          `json:"to"`
 }
+
+type Operation struct {
+	Value     any    `json:"value,omitempty"`
+	Path      string `json:"path,omitempty"`
+	Operation string `json:"op,omitempty"`
+	From      string `json:"from,omitempty"`
+}
