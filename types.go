@@ -1786,3 +1786,13 @@ type Operation struct {
 	Operation string `json:"op,omitempty"`
 	From      string `json:"from,omitempty"`
 }
+
+type MarketSegment struct {
+	ID          string   `json:"id"`
+	Code        string   `json:"code"`
+	Name        string   `json:"name"`
+	Description string   `json:"description"`
+	PropertyIDs []string `json:"propertyIds"`
+}
+
+type MarketSegments []MarketSegment
