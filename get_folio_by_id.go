@@ -110,7 +110,7 @@ func (r *GetFolioByIDRequest) NewResponseBody() *GetFolioByIDResponseBody {
 type GetFolioByIDResponseBody FolioModel
 
 func (r *GetFolioByIDRequest) URL() *url.URL {
-	u := r.client.GetEndpointURL("finance/v1/folios/{{.id}}", r.PathParams())
+	u := r.client.GetEndpointURL("finance/v0-nsfw/folios/{{.id}}", r.PathParams())
 	return &u
 }
 

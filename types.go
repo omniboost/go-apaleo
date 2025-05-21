@@ -1417,6 +1417,17 @@ type FolioItemModel struct {
 	Payments                       []PaymentModel           `json:"payments"`
 }
 
+type DepositItemModel struct {
+	ID                   string            `json:"id"`
+	Created              DateTime          `json:"created"`
+	Updated              DateTime          `json:"updated"`
+	ExpectedDeliveryDate Date              `json:"expectedDeliveryDate"`
+	ServiceDate          Date              `json:"serviceDate"`
+	Quantity             int32             `json:"quantity"`
+	Amount               AmountModel       `json:"amount"`
+	Name                 map[string]string `json:"name"`
+}
+
 type PendingPaymentModel struct {
 	ID         string             `json:"id"`
 	Amount     MonetaryValueModel `json:"amount"`
@@ -1434,6 +1445,7 @@ type FolioModel struct {
 	BookingID                      string                   `json:"bookingId"`
 	Company                        EmbeddedCompanyModel     `json:"company"`
 	Property                       EmbeddedPropertyModel    `json:"property"`
+	DepositItems                   []DepositItemModel       `json:"depositItems"`
 	Charges                        []ChargeModel            `json:"charges"`
 	TransitoryCharges              []TransitoryChargeModel  `json:"transitoryCharges"`
 	Payments                       []PaymentModel           `json:"payments"`
