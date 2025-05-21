@@ -1459,7 +1459,7 @@ type FolioModel struct {
 	RelatedInvoices                []EmbeddedInvoiceModel   `json:"relatedInvoices"`
 	FolioWarnings                  []string                 `json:"folioWarnings"`
 	AllowedActions                 []string                 `json:"allowedActions"`
-	AllowedPayments                float64                  `json:"allowedPayments"`
+	AllowedPayment                 float64                  `json:"allowedPayment"`
 	MaximumAllowance               float64                  `json:"maximumAllowance"`
 	Status                         string                   `json:"status"`
 }
