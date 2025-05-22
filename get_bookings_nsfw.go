@@ -33,7 +33,7 @@ func (c *Client) NewGetBookingsNSFWQueryParams() *GetBookingsNSFWQueryParams {
 
 type GetBookingsNSFWQueryParams struct {
 	ReservationID string   `schema:"reservationId,omitempty"`
-	GroupdID      string   `schema:"groupId,omitempty"`
+	GroupID       string   `schema:"groupId,omitempty"`
 	ChannelCode   []string `schema:"channelCode,omitempty"`
 	ExternalCode  string   `schema:"externalCode,omitempty"`
 	TextSearch    string   `schema:"textSearch,omitempty"`
