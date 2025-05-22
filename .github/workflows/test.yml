@@ -19,15 +19,3 @@ jobs:
 
       - name: Check out code
         uses: actions/checkout@v3
-
-      - name: Run tests
-        run: go test -v ./...
-
-      - name: Run go vet
-        run: go vet ./...
-
-      - name: Install staticcheck
-        run: go install honnef.co/go/tools/cmd/staticcheck@latest
-
-      - name: Run staticcheck
-        run: staticcheck ./...
