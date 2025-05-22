@@ -1,0 +1,62 @@
+name: Go Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 'stable'
+
+      - name: Check out code
+        uses: actions/checkout@v3
+        # We need to fetch all history for all branches and tags
+        # for git describe and git log to work correctly.
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: previous_tag
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          echo "PREVIOUS_TAG=$PREVIOUS_TAG"
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+        # If there's no previous tag, PREVIOUS_TAG will be the first commit hash.
+        # HEAD^^ is used because HEAD^ is the commit that added the tag, and we want the commit *before* that.
+        # If the tag was added directly to the latest commit without a separate tagging commit,
+        # then HEAD^ would be the commit we want.
+        # However, `git describe --tags --abbrev=0 HEAD^^` might fail if there's only one tag or no tags before the current one.
+        # So, we use `|| git rev-list --max-parents=0 HEAD` as a fallback to get the initial commit hash if no previous tag is found.
+
+      - name: Generate release body
+        id: generate_body
+        run: |
+          echo "Generating release notes from ${{ steps.previous_tag.outputs.previous_tag }} to ${{ github.ref_name }}"
+          RELEASE_BODY=$(git log ${{ steps.previous_tag.outputs.previous_tag }}..${{ github.ref_name }} --pretty=format:"* %s (%h)")
+          # Escape special characters for JSON
+          RELEASE_BODY="${RELEASE_BODY//'%'/'%25'}"
+          RELEASE_BODY="${RELEASE_BODY//$'\n'/'%0A'}"
+          RELEASE_BODY="${RELEASE_BODY//$'\r'/'%0D'}"
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELEASE_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "RELEASE_BODY (raw):"
+          git log ${{ steps.previous_tag.outputs.previous_tag }}..${{ github.ref_name }} --pretty=format:"* %s (%h)"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body: ${{ steps.generate_body.outputs.body }}
+          # files: | # Optional: add files to your release
+          #   my-artifact.zip
+          #   my-other-artifact.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
