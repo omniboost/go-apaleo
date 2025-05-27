@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -123,9 +124,9 @@ func (r *GetBookingsNSFWRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetBookingsNSFWRequest) Do() (GetBookingsNSFWResponseBody, error) {
+func (r *GetBookingsNSFWRequest) Do(ctx context.Context) (GetBookingsNSFWResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -141,10 +142,10 @@ func (r *GetBookingsNSFWRequest) Do() (GetBookingsNSFWResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetBookingsNSFWRequest) All() ([]BookingItemModel, error) {
+func (r *GetBookingsNSFWRequest) All(ctx context.Context) ([]BookingItemModel, error) {
 	bookings := []BookingItemModel{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return bookings, err
 		}

@@ -109,7 +109,7 @@ func (r *PutReservationAssignUnitRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PutReservationAssignUnitRequest) Do() (PutReservationAssignUnitResponseBody, error) {
+func (r *PutReservationAssignUnitRequest) Do(ctx context.Context) (PutReservationAssignUnitResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(context.TODO(), r)
 	if err != nil {

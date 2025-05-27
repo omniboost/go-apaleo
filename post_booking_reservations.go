@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -139,9 +140,9 @@ func (r *PostBookingReservationsRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PostBookingReservationsRequest) Do() (PostBookingReservationsResponseBody, error) {
+func (r *PostBookingReservationsRequest) Do(ctx context.Context) (PostBookingReservationsResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

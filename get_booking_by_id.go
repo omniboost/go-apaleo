@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -113,9 +114,9 @@ func (r *GetBookingByIDRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetBookingByIDRequest) Do() (GetBookingByIDResponseBody, error) {
+func (r *GetBookingByIDRequest) Do(ctx context.Context) (GetBookingByIDResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

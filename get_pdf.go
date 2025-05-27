@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"io"
 	"net/http"
 	"net/url"
@@ -113,9 +114,9 @@ func (r *GetPdfRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetPdfRequest) Do() (GetPdfResponseBody, error) {
+func (r *GetPdfRequest) Do(ctx context.Context) (GetPdfResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

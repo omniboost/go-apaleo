@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -12,7 +13,7 @@ func TestGetUnitGroups(t *testing.T) {
 	client := client()
 	req := client.NewGetUnitGroupsRequest()
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -25,7 +26,7 @@ func TestGetUnitGroupsAll(t *testing.T) {
 	client := client()
 	req := client.NewGetUnitGroupsRequest()
 
-	resp, err := req.All()
+	resp, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -43,7 +44,7 @@ func TestPostBookingGroupReservationsNSFW(t *testing.T) {
 
 	req.RequestBody().Reservations = reservations
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

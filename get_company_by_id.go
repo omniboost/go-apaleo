@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -111,9 +112,9 @@ func (r *GetCompanyByIDRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetCompanyByIDRequest) Do() (GetCompanyByIDResponseBody, error) {
+func (r *GetCompanyByIDRequest) Do(ctx context.Context) (GetCompanyByIDResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

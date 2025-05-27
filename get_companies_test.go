@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -12,7 +13,7 @@ func TestGetCompanies(t *testing.T) {
 	client := client()
 	req := client.NewGetCompaniesRequest()
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -24,8 +25,9 @@ func TestGetCompanies(t *testing.T) {
 func TestGetCompaniesAll(t *testing.T) {
 	client := client()
 	req := client.NewGetCompaniesRequest()
+	req.QueryParams().PropertyID = "MID"
 
-	resp, err := req.All()
+	resp, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

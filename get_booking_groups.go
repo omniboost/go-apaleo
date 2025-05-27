@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -119,9 +120,9 @@ func (r *GetBookingGroupsRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetBookingGroupsRequest) Do() (GetBookingGroupsResponseBody, error) {
+func (r *GetBookingGroupsRequest) Do(ctx context.Context) (GetBookingGroupsResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -137,10 +138,10 @@ func (r *GetBookingGroupsRequest) Do() (GetBookingGroupsResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetBookingGroupsRequest) All() ([]GroupItemModel, error) {
+func (r *GetBookingGroupsRequest) All(ctx context.Context) ([]GroupItemModel, error) {
 	groups := []GroupItemModel{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return groups, err
 		}

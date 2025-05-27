@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -11,9 +12,10 @@ import (
 func TestGetInvoicesByID(t *testing.T) {
 	client := client()
 	req := client.NewGetInvoicesByIDRequest()
-	req.PathParams().ID = "TEST-20250200000001"
+	req.PathParams().ID = "AMZ-202500000018"
+	req.QueryParams().Expand = []string{"company"}
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

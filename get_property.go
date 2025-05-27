@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -115,9 +116,9 @@ func (r *GetPropertyRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetPropertyRequest) Do() (GetPropertyResponseBody, error) {
+func (r *GetPropertyRequest) Do(ctx context.Context) (GetPropertyResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

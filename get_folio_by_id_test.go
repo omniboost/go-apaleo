@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -11,9 +12,9 @@ import (
 func TestGetFolioByID(t *testing.T) {
 	client := client()
 	req := client.NewGetFolioByIDRequest()
-	req.PathParams().ID = "AAJPJLNI-1-1"
+	req.PathParams().ID = "UZFKVQBI-1-1"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

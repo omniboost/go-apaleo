@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -115,9 +116,9 @@ func (r *GetNoShowPoliciesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetNoShowPoliciesRequest) Do() (GetNoShowPoliciesResponseBody, error) {
+func (r *GetNoShowPoliciesRequest) Do(ctx context.Context) (GetNoShowPoliciesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -133,10 +134,10 @@ func (r *GetNoShowPoliciesRequest) Do() (GetNoShowPoliciesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetNoShowPoliciesRequest) All() (NoShowPolicies, error) {
+func (r *GetNoShowPoliciesRequest) All(ctx context.Context) (NoShowPolicies, error) {
 	noShowPolicies := NoShowPolicies{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return noShowPolicies, err
 		}

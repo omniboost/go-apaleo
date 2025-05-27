@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -18,7 +19,7 @@ func TestPutReservationCheckIn(t *testing.T) {
 	// Optionally set city tax
 	req.QueryParams().WithCityTax = true
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

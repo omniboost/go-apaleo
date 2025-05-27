@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -13,7 +14,7 @@ func TestGetAgeCategories(t *testing.T) {
 	req := client.NewGetAgeCategoriesRequest()
 	req.QueryParams().PropertyID = "OMNI"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -27,7 +28,7 @@ func TestGetAgeCategoriesAll(t *testing.T) {
 	req := client.NewGetAgeCategoriesRequest()
 	req.QueryParams().PropertyID = "OMNI"
 
-	resp, err := req.All()
+	resp, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

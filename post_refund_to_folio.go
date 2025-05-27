@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -123,9 +124,9 @@ func (r *PostRefundToFolioRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PostRefundToFolioRequest) Do() (PostRefundToFolioResponseBody, error) {
+func (r *PostRefundToFolioRequest) Do(ctx context.Context) (PostRefundToFolioResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

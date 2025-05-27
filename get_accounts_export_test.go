@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -21,7 +22,7 @@ func TestGetAccountsExport(t *testing.T) {
 	req.QueryParams().From = apaleo.DateTime{yesterday}
 	req.QueryParams().To = apaleo.DateTime{today}
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

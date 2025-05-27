@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -129,9 +130,9 @@ func (r *GetPropertiesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetPropertiesRequest) Do() (GetPropertiesResponseBody, error) {
+func (r *GetPropertiesRequest) Do(ctx context.Context) (GetPropertiesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -147,10 +148,10 @@ func (r *GetPropertiesRequest) Do() (GetPropertiesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetPropertiesRequest) All() (Properties, error) {
+func (r *GetPropertiesRequest) All(ctx context.Context) (Properties, error) {
 	properties := Properties{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return properties, err
 		}

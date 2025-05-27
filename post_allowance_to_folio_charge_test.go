@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -24,7 +25,7 @@ func TestPostAllowanceToFolioCharge(t *testing.T) {
 
 	req.SetRequestBody(body)
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

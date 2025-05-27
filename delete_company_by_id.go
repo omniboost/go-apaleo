@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -111,9 +112,9 @@ func (r *DeleteCompanyByIDRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *DeleteCompanyByIDRequest) Do() (DeleteCompanyByIDResponseBody, error) {
+func (r *DeleteCompanyByIDRequest) Do(ctx context.Context) (DeleteCompanyByIDResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

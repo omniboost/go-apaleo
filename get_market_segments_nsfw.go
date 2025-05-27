@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -121,9 +122,9 @@ func (r *GetMarketSegmentsNSFWRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetMarketSegmentsNSFWRequest) Do() (GetMarketSegmentsNSFWResponseBody, error) {
+func (r *GetMarketSegmentsNSFWRequest) Do(ctx context.Context) (GetMarketSegmentsNSFWResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -139,10 +140,10 @@ func (r *GetMarketSegmentsNSFWRequest) Do() (GetMarketSegmentsNSFWResponseBody, 
 	return *responseBody, err
 }
 
-func (r *GetMarketSegmentsNSFWRequest) All() (MarketSegments, error) {
+func (r *GetMarketSegmentsNSFWRequest) All(ctx context.Context) (MarketSegments, error) {
 	values := MarketSegments{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return values, err
 		}

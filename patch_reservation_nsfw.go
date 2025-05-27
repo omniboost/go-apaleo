@@ -111,7 +111,7 @@ func (r *PatchReservationNSFWRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PatchReservationNSFWRequest) Do() (PatchReservationNSFWResponseBody, error) {
+func (r *PatchReservationNSFWRequest) Do(ctx context.Context) (PatchReservationNSFWResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(context.TODO(), r)
 	if err != nil {

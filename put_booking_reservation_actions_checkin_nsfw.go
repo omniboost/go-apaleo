@@ -107,7 +107,7 @@ func (r *PutReservationCheckInRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PutReservationCheckInRequest) Do() (PutReservationCheckInResponseBody, error) {
+func (r *PutReservationCheckInRequest) Do(ctx context.Context) (PutReservationCheckInResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(context.TODO(), r)
 	if err != nil {

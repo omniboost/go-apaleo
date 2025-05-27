@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -14,7 +15,7 @@ func TestGetBookingByID(t *testing.T) {
 	req.PathParams().ID = "CXFWEVVO"
 	req.QueryParams().Expand = []string{"reservations"}
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

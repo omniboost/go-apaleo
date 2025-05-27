@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -115,9 +116,9 @@ func (r *GetCancellationPoliciesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetCancellationPoliciesRequest) Do() (GetCancellationPoliciesResponseBody, error) {
+func (r *GetCancellationPoliciesRequest) Do(ctx context.Context) (GetCancellationPoliciesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -133,10 +134,10 @@ func (r *GetCancellationPoliciesRequest) Do() (GetCancellationPoliciesResponseBo
 	return *responseBody, err
 }
 
-func (r *GetCancellationPoliciesRequest) All() (CancellationPolicies, error) {
+func (r *GetCancellationPoliciesRequest) All(ctx context.Context) (CancellationPolicies, error) {
 	cancellationPolicies := CancellationPolicies{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return cancellationPolicies, err
 		}

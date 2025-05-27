@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -11,8 +12,9 @@ import (
 func TestGetReservations(t *testing.T) {
 	client := client()
 	req := client.NewGetReservationsRequest()
+	req.QueryParams().BookingID = "LRNQSMTM"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -26,7 +28,7 @@ func TestGetReservationsAll(t *testing.T) {
 	req := client.NewGetReservationsRequest()
 	req.QueryParams().PageSize = 1
 
-	resp, err := req.All()
+	resp, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

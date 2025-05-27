@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -125,9 +126,9 @@ func (r *PostFinanceRoutingRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PostFinanceRoutingRequest) Do() (PostFinanceRoutingResponseBody, error) {
+func (r *PostFinanceRoutingRequest) Do(ctx context.Context) (PostFinanceRoutingResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

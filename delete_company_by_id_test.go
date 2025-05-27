@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -13,7 +14,7 @@ func TestDeleteCompanyByID(t *testing.T) {
 	req := client.NewDeleteCompanyByIDRequest()
 	req.PathParams().ID = "AMZ2-TEST"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -25,7 +26,8 @@ func TestDeleteCompanyByID(t *testing.T) {
 func TestDeleteAllCompanies(t *testing.T) {
 	client := client()
 	req := client.NewGetCompaniesRequest()
-	companies, err := req.All()
+	req.QueryParams().PropertyID = "MID2"
+	companies, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -33,7 +35,7 @@ func TestDeleteAllCompanies(t *testing.T) {
 	for _, company := range companies {
 		req := client.NewDeleteCompanyByIDRequest()
 		req.PathParams().ID = company.ID
-		_, err := req.Do()
+		_, err := req.Do(context.Background())
 		if err != nil {
 			t.Error(err)
 		}

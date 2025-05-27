@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -120,9 +121,9 @@ func (r *GetServicesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetServicesRequest) Do() (GetServicesResponseBody, error) {
+func (r *GetServicesRequest) Do(ctx context.Context) (GetServicesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -138,10 +139,10 @@ func (r *GetServicesRequest) Do() (GetServicesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetServicesRequest) All() (Services, error) {
+func (r *GetServicesRequest) All(ctx context.Context) (Services, error) {
 	services := Services{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return services, err
 		}

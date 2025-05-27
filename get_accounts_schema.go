@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -114,9 +115,9 @@ func (r *GetAccountsSchemaRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetAccountsSchemaRequest) Do() (GetAccountsSchemaResponseBody, error) {
+func (r *GetAccountsSchemaRequest) Do(ctx context.Context) (GetAccountsSchemaResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

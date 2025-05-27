@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -117,9 +118,9 @@ func (r *GetUnitGroupsRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetUnitGroupsRequest) Do() (GetUnitGroupsResponseBody, error) {
+func (r *GetUnitGroupsRequest) Do(ctx context.Context) (GetUnitGroupsResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -135,10 +136,10 @@ func (r *GetUnitGroupsRequest) Do() (GetUnitGroupsResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetUnitGroupsRequest) All() (UnitGroups, error) {
+func (r *GetUnitGroupsRequest) All(ctx context.Context) (UnitGroups, error) {
 	unitGroups := UnitGroups{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return unitGroups, err
 		}

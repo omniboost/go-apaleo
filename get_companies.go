@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -120,9 +121,9 @@ func (r *GetCompaniesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetCompaniesRequest) Do() (GetCompaniesResponseBody, error) {
+func (r *GetCompaniesRequest) Do(ctx context.Context) (GetCompaniesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -138,10 +139,10 @@ func (r *GetCompaniesRequest) Do() (GetCompaniesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetCompaniesRequest) All() (Companies, error) {
+func (r *GetCompaniesRequest) All(ctx context.Context) (Companies, error) {
 	companies := Companies{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return companies, err
 		}

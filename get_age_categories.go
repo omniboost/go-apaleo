@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -115,9 +116,9 @@ func (r *GetAgeCategoriesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetAgeCategoriesRequest) Do() (GetAgeCategoriesResponseBody, error) {
+func (r *GetAgeCategoriesRequest) Do(ctx context.Context) (GetAgeCategoriesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -133,10 +134,10 @@ func (r *GetAgeCategoriesRequest) Do() (GetAgeCategoriesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetAgeCategoriesRequest) All() (AgeCategories, error) {
+func (r *GetAgeCategoriesRequest) All(ctx context.Context) (AgeCategories, error) {
 	ageCategories := AgeCategories{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return ageCategories, err
 		}

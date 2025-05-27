@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -11,9 +12,11 @@ import (
 func TestGetSchema(t *testing.T) {
 	client := client()
 	req := client.NewGetAccountsSchemaRequest()
-	req.QueryParams().PropertyID = "BER"
+	req.QueryParams().PropertyID = "AMZ2"
+	req.QueryParams().Depth = 4
+	req.QueryParams().AccountingSchema = "Extended"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

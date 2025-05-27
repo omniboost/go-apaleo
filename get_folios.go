@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -133,9 +134,9 @@ func (r *GetFoliosRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetFoliosRequest) Do() (GetFoliosResponseBody, error) {
+func (r *GetFoliosRequest) Do(ctx context.Context) (GetFoliosResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -151,10 +152,10 @@ func (r *GetFoliosRequest) Do() (GetFoliosResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetFoliosRequest) All() ([]FolioItemModel, error) {
+func (r *GetFoliosRequest) All(ctx context.Context) ([]FolioItemModel, error) {
 	folios := []FolioItemModel{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return folios, err
 		}

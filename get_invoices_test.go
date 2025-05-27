@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -12,7 +13,7 @@ func TestGetInvoices(t *testing.T) {
 	client := client()
 	req := client.NewGetInvoicesRequest()
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
@@ -27,7 +28,7 @@ func TestGetInvoicesAll(t *testing.T) {
 	req.QueryParams().CheckedOutOnAccountsReceivable = true
 	req.QueryParams().DateFilter = []string{"gte_2025-03-24", "lte_2025-03-25"}
 
-	resp, err := req.All()
+	resp, err := req.All(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

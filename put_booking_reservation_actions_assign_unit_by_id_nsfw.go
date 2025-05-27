@@ -111,7 +111,7 @@ func (r *PutReservationAssignUnitByIDRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PutReservationAssignUnitByIDRequest) Do() (PutReservationAssignUnitByIDResponseBody, error) {
+func (r *PutReservationAssignUnitByIDRequest) Do(ctx context.Context) (PutReservationAssignUnitByIDResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(context.TODO(), r)
 	if err != nil {

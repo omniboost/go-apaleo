@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -131,9 +132,9 @@ func (r *GetRatePlansRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetRatePlansRequest) Do() (GetRatePlansResponseBody, error) {
+func (r *GetRatePlansRequest) Do(ctx context.Context) (GetRatePlansResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -149,10 +150,10 @@ func (r *GetRatePlansRequest) Do() (GetRatePlansResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetRatePlansRequest) All() (RatePlans, error) {
+func (r *GetRatePlansRequest) All(ctx context.Context) (RatePlans, error) {
 	rateplans := RatePlans{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return rateplans, err
 		}

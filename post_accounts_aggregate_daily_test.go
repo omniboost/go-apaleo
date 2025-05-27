@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"testing"
@@ -22,7 +23,7 @@ func TestPostAggregateDaily(t *testing.T) {
 	req.QueryParams().To = apaleo.Date{today}
 	// req.QueryParams().Reference = "1"
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

@@ -1,6 +1,7 @@
 package apaleo_test
 
 import (
+	"context"
 	"log"
 	"testing"
 
@@ -14,7 +15,7 @@ func TestGetPdf(t *testing.T) {
 	req.PathParams().ID = "TEST-20190700000001"
 	// req.QueryParams().Expand = []string{"invoices"}
 
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}

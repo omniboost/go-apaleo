@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -136,9 +137,9 @@ func (r *PostAccountsAggregateRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PostAccountsAggregateRequest) Do() (PostAccountsAggregateResponseBody, error) {
+func (r *PostAccountsAggregateRequest) Do(ctx context.Context) (PostAccountsAggregateResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

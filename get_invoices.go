@@ -1,6 +1,7 @@
 package apaleo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -128,9 +129,9 @@ func (r *GetInvoicesRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *GetInvoicesRequest) Do() (GetInvoicesResponseBody, error) {
+func (r *GetInvoicesRequest) Do(ctx context.Context) (GetInvoicesResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -146,10 +147,10 @@ func (r *GetInvoicesRequest) Do() (GetInvoicesResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *GetInvoicesRequest) All() (Invoices, error) {
+func (r *GetInvoicesRequest) All(ctx context.Context) (Invoices, error) {
 	invoices := Invoices{}
 	for {
-		resp, err := r.Do()
+		resp, err := r.Do(ctx)
 		if err != nil {
 			return invoices, err
 		}

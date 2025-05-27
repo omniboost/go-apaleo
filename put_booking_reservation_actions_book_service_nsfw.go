@@ -131,7 +131,7 @@ func (r *PutReservationActionsBookServiceRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *PutReservationActionsBookServiceRequest) Do() (PutReservationActionsBookServiceResponseBody, error) {
+func (r *PutReservationActionsBookServiceRequest) Do(ctx context.Context) (PutReservationActionsBookServiceResponseBody, error) {
 	// Create http request
 	req, err := r.client.NewRequest(context.TODO(), r)
 	if err != nil {
