@@ -15,7 +15,7 @@ func (c *Client) NewPostBookingGroupRequest() PostBookingGroupRequest {
 		queryParams: c.NewPostBookingGroupQueryParams(),
 		pathParams:  c.NewPostBookingGroupPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingGroupHeaders(),
 		requestBody: c.NewPostBookingGroupRequestBody(),
 	}
 }
@@ -25,7 +25,7 @@ type PostBookingGroupRequest struct {
 	queryParams *PostBookingGroupQueryParams
 	pathParams  *PostBookingGroupPathParams
 	method      string
-	headers     http.Header
+	headers     *PostBookingGroupHeaders
 	requestBody PostBookingGroupRequestBody
 }
 
@@ -51,6 +51,18 @@ func (p PostBookingGroupQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostBookingGroupRequest) QueryParams() *PostBookingGroupQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostBookingGroupHeaders() *PostBookingGroupHeaders {
+	return &PostBookingGroupHeaders{}
+}
+
+type PostBookingGroupHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostBookingGroupRequest) Headers() *PostBookingGroupHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostBookingGroupPathParams() *PostBookingGroupPathParams {
@@ -128,6 +140,11 @@ func (r *PostBookingGroupRequest) Do(ctx context.Context) (PostBookingGroupRespo
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

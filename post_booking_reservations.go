@@ -15,7 +15,7 @@ func (c *Client) NewPostBookingReservationsRequest() PostBookingReservationsRequ
 		queryParams: c.NewPostBookingReservationsQueryParams(),
 		pathParams:  c.NewPostBookingReservationsPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingReservationsHeaders(),
 		requestBody: c.NewPostBookingReservationsRequestBody(),
 		force:       false,
 	}
@@ -27,7 +27,7 @@ func (c *Client) NewPostBookingReservationsForceRequest() PostBookingReservation
 		queryParams: c.NewPostBookingReservationsQueryParams(),
 		pathParams:  c.NewPostBookingReservationsPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingReservationsHeaders(),
 		requestBody: c.NewPostBookingReservationsRequestBody(),
 		force:       true,
 	}
@@ -38,7 +38,7 @@ type PostBookingReservationsRequest struct {
 	queryParams *PostBookingReservationsQueryParams
 	pathParams  *PostBookingReservationsPathParams
 	method      string
-	headers     http.Header
+	headers     *PostBookingReservationsHeaders
 	requestBody PostBookingReservationsRequestBody
 	force       bool
 }
@@ -65,6 +65,18 @@ func (p PostBookingReservationsQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostBookingReservationsRequest) QueryParams() *PostBookingReservationsQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostBookingReservationsHeaders() *PostBookingReservationsHeaders {
+	return &PostBookingReservationsHeaders{}
+}
+
+type PostBookingReservationsHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostBookingReservationsRequest) Headers() *PostBookingReservationsHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostBookingReservationsPathParams() *PostBookingReservationsPathParams {
@@ -145,6 +157,11 @@ func (r *PostBookingReservationsRequest) Do(ctx context.Context) (PostBookingRes
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

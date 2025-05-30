@@ -14,7 +14,7 @@ func (c *Client) NewPostFinanceRoutingRequest() PostFinanceRoutingRequest {
 		queryParams: c.NewPostFinanceRoutingQueryParams(),
 		pathParams:  c.NewPostFinanceRoutingPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostFinanceRoutingHeaders(),
 		requestBody: c.NewPostFinanceRoutingRequestBody(),
 	}
 }
@@ -24,7 +24,7 @@ type PostFinanceRoutingRequest struct {
 	queryParams *PostFinanceRoutingQueryParams
 	pathParams  *PostFinanceRoutingPathParams
 	method      string
-	headers     http.Header
+	headers     *PostFinanceRoutingHeaders
 	requestBody PostFinanceRoutingRequestBody
 }
 
@@ -51,6 +51,18 @@ func (p PostFinanceRoutingQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostFinanceRoutingRequest) QueryParams() *PostFinanceRoutingQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostFinanceRoutingHeaders() *PostFinanceRoutingHeaders {
+	return &PostFinanceRoutingHeaders{}
+}
+
+type PostFinanceRoutingHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostFinanceRoutingRequest) Headers() *PostFinanceRoutingHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostFinanceRoutingPathParams() *PostFinanceRoutingPathParams {
@@ -131,6 +143,11 @@ func (r *PostFinanceRoutingRequest) Do(ctx context.Context) (PostFinanceRoutingR
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

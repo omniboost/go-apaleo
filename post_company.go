@@ -14,7 +14,7 @@ func (c *Client) NewPostCompanyRequest() PostCompanyRequest {
 		queryParams: c.NewPostCompanyQueryParams(),
 		pathParams:  c.NewPostCompanyPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostCompanyHeaders(),
 		requestBody: c.NewPostCompanyRequestBody(),
 	}
 }
@@ -24,7 +24,7 @@ type PostCompanyRequest struct {
 	queryParams *PostCompanyQueryParams
 	pathParams  *PostCompanyPathParams
 	method      string
-	headers     http.Header
+	headers     *PostCompanyHeaders
 	requestBody PostCompanyRequestBody
 }
 
@@ -50,6 +50,18 @@ func (p PostCompanyQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostCompanyRequest) QueryParams() *PostCompanyQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostCompanyHeaders() *PostCompanyHeaders {
+	return &PostCompanyHeaders{}
+}
+
+type PostCompanyHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostCompanyRequest) Headers() *PostCompanyHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostCompanyPathParams() *PostCompanyPathParams {
@@ -117,6 +129,11 @@ func (r *PostCompanyRequest) Do(ctx context.Context) (PostCompanyResponseBody, e
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

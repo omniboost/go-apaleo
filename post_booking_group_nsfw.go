@@ -15,7 +15,7 @@ func (c *Client) NewPostBookingGroupNSFWRequest() PostBookingGroupNSFWRequest {
 		queryParams: c.NewPostBookingGroupNSFWQueryParams(),
 		pathParams:  c.NewPostBookingGroupNSFWPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingGroupNSFWHeaders(),
 		requestBody: c.NewPostBookingGroupNSFWRequestBody(),
 	}
 }
@@ -25,7 +25,7 @@ type PostBookingGroupNSFWRequest struct {
 	queryParams *PostBookingGroupNSFWQueryParams
 	pathParams  *PostBookingGroupNSFWPathParams
 	method      string
-	headers     http.Header
+	headers     *PostBookingGroupNSFWHeaders
 	requestBody PostBookingGroupNSFWRequestBody
 }
 
@@ -51,6 +51,18 @@ func (p PostBookingGroupNSFWQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostBookingGroupNSFWRequest) QueryParams() *PostBookingGroupNSFWQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostBookingGroupNSFWHeaders() *PostBookingGroupNSFWHeaders {
+	return &PostBookingGroupNSFWHeaders{}
+}
+
+type PostBookingGroupNSFWHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostBookingGroupNSFWRequest) Headers() *PostBookingGroupNSFWHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostBookingGroupNSFWPathParams() *PostBookingGroupNSFWPathParams {
@@ -128,6 +140,11 @@ func (r *PostBookingGroupNSFWRequest) Do(ctx context.Context) (PostBookingGroupN
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

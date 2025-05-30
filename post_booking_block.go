@@ -15,7 +15,7 @@ func (c *Client) NewPostBookingBlockRequest() PostBookingBlockRequest {
 		queryParams: c.NewPostBookingBlockQueryParams(),
 		pathParams:  c.NewPostBookingBlockPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingBlockHeaders(),
 		requestBody: c.NewPostBookingBlockRequestBody(),
 	}
 }
@@ -26,7 +26,7 @@ func (c *Client) NewPostBookingBlockForceRequest() PostBookingBlockRequest {
 		queryParams: c.NewPostBookingBlockQueryParams(),
 		pathParams:  c.NewPostBookingBlockPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostBookingBlockHeaders(),
 		requestBody: c.NewPostBookingBlockRequestBody(),
 	}
 }
@@ -36,9 +36,8 @@ type PostBookingBlockRequest struct {
 	queryParams *PostBookingBlockQueryParams
 	pathParams  *PostBookingBlockPathParams
 	method      string
-	headers     http.Header
+	headers     *PostBookingBlockHeaders
 	requestBody PostBookingBlockRequestBody
-	force       bool
 }
 
 func (c *Client) NewPostBookingBlockQueryParams() *PostBookingBlockQueryParams {
@@ -63,6 +62,18 @@ func (p PostBookingBlockQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostBookingBlockRequest) QueryParams() *PostBookingBlockQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostBookingBlockHeaders() *PostBookingBlockHeaders {
+	return &PostBookingBlockHeaders{}
+}
+
+type PostBookingBlockHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostBookingBlockRequest) Headers() *PostBookingBlockHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostBookingBlockPathParams() *PostBookingBlockPathParams {
@@ -143,6 +154,11 @@ func (r *PostBookingBlockRequest) Do(ctx context.Context) (PostBookingBlockRespo
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters

@@ -14,7 +14,7 @@ func (c *Client) NewPostAllowanceToFolioRequest() PostAllowanceToFolioRequest {
 		queryParams: c.NewPostAllowanceToFolioQueryParams(),
 		pathParams:  c.NewPostAllowanceToFolioPathParams(),
 		method:      http.MethodPost,
-		headers:     http.Header{},
+		headers:     c.NewPostAllowanceToFolioHeaders(),
 		requestBody: c.NewPostAllowanceToFolioRequestBody(),
 	}
 }
@@ -24,7 +24,7 @@ type PostAllowanceToFolioRequest struct {
 	queryParams *PostAllowanceToFolioQueryParams
 	pathParams  *PostAllowanceToFolioPathParams
 	method      string
-	headers     http.Header
+	headers     *PostAllowanceToFolioHeaders
 	requestBody PostAllowanceToFolioRequestBody
 }
 
@@ -51,6 +51,18 @@ func (p PostAllowanceToFolioQueryParams) ToURLValues() (url.Values, error) {
 
 func (r *PostAllowanceToFolioRequest) QueryParams() *PostAllowanceToFolioQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPostAllowanceToFolioHeaders() *PostAllowanceToFolioHeaders {
+	return &PostAllowanceToFolioHeaders{}
+}
+
+type PostAllowanceToFolioHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PostAllowanceToFolioRequest) Headers() *PostAllowanceToFolioHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPostAllowanceToFolioPathParams() *PostAllowanceToFolioPathParams {
@@ -130,6 +142,11 @@ func (r *PostAllowanceToFolioRequest) Do(ctx context.Context) (PostAllowanceToFo
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters
