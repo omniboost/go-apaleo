@@ -15,7 +15,7 @@ func (c *Client) NewPutBookingBlockActionsConfirmRequest() PutBookingBlockAction
 		queryParams: c.NewPutBookingBlockActionsConfirmQueryParams(),
 		pathParams:  c.NewPutBookingBlockActionsConfirmPathParams(),
 		method:      http.MethodPut,
-		headers:     http.Header{},
+		headers:     c.NewPutBookingBlockActionsConfirmHeaders(),
 		requestBody: c.NewPutBookingBlockActionsConfirmRequestBody(),
 	}
 }
@@ -25,7 +25,7 @@ type PutBookingBlockActionsConfirmRequest struct {
 	queryParams *PutBookingBlockActionsConfirmQueryParams
 	pathParams  *PutBookingBlockActionsConfirmPathParams
 	method      string
-	headers     http.Header
+	headers     *PutBookingBlockActionsConfirmHeaders
 	requestBody PutBookingBlockActionsConfirmRequestBody
 }
 
@@ -51,6 +51,18 @@ func (p PutBookingBlockActionsConfirmQueryParams) ToURLValues() (url.Values, err
 
 func (r *PutBookingBlockActionsConfirmRequest) QueryParams() *PutBookingBlockActionsConfirmQueryParams {
 	return r.queryParams
+}
+
+func (c *Client) NewPutBookingBlockActionsConfirmHeaders() *PutBookingBlockActionsConfirmHeaders {
+	return &PutBookingBlockActionsConfirmHeaders{}
+}
+
+type PutBookingBlockActionsConfirmHeaders struct {
+	IdempotencyKey string `schema:"Idempotency-Key,omitempty"`
+}
+
+func (r *PutBookingBlockActionsConfirmRequest) Headers() *PutBookingBlockActionsConfirmHeaders {
+	return r.headers
 }
 
 func (c *Client) NewPutBookingBlockActionsConfirmPathParams() *PutBookingBlockActionsConfirmPathParams {
@@ -122,6 +134,11 @@ func (r *PutBookingBlockActionsConfirmRequest) Do(ctx context.Context) (PutBooki
 	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
+	}
+
+	// Add headers
+	if r.Headers().IdempotencyKey != "" {
+		req.Header.Set("Idempotency-Key", r.Headers().IdempotencyKey)
 	}
 
 	// Process query parameters
